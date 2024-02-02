@@ -1,10 +1,14 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:convert';
 import 'package:agrario_app/pantallas/menu.dart';
+import 'package:agrario_app/pantallas/visitas_add.dart';
 import 'package:flutter/material.dart';
 import 'package:agrario_app/modelos/visitas_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:agrario_app/configuracion/configuracion.dart' as config;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:location/location.dart';
 
 class Visitas extends StatefulWidget {
   @override
@@ -14,6 +18,8 @@ class Visitas extends StatefulWidget {
 class _VisitasState extends State<Visitas> {
   List<visitas_model> data = [];
   bool isLoading = true;
+  Location location = Location();
+  LocationData? currentLocation;
 
   // Método para obtener datos de visitas
   Future<List<visitas_model>> obtenerDatos() async {
@@ -50,6 +56,21 @@ class _VisitasState extends State<Visitas> {
   void initState() {
     super.initState();
     cargarDatos();
+    _getLocation();
+  }
+
+  //Obtener la geolocalizacion del man
+  Future<void> _getLocation() async {
+    try {
+      var _location = await location.getLocation();
+      setState(() {
+        currentLocation = _location;
+        print(
+            "Longitud: ${currentLocation!.longitude} Latitud:  ${currentLocation!.latitude}");
+      });
+    } catch (e) {
+      print('Error: $e');
+    }
   }
 
   Future<void> cargarDatos() async {
@@ -100,15 +121,51 @@ class _VisitasState extends State<Visitas> {
                         ),
                         itemBuilder: (context, index) {
                           return ListTile(
-                            title: Text("VisitaId: " +
-                                data[index].visitaID.toString() +
-                                " FincaId: " +
-                                data[index].fincaID.toString() +
-                                " Observaciones: " +
-                                data[index].observaciones),
-
-                            // Puedes agregar más widgets aquí según tus necesidades
-                          );
+                              title: Text("VisitaId: " +
+                                  data[index].visitaID.toString() +
+                                  "\n" +
+                                  "FincaId: " +
+                                  data[index].fincaID.toString() +
+                                  "\n" +
+                                  "ProductorId: " +
+                                  data[index].productorID.toString() +
+                                  "\n" +
+                                  "Observaciones: " +
+                                  data[index].observaciones +
+                                  "\n" +
+                                  "FechaVisita: " +
+                                  data[index].fechaVisita),
+                              // Puedes agregar más widgets aquí según tus necesidades
+                              trailing: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.grey,
+                                      ),
+                                      child: Icon(Icons.edit_attributes_sharp),
+                                      onPressed: () {
+                                        print("Editing " +
+                                            data[index].visitaID.toString());
+                                      },
+                                    ),
+                                    SizedBox(
+                                        width:
+                                            8), // Ajusta el espacio según tus preferencias
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.grey,
+                                      ),
+                                      child: Icon(Icons.delete_forever_sharp),
+                                      onPressed: () {
+                                        print("Deleting " +
+                                            data[index].visitaID.toString());
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ));
                         },
                       )
                     : Center(child: Text('No hay datos')),
@@ -121,6 +178,10 @@ class _VisitasState extends State<Visitas> {
               elevation: 5,
               onPressed: () {
                 print("agregar visita");
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => VisitasAddPage())));
               },
               child: Icon(Icons.add),
             ),

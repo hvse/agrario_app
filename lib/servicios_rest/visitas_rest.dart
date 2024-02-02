@@ -32,6 +32,51 @@ Future<List<visitas_model>> visitasRest() async {
     throw Error();
   }
 }
+
+Future<void> visitasAdd(String visitasID, String fincaId, String productoId,
+    String visita, String observacion) async {
+  Map<String, dynamic> data = {
+    'VisitasID': int.parse(visitasID),
+    'FincaID': int.parse(fincaId),
+    'ProductorID': int.parse(productoId),
+    'FechaVisita': visita,
+    'Observaciones': observacion,
+  };
+
+  // Convierte los datos a formato JSON
+  String jsonData = jsonEncode(data);
+  print("json a enviar:");
+  print(jsonData);
+
+  // URL de la API
+  final String apiUrl =
+      '${config.BASE}api.php?action=verificar_sesion&action=crear';
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? cokie = prefs.getString('session');
+  // Realiza la solicitud POST
+  final response = await http.post(
+    Uri.parse(apiUrl),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Cookie': '$cokie',
+
+      // Agrega cualquier otro encabezado necesario
+    },
+    body: jsonData,
+  );
+
+  print(response);
+  // Verifica el código de estado de la respuesta
+  if (response.statusCode == 200) {
+    // Procesa la respuesta si es exitosa
+    //Map<String, dynamic> visitas = json.decode(response.body);
+    print(response.body);
+    //return visitas['visitas'];
+  } else {
+    // Maneja errores de la respuesta
+    throw Error();
+  }
+}
 /*void main() {
   postData();
 }*/
