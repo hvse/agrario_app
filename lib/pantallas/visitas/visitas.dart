@@ -2,9 +2,13 @@
 
 import 'dart:convert';
 import 'package:agrario_app/pantallas/menu.dart';
-import 'package:agrario_app/pantallas/visitas_add.dart';
+import 'package:agrario_app/pantallas/visitas/visitas_add.dart';
+import 'package:agrario_app/pantallas/visitas/visitas_edit.dart';
+import 'package:agrario_app/servicios_rest/visitas_rest.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:agrario_app/modelos/visitas_model.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart' as http;
 import 'package:agrario_app/configuracion/configuracion.dart' as config;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,8 +22,8 @@ class Visitas extends StatefulWidget {
 class _VisitasState extends State<Visitas> {
   List<visitas_model> data = [];
   bool isLoading = true;
-  Location location = Location();
-  LocationData? currentLocation;
+
+  String visitaId = "";
 
   // Método para obtener datos de visitas
   Future<List<visitas_model>> obtenerDatos() async {
@@ -56,21 +60,6 @@ class _VisitasState extends State<Visitas> {
   void initState() {
     super.initState();
     cargarDatos();
-    _getLocation();
-  }
-
-  //Obtener la geolocalizacion del man
-  Future<void> _getLocation() async {
-    try {
-      var _location = await location.getLocation();
-      setState(() {
-        currentLocation = _location;
-        print(
-            "Longitud: ${currentLocation!.longitude} Latitud:  ${currentLocation!.latitude}");
-      });
-    } catch (e) {
-      print('Error: $e');
-    }
   }
 
   Future<void> cargarDatos() async {
@@ -141,26 +130,21 @@ class _VisitasState extends State<Visitas> {
                                 child: Row(
                                   children: [
                                     ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.grey,
-                                      ),
-                                      child: Icon(Icons.edit_attributes_sharp),
+                                      child: Icon(Icons.more_vert),
                                       onPressed: () {
                                         print("Editing " +
                                             data[index].visitaID.toString());
-                                      },
-                                    ),
-                                    SizedBox(
-                                        width:
-                                            8), // Ajusta el espacio según tus preferencias
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.grey,
-                                      ),
-                                      child: Icon(Icons.delete_forever_sharp),
-                                      onPressed: () {
-                                        print("Deleting " +
-                                            data[index].visitaID.toString());
+                                        this.visitaId =
+                                            data[index].visitaID.toString();
+                                        _showEditDeletOption(
+                                            context,
+                                            data[index].visitaID.toString(),
+                                            data[index].fincaID.toString(),
+                                            data[index].productorID.toString(),
+                                            data[index].fechaVisita.toString(),
+                                            data[index]
+                                                .observaciones
+                                                .toString());
                                       },
                                     ),
                                   ],
@@ -174,7 +158,7 @@ class _VisitasState extends State<Visitas> {
             padding:
                 EdgeInsets.only(bottom: 15.0, left: screenWidth(context) - 80),
             child: FloatingActionButton(
-              backgroundColor: Colors.grey,
+              //backgroundColor: Colors.grey,
               elevation: 5,
               onPressed: () {
                 print("agregar visita");
@@ -186,6 +170,81 @@ class _VisitasState extends State<Visitas> {
               child: Icon(Icons.add),
             ),
           )
+        ],
+      ),
+    );
+  }
+
+  // This shows a CupertinoModalPopup which hosts a CupertinoAlertDialog.
+  void _showEditDeletOption(BuildContext context, String visitaid,
+      String fincaid, String productoid, String fecha, String observaciones) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        title: Text('Acciones'),
+        message: Text('Seleccione una Acción'),
+        actions: <Widget>[
+          CupertinoActionSheetAction(
+            child: Text('Editar Registro'),
+            onPressed: () {
+              print(visitaid);
+              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => VisitasEditPage(
+                            visitadid: visitaid,
+                            fincaid: fincaid,
+                            productoid: productoid,
+                            fechavisita: fecha,
+                            observaciones: observaciones,
+                          ))));
+            },
+          ),
+          CupertinoActionSheetAction(
+            isDestructiveAction: true,
+            child: Text('Eliminar Registro'),
+            onPressed: () {
+              print(visitaid);
+              Navigator.pop(context);
+              _confirmEditDeletOption(context, visitaid);
+            },
+          ),
+        ],
+        cancelButton: CupertinoButton(
+          child: Icon(Icons.clear),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+    );
+  }
+
+  void _confirmEditDeletOption(BuildContext context, String visitaid) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text('Selecciona opción'),
+        content: Text("Eliminar Registro? ${visitaid} "),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () async {
+              EasyLoading.show();
+
+              var resultado = await deleteVisitas(visitaid);
+
+              if (resultado.toString().contains("Visita eliminada")) {
+                EasyLoading.dismiss();
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => Visitas()),
+                  (route) => false,
+                );
+              }
+            },
+            child: const Text("Eliminar"),
+          ),
         ],
       ),
     );

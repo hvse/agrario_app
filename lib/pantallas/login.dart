@@ -1,4 +1,4 @@
-import 'package:agrario_app/pantallas/visitas.dart';
+import 'package:agrario_app/pantallas/visitas/visitas.dart';
 import 'package:agrario_app/servicios_rest/login_rest.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

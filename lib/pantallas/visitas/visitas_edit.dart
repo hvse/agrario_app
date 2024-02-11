@@ -1,49 +1,69 @@
-import 'package:agrario_app/pantallas/visitas.dart';
-import 'package:agrario_app/servicios_rest/login_rest.dart';
+import 'package:agrario_app/pantallas/visitas/visitas.dart';
 import 'package:agrario_app/servicios_rest/visitas_rest.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:location/location.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+class VisitasEditPage extends StatefulWidget {
+  final String visitadid;
+  final String fincaid;
+  final String productoid;
+  final String fechavisita;
+  final String observaciones;
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home:
-          VisitasAddPage(), // Establece VisitasAddPage como la pantalla inicial
-    );
-  }
-}
-
-class VisitasAddPage extends StatefulWidget {
-  const VisitasAddPage({super.key});
+  const VisitasEditPage({
+    required this.visitadid,
+    required this.fincaid,
+    required this.productoid,
+    required this.fechavisita,
+    required this.observaciones,
+  });
 
   @override
-  // ignore: library_private_types_in_public_api
-  _VisitasAddPageState createState() => _VisitasAddPageState();
+  _VisitasEditPageState createState() => _VisitasEditPageState();
 }
 
-class _VisitasAddPageState extends State<VisitasAddPage> {
-  final TextEditingController _visitasId = TextEditingController();
-  final TextEditingController _fincaId = TextEditingController();
-  final TextEditingController _productoId = TextEditingController();
-  final TextEditingController _fechaVisita = TextEditingController();
-  final TextEditingController _observaciones = TextEditingController();
+class _VisitasEditPageState extends State<VisitasEditPage> {
+  late TextEditingController _visitasId;
+  late TextEditingController _fincaId;
+  late TextEditingController _productoId;
+  late TextEditingController _fechaVisita;
+  late TextEditingController _observaciones;
 
   String resultadologin = '';
+  String latitud = '';
+  String longitud = '';
+
+  @override
+  void initState() {
+    super.initState();
+
+    _visitasId = TextEditingController(text: widget.visitadid.toString());
+    _fincaId = TextEditingController(text: widget.fincaid.toString());
+    _productoId = TextEditingController(text: widget.productoid.toString());
+    _fechaVisita = TextEditingController(text: widget.fechavisita);
+    _observaciones = TextEditingController(text: widget.observaciones);
+
+    _getLocation();
+  }
+
+  @override
+  void dispose() {
+    // Dispose the controllers when the widget is disposed to avoid memory leaks
+    _visitasId.dispose();
+    _fincaId.dispose();
+    _productoId.dispose();
+    _fechaVisita.dispose();
+    _observaciones.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Agregar Visitas'),
+        title: const Text('Editar Visita'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -84,15 +104,17 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
                 print('Contraseña: ${_productoId.text}');
                 print('Contraseña: ${_visitasId.text}');
                 print('Contraseña: ${_observaciones.text}');
-                visitasAdd(
+                // Resto del código de manejo de los datos
+                var respuesta = await visitasEdit(
                     this._visitasId.text,
                     this._fincaId.text,
                     this._productoId.text,
                     this._fechaVisita.text,
-                    this._observaciones.text);
-                var resultado = "ok";
-                print('Esto fue el resultado: ' + resultado);
-                if (resultado == 'ok') {
+                    this._observaciones.text,
+                    this.longitud,
+                    this.latitud);
+                if (respuesta.toString().contains("Visita creada")) {
+                  print("creo puretemente");
                   EasyLoading.dismiss();
                   Navigator.push(context,
                       MaterialPageRoute(builder: ((context) => Visitas())));
@@ -130,5 +152,24 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
         ],
       ),
     );
+  }
+
+  // Resto del código de la clase
+  //Obtener la geolocalizacion del man
+  Future<void> _getLocation() async {
+    Location location = Location();
+    LocationData? currentLocation;
+
+    try {
+      var _location = await location.getLocation();
+
+      currentLocation = _location;
+      this.latitud = currentLocation.latitude.toString();
+      this.longitud = currentLocation.longitude.toString();
+      print(
+          "Longitud: ${currentLocation.longitude} Latitud:  ${currentLocation.latitude}");
+    } catch (e) {
+      print('Error: $e');
+    }
   }
 }
