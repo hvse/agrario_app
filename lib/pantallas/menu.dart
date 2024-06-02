@@ -1,4 +1,6 @@
+import 'package:agrario_app/pantallas/finca/finca.dart';
 import 'package:agrario_app/pantallas/login.dart';
+import 'package:agrario_app/pantallas/visitas/visitas.dart';
 import 'package:agrario_app/servicios_rest/salir_rest.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,10 +26,21 @@ class Menu extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text('Config'),
+            leading: const Icon(Icons.trending_flat),
+            title: const Text('Finca'),
             onTap: () {
               print("menu 1");
+              Navigator.push(
+                  context, MaterialPageRoute(builder: ((context) => Finca())));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.trending_flat),
+            title: const Text('Visitas'),
+            onTap: () {
+              print("menu 2");
+              Navigator.push(context,
+                  MaterialPageRoute(builder: ((context) => Visitas())));
             },
           ),
           ListTile(

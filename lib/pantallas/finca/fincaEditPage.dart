@@ -1,18 +1,18 @@
-import 'package:agrario_app/pantallas/visitas/visitas.dart';
-import 'package:agrario_app/servicios_rest/visitas_rest.dart';
+import 'package:agrario_app/pantallas/Finca/Finca.dart';
+import 'package:agrario_app/servicios_rest/finca_rest.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:location/location.dart';
 
-class VisitasEditPage extends StatefulWidget {
+class FincaEditPage extends StatefulWidget {
   final String visitadid;
   final String fincaid;
   final String productoid;
   final String fechavisita;
   final String observaciones;
 
-  const VisitasEditPage({
+  const FincaEditPage({
     required this.visitadid,
     required this.fincaid,
     required this.productoid,
@@ -21,11 +21,11 @@ class VisitasEditPage extends StatefulWidget {
   });
 
   @override
-  _VisitasEditPageState createState() => _VisitasEditPageState();
+  _FincaEditPageState createState() => _FincaEditPageState();
 }
 
-class _VisitasEditPageState extends State<VisitasEditPage> {
-  late TextEditingController _visitasId;
+class _FincaEditPageState extends State<FincaEditPage> {
+  late TextEditingController _FincaId;
   late TextEditingController _fincaId;
   late TextEditingController _productoId;
   late TextEditingController _fechaVisita;
@@ -39,7 +39,7 @@ class _VisitasEditPageState extends State<VisitasEditPage> {
   void initState() {
     super.initState();
 
-    _visitasId = TextEditingController(text: widget.visitadid.toString());
+    _FincaId = TextEditingController(text: widget.visitadid.toString());
     _fincaId = TextEditingController(text: widget.fincaid.toString());
     _productoId = TextEditingController(text: widget.productoid.toString());
     _fechaVisita = TextEditingController(text: widget.fechavisita);
@@ -51,7 +51,7 @@ class _VisitasEditPageState extends State<VisitasEditPage> {
   @override
   void dispose() {
     // Dispose the controllers when the widget is disposed to avoid memory leaks
-    _visitasId.dispose();
+    _FincaId.dispose();
     _fincaId.dispose();
     _productoId.dispose();
     _fechaVisita.dispose();
@@ -71,7 +71,7 @@ class _VisitasEditPageState extends State<VisitasEditPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
-              controller: _visitasId,
+              controller: _FincaId,
               decoration: const InputDecoration(labelText: 'Visita'),
             ),
             const SizedBox(height: 16.0),
@@ -99,14 +99,14 @@ class _VisitasEditPageState extends State<VisitasEditPage> {
               onPressed: () async {
                 EasyLoading.show(status: 'Cargando...');
                 print('Usuario: ${_fincaId.text}');
-                print('Contraseña: ${_visitasId.text}');
+                print('Contraseña: ${_FincaId.text}');
                 print('Contraseña: ${_fincaId.text}');
                 print('Contraseña: ${_productoId.text}');
-                print('Contraseña: ${_visitasId.text}');
+                print('Contraseña: ${_FincaId.text}');
                 print('Contraseña: ${_observaciones.text}');
                 // Resto del código de manejo de los datos
-                var respuesta = await visitasEdit(
-                    this._visitasId.text,
+                var respuesta = await fincaEdit(
+                    this._FincaId.text,
                     this._fincaId.text,
                     this._productoId.text,
                     this._fechaVisita.text,
@@ -117,7 +117,7 @@ class _VisitasEditPageState extends State<VisitasEditPage> {
                   print("creo puretemente");
                   EasyLoading.dismiss();
                   Navigator.push(context,
-                      MaterialPageRoute(builder: ((context) => Visitas())));
+                      MaterialPageRoute(builder: ((context) => Finca())));
                 } else {
                   EasyLoading.dismiss();
                   _showAlertDialog(context);

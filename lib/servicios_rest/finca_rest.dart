@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:agrario_app/modelos/finca_model.dart';
 import 'package:agrario_app/modelos/visitas_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -6,9 +7,9 @@ import 'package:agrario_app/configuracion/configuracion.dart' as config;
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<List<visitas_model>> visitasRest() async {
+Future<List<finca_model>> FincaRest() async {
   // URL de la API
-  final String apiUrl = '${config.BASE}api.php?action=VisitaID';
+  final String apiUrl = '${config.BASE}api.php?action=FincaID';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
 
@@ -26,16 +27,16 @@ Future<List<visitas_model>> visitasRest() async {
   // Verifica el código de estado de la respuesta
   if (response.statusCode == 200) {
     // Procesa la respuesta si es exitosa
-    Map<String, dynamic> visitas = json.decode(response.body);
+    Map<String, dynamic> finca = json.decode(response.body);
     //print(visitas['visitas']);
-    return visitas['visitas'];
+    return finca['finca'];
   } else {
     // Maneja errores de la respuesta
     throw Error();
   }
 }
 
-FutureOr<String> visitasAdd(String visitasID, String fincaId, String productoId,
+FutureOr<String> fincaAdd(String visitasID, String fincaId, String productoId,
     String visita, String observacion, String latitud, String longitud) async {
   Map<String, dynamic> data = {
     'VisitasID': int.parse(visitasID),
@@ -84,7 +85,7 @@ FutureOr<String> visitasAdd(String visitasID, String fincaId, String productoId,
 }
 
 //Function for delete data from datasource
-FutureOr<String> deleteVisitas(String visitaID) async {
+FutureOr<String> deleteFinca(String visitaID) async {
   // URL de la API
   final String apiUrl = '${config.BASE}api.php?VisitaID=${visitaID}';
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -111,14 +112,8 @@ FutureOr<String> deleteVisitas(String visitaID) async {
 }
 
 //Funcion para editar
-FutureOr<String> visitasEdit(
-    String visitasID,
-    String fincaId,
-    String productoId,
-    String visita,
-    String observacion,
-    String latitud,
-    String longitud) async {
+FutureOr<String> fincaEdit(String visitasID, String fincaId, String productoId,
+    String visita, String observacion, String latitud, String longitud) async {
   Map<String, dynamic> data = {
     'FincaID': int.parse(fincaId),
     'ProductorID': int.parse(productoId),

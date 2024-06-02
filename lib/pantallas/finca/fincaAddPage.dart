@@ -1,69 +1,50 @@
-import 'package:agrario_app/pantallas/visitas/visitas.dart';
-import 'package:agrario_app/servicios_rest/visitas_rest.dart';
+import 'package:agrario_app/pantallas/Finca/Finca.dart';
+import 'package:agrario_app/servicios_rest/finca_rest.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:location/location.dart';
 
-class VisitasEditPage extends StatefulWidget {
-  final String visitadid;
-  final String fincaid;
-  final String productoid;
-  final String fechavisita;
-  final String observaciones;
-
-  const VisitasEditPage({
-    required this.visitadid,
-    required this.fincaid,
-    required this.productoid,
-    required this.fechavisita,
-    required this.observaciones,
-  });
-
-  @override
-  _VisitasEditPageState createState() => _VisitasEditPageState();
+void main() {
+  runApp(const MyApp());
 }
 
-class _VisitasEditPageState extends State<VisitasEditPage> {
-  late TextEditingController _visitasId;
-  late TextEditingController _fincaId;
-  late TextEditingController _productoId;
-  late TextEditingController _fechaVisita;
-  late TextEditingController _observaciones;
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      home: FincaAddPage(), // Establece FincaAddPage como la pantalla inicial
+    );
+  }
+}
+
+class FincaAddPage extends StatefulWidget {
+  const FincaAddPage({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _FincaAddPageState createState() => _FincaAddPageState();
+}
+
+class _FincaAddPageState extends State<FincaAddPage> {
+  final TextEditingController _FincaId = TextEditingController();
+  final TextEditingController _fincaId = TextEditingController();
+  final TextEditingController _productoId = TextEditingController();
+  final TextEditingController _fechaVisita = TextEditingController();
+  final TextEditingController _observaciones = TextEditingController();
 
   String resultadologin = '';
   String latitud = '';
   String longitud = '';
 
   @override
-  void initState() {
-    super.initState();
-
-    _visitasId = TextEditingController(text: widget.visitadid.toString());
-    _fincaId = TextEditingController(text: widget.fincaid.toString());
-    _productoId = TextEditingController(text: widget.productoid.toString());
-    _fechaVisita = TextEditingController(text: widget.fechavisita);
-    _observaciones = TextEditingController(text: widget.observaciones);
-
-    _getLocation();
-  }
-
-  @override
-  void dispose() {
-    // Dispose the controllers when the widget is disposed to avoid memory leaks
-    _visitasId.dispose();
-    _fincaId.dispose();
-    _productoId.dispose();
-    _fechaVisita.dispose();
-    _observaciones.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    _getLocation();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editar Visita'),
+        title: const Text('Agregar Visita'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -71,7 +52,7 @@ class _VisitasEditPageState extends State<VisitasEditPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
-              controller: _visitasId,
+              controller: _FincaId,
               decoration: const InputDecoration(labelText: 'Visita'),
             ),
             const SizedBox(height: 16.0),
@@ -99,25 +80,25 @@ class _VisitasEditPageState extends State<VisitasEditPage> {
               onPressed: () async {
                 EasyLoading.show(status: 'Cargando...');
                 print('Usuario: ${_fincaId.text}');
-                print('Contraseña: ${_visitasId.text}');
+                print('Contraseña: ${_FincaId.text}');
                 print('Contraseña: ${_fincaId.text}');
                 print('Contraseña: ${_productoId.text}');
-                print('Contraseña: ${_visitasId.text}');
+                print('Contraseña: ${_FincaId.text}');
                 print('Contraseña: ${_observaciones.text}');
-                // Resto del código de manejo de los datos
-                var respuesta = await visitasEdit(
-                    this._visitasId.text,
+                var respuesta = await fincaAdd(
+                    this._FincaId.text,
                     this._fincaId.text,
                     this._productoId.text,
                     this._fechaVisita.text,
                     this._observaciones.text,
-                    this.longitud,
-                    this.latitud);
-                if (respuesta.toString().contains("Visita actualizada")) {
+                    this.latitud,
+                    this.longitud);
+
+                if (respuesta.toString().contains("Visita creada")) {
                   print("creo puretemente");
                   EasyLoading.dismiss();
                   Navigator.push(context,
-                      MaterialPageRoute(builder: ((context) => Visitas())));
+                      MaterialPageRoute(builder: ((context) => Finca())));
                 } else {
                   EasyLoading.dismiss();
                   _showAlertDialog(context);
@@ -137,7 +118,7 @@ class _VisitasEditPageState extends State<VisitasEditPage> {
       context: context,
       builder: (BuildContext context) => CupertinoAlertDialog(
         title: const Text('Alert'),
-        content: const Text('Error al actualizar'),
+        content: const Text('Error al iniciar sesión'),
         actions: <CupertinoDialogAction>[
           CupertinoDialogAction(
             /// This parameter indicates the action would perform
@@ -154,7 +135,6 @@ class _VisitasEditPageState extends State<VisitasEditPage> {
     );
   }
 
-  // Resto del código de la clase
   //Obtener la geolocalizacion del man
   Future<void> _getLocation() async {
     Location location = Location();
