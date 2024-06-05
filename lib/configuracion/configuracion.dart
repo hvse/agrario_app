@@ -1,1 +1,1 @@
-String BASE = "https://cloud.tracertsystem.net/ws/";
+String BASE = "https://info.tracertsystem.net/api/";
