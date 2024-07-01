@@ -123,7 +123,11 @@ class _VisitasState extends State<Visitas> {
                                   data[index].observaciones +
                                   "\n" +
                                   "FechaVisita: " +
-                                  data[index].fechaVisita),
+                                  data[index].fechaVisita +
+                                  "\n" +
+                                  "Cultivo Vecino: " +
+                                  data[index].cultivo_vecino),
+
                               // Puedes agregar más widgets aquí según tus necesidades
                               trailing: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,

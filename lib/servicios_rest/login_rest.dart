@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 FutureOr<String> loginRest(String usuario, String pass) async {
   // URL de la API
-  final String apiUrl = '${config.BASE}api.php?action=iniciar_sesion';
+  final String apiUrl = '${config.BASE}index.php?action=iniciar_sesion';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   // Datos que deseas enviar en el cuerpo de la solicitud
   Map<String, dynamic> data = {
@@ -41,6 +41,8 @@ FutureOr<String> loginRest(String usuario, String pass) async {
         prefs.setString('session', headersplited[0]);
         print(headersplited[0]);
 
+        print("url: ${apiUrl}");
+        print("body: ${jsonData}");
         print("Inicio de sesion: ${response.body}");
         return 'ok';
       } else {

@@ -5,9 +5,10 @@ class visitas_model {
   int productorID = 0;
   String fechaVisita = '';
   String observaciones = '';
+  String cultivo_vecino = '';
 
   visitas_model(this.visitaID, this.fincaID, this.productorID, this.fechaVisita,
-      this.observaciones);
+      this.observaciones, this.cultivo_vecino);
 
   // ignore: avoid_types_as_parameter_names
   visitas_model.fromJson(Map<String, dynamic> json) {
@@ -16,5 +17,6 @@ class visitas_model {
     productorID = json['ProductorID'];
     fechaVisita = json['FechaVisita'];
     observaciones = json['Observaciones'];
+    cultivo_vecino = json['cultivo_vecino'] ?? '';
   }
 }

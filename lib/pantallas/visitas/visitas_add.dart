@@ -35,6 +35,7 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
   final TextEditingController _productoId = TextEditingController();
   final TextEditingController _fechaVisita = TextEditingController();
   final TextEditingController _observaciones = TextEditingController();
+  final TextEditingController _cultivo_vecino = TextEditingController();
 
   String resultadologin = '';
   String latitud = '';
@@ -69,12 +70,16 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
             const SizedBox(height: 16.0),
             TextField(
               controller: _fechaVisita,
-              decoration: const InputDecoration(labelText: 'Visita'),
+              decoration: const InputDecoration(labelText: 'Fecha Visita'),
             ),
             const SizedBox(height: 16.0),
             TextField(
               controller: _observaciones,
               decoration: const InputDecoration(labelText: 'Observaciones'),
+            ),
+            TextField(
+              controller: _cultivo_vecino,
+              decoration: const InputDecoration(labelText: 'Cultivo vecino'),
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
@@ -85,13 +90,14 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
                 print('Contraseña: ${_fincaId.text}');
                 print('Contraseña: ${_productoId.text}');
                 print('Contraseña: ${_visitasId.text}');
-                print('Contraseña: ${_observaciones.text}');
+                print('cultivo vecino: ${_observaciones.text}');
                 var respuesta = await visitasAdd(
                     this._visitasId.text,
                     this._fincaId.text,
                     this._productoId.text,
                     this._fechaVisita.text,
                     this._observaciones.text,
+                    this._cultivo_vecino.text,
                     this.latitud,
                     this.longitud);
 

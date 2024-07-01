@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<List<visitas_model>> visitasRest() async {
   // URL de la API
-  final String apiUrl = '${config.BASE}api.php?action=VisitaID';
+  final String apiUrl = '${config.BASE}index.php?action=VisitaID';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
 
@@ -35,14 +35,22 @@ Future<List<visitas_model>> visitasRest() async {
   }
 }
 
-FutureOr<String> visitasAdd(String visitasID, String fincaId, String productoId,
-    String visita, String observacion, String latitud, String longitud) async {
+FutureOr<String> visitasAdd(
+    String visitasID,
+    String fincaId,
+    String productoId,
+    String visita,
+    String observacion,
+    String cultivo_vecino,
+    String latitud,
+    String longitud) async {
   Map<String, dynamic> data = {
     'VisitasID': int.parse(visitasID),
     'FincaID': int.parse(fincaId),
     'ProductorID': int.parse(productoId),
     'FechaVisita': visita,
     'Observaciones': observacion,
+    'cultivo_vecino': cultivo_vecino,
     'longitud': longitud,
     'latitud': latitud
   };
@@ -54,8 +62,7 @@ FutureOr<String> visitasAdd(String visitasID, String fincaId, String productoId,
   print(jsonData);
 
   // URL de la API
-  final String apiUrl =
-      '${config.BASE}api.php?action=verificar_sesion&action=crear';
+  final String apiUrl = '${config.BASE}index.php?action=crear';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
   // Realiza la solicitud POST
@@ -86,7 +93,7 @@ FutureOr<String> visitasAdd(String visitasID, String fincaId, String productoId,
 //Function for delete data from datasource
 FutureOr<String> deleteVisitas(String visitaID) async {
   // URL de la API
-  final String apiUrl = '${config.BASE}api.php?VisitaID=${visitaID}';
+  final String apiUrl = '${config.BASE}index.php?VisitaID=${visitaID}';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
   // Realiza la solicitud POST
@@ -132,7 +139,7 @@ FutureOr<String> visitasEdit(
   String jsonData = jsonEncode(data);
 
   // URL de la API
-  final String apiUrl = '${config.BASE}api.php?VisitaID=${visitasID}';
+  final String apiUrl = '${config.BASE}index.php?VisitaID=${visitasID}';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
 
