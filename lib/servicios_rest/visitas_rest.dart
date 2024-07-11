@@ -12,6 +12,8 @@ Future<List<visitas_model>> visitasRest() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
 
+  print('VISITAS: ' + apiUrl);
+  print('VISITAS: ' + cokie!);
   // Realiza la solicitud POST
   final response = await http.get(
     Uri.parse(apiUrl),
