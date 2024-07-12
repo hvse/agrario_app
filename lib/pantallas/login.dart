@@ -3,6 +3,7 @@ import 'package:agrario_app/servicios_rest/login_rest.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -77,6 +78,9 @@ class _LoginPageState extends State<LoginPage> {
                 EasyLoading.show(status: 'Cargando...');
                 print('Usuario: ${_emailController.text}');
                 print('Contraseña: ${_passwordController.text}');
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                String? cokie = prefs.getString('session');
+                print('lo que debe llevar la sesion: ${cokie}');
                 var resultado = await loginRest(
                     _emailController.text, _passwordController.text);
                 print('Esto fue el resultado: ' + resultado);

@@ -5,7 +5,7 @@ import 'dart:async';
 
 FutureOr<String> salirRest() async {
   // URL de la API
-  final String apiUrl = '${config.BASE}api.php?action=cerrar_sesion';
+  final String apiUrl = '${config.BASE}index.php?action=cerrar_sesion';
 
   //SharedPreferences prefs = await SharedPreferences.getInstance();
   //String? cokie = prefs.getString('session');

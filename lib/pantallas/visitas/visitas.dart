@@ -27,7 +27,7 @@ class _VisitasState extends State<Visitas> {
 
   // Método para obtener datos de visitas
   Future<List<visitas_model>> obtenerDatos() async {
-    final String apiUrl = '${config.BASE}api.php?action=VisitaID';
+    final String apiUrl = '${config.BASE}index.php?action=VisitaID';
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? cookie = prefs.getString('session');
 

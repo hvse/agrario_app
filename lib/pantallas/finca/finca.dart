@@ -27,7 +27,7 @@ class _FincaState extends State<Finca> {
 
   // Método para obtener datos de Finca
   Future<List<finca_model>> obtenerDatos() async {
-    final String apiUrl = '${config.BASE}api.php?action=FincaID';
+    final String apiUrl = '${config.BASE}index.php?action=FincaID';
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? cookie = prefs.getString('session');
 

@@ -36,6 +36,16 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
   final TextEditingController _fechaVisita = TextEditingController();
   final TextEditingController _observaciones = TextEditingController();
   final TextEditingController _cultivo_vecino = TextEditingController();
+  final TextEditingController _cosecha_mecanica = TextEditingController();
+  final TextEditingController _canha_organica = TextEditingController();
+  final TextEditingController _canha_conversion = TextEditingController();
+  final TextEditingController _tierra_descanso = TextEditingController();
+  final TextEditingController _maquinarias_utilizadas = TextEditingController();
+  final TextEditingController _anho = TextEditingController();
+  final TextEditingController _forma_cosecha = TextEditingController();
+  final TextEditingController _apto_maquina = TextEditingController();
+  final TextEditingController _otros_cultivos = TextEditingController();
+  final TextEditingController _fotos = TextEditingController();
 
   String resultadologin = '';
   String latitud = '';
@@ -55,22 +65,23 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
           children: [
             TextField(
               controller: _visitasId,
-              decoration: const InputDecoration(labelText: 'Visita'),
+              decoration: const InputDecoration(labelText: 'Visita(número)'),
             ),
             const SizedBox(height: 16.0),
             TextField(
               controller: _fincaId,
-              decoration: const InputDecoration(labelText: 'Finca'),
+              decoration: const InputDecoration(labelText: 'Finca(número)'),
             ),
             const SizedBox(height: 16.0),
             TextField(
               controller: _productoId,
-              decoration: const InputDecoration(labelText: 'Producto'),
+              decoration: const InputDecoration(labelText: 'Producto(número)'),
             ),
             const SizedBox(height: 16.0),
             TextField(
               controller: _fechaVisita,
-              decoration: const InputDecoration(labelText: 'Fecha Visita'),
+              decoration:
+                  const InputDecoration(labelText: 'Fecha Visita(dd-mm-yyy)'),
             ),
             const SizedBox(height: 16.0),
             TextField(
@@ -80,6 +91,47 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
             TextField(
               controller: _cultivo_vecino,
               decoration: const InputDecoration(labelText: 'Cultivo vecino'),
+            ),
+            TextField(
+              controller: _cosecha_mecanica,
+              decoration: const InputDecoration(labelText: 'Cosecha Mecanica'),
+            ),
+            TextField(
+              controller: _canha_organica,
+              decoration: const InputDecoration(labelText: 'Caña Organica'),
+            ),
+            TextField(
+              controller: _canha_conversion,
+              decoration: const InputDecoration(labelText: 'Caña conversion'),
+            ),
+            TextField(
+              controller: _tierra_descanso,
+              decoration: const InputDecoration(labelText: 'Tierra Descanso'),
+            ),
+            TextField(
+              controller: _maquinarias_utilizadas,
+              decoration:
+                  const InputDecoration(labelText: 'Maquinarias Utilizadas'),
+            ),
+            TextField(
+              controller: _anho,
+              decoration: const InputDecoration(labelText: 'Año'),
+            ),
+            TextField(
+              controller: _forma_cosecha,
+              decoration: const InputDecoration(labelText: 'Forma cosecha'),
+            ),
+            TextField(
+              controller: _apto_maquina,
+              decoration: const InputDecoration(labelText: 'Apto maquina'),
+            ),
+            TextField(
+              controller: _otros_cultivos,
+              decoration: const InputDecoration(labelText: 'Otros cultivos'),
+            ),
+            TextField(
+              controller: _fotos,
+              decoration: const InputDecoration(labelText: 'Fotos'),
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
@@ -98,6 +150,16 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
                     this._fechaVisita.text,
                     this._observaciones.text,
                     this._cultivo_vecino.text,
+                    this._cosecha_mecanica.text,
+                    this._canha_organica.text,
+                    this._canha_conversion.text,
+                    this._tierra_descanso.text,
+                    this._maquinarias_utilizadas.text,
+                    this._anho.text,
+                    this._forma_cosecha.text,
+                    this._apto_maquina.text,
+                    this._otros_cultivos.text,
+                    this._fotos.text,
                     this.latitud,
                     this.longitud);
 

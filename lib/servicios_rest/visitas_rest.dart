@@ -10,30 +10,42 @@ Future<List<visitas_model>> visitasRest() async {
   // URL de la API
   final String apiUrl = '${config.BASE}index.php?action=VisitaID';
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? cokie = prefs.getString('session');
+  String? cookie = prefs.getString('session');
 
-  print('VISITAS: ' + apiUrl);
-  print('VISITAS: ' + cokie!);
-  // Realiza la solicitud POST
-  final response = await http.get(
-    Uri.parse(apiUrl),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Cookie': '$cokie',
+  if (cookie == null) {
+    throw Exception('No session cookie found');
+  }
 
-      // Agrega cualquier otro encabezado necesario
-    },
-  );
+  print('VISITAS: $apiUrl');
+  print('VISITAS: $cookie');
 
-  // Verifica el código de estado de la respuesta
-  if (response.statusCode == 200) {
-    // Procesa la respuesta si es exitosa
-    Map<String, dynamic> visitas = json.decode(response.body);
-    //print(visitas['visitas']);
-    return visitas['visitas'];
-  } else {
-    // Maneja errores de la respuesta
-    throw Error();
+  try {
+    // Realiza la solicitud GET
+    final response = await http.get(
+      Uri.parse(apiUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Cookie': 'session=$cookie;',
+      },
+    );
+
+    // Verifica el código de estado de la respuesta
+    if (response.statusCode == 200) {
+      // Procesa la respuesta si es exitosa
+      Map<String, dynamic> visitas = json.decode(response.body);
+      // Assuming visitas['visitas'] is a List
+      return (visitas['visitas'] as List)
+          .map((data) => visitas_model.fromJson(data))
+          .toList();
+    } else {
+      // Log response details for debugging
+      print('Error en la solicitud: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      throw Exception('Error en la solicitud: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Error general en la solicitud: $e');
+    throw Exception('Error general en la solicitud: $e');
   }
 }
 
@@ -44,6 +56,16 @@ FutureOr<String> visitasAdd(
     String visita,
     String observacion,
     String cultivo_vecino,
+    String cosecha_mecanica,
+    String canha_organica,
+    String canha_conversion,
+    String tierra_descanso,
+    String maquinarias_utilizadas,
+    String anho,
+    String forma_cosecha,
+    String apto_maquina,
+    String otros_cultivos,
+    String fotos,
     String latitud,
     String longitud) async {
   Map<String, dynamic> data = {
@@ -53,6 +75,16 @@ FutureOr<String> visitasAdd(
     'FechaVisita': visita,
     'Observaciones': observacion,
     'cultivo_vecino': cultivo_vecino,
+    'cosecha_mecanica': cosecha_mecanica,
+    'canha_organica': canha_organica,
+    'canha_conversion': canha_conversion,
+    'tierra_descanso': tierra_descanso,
+    'maquinarias_utilizadas': maquinarias_utilizadas,
+    'anho': anho,
+    'forma_cosecha': forma_cosecha,
+    'apto_maquina': apto_maquina,
+    'otros_cultivos': otros_cultivos,
+    'fotos': fotos,
     'longitud': longitud,
     'latitud': latitud
   };

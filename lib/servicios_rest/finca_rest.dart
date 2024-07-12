@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<List<finca_model>> FincaRest() async {
   // URL de la API
-  final String apiUrl = '${config.BASE}api.php?action=FincaID';
+  final String apiUrl = '${config.BASE}index.php?action=FincaID';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
 
@@ -56,7 +56,7 @@ FutureOr<String> fincaAdd(String visitasID, String fincaId, String productoId,
 
   // URL de la API
   final String apiUrl =
-      '${config.BASE}api.php?action=verificar_sesion&action=crear';
+      '${config.BASE}index.php?action=verificar_sesion&action=crear';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
   // Realiza la solicitud POST
@@ -87,7 +87,7 @@ FutureOr<String> fincaAdd(String visitasID, String fincaId, String productoId,
 //Function for delete data from datasource
 FutureOr<String> deleteFinca(String visitaID) async {
   // URL de la API
-  final String apiUrl = '${config.BASE}api.php?VisitaID=${visitaID}';
+  final String apiUrl = '${config.BASE}index.php?VisitaID=${visitaID}';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
   // Realiza la solicitud POST
@@ -127,7 +127,7 @@ FutureOr<String> fincaEdit(String visitasID, String fincaId, String productoId,
   String jsonData = jsonEncode(data);
 
   // URL de la API
-  final String apiUrl = '${config.BASE}api.php?VisitaID=${visitasID}';
+  final String apiUrl = '${config.BASE}index.php?VisitaID=${visitasID}';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
 
