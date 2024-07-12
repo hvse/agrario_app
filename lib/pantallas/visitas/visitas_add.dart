@@ -81,7 +81,7 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
             TextField(
               controller: _fechaVisita,
               decoration:
-                  const InputDecoration(labelText: 'Fecha Visita(dd-mm-yyy)'),
+                  const InputDecoration(labelText: 'Fecha Visita(YYYY-mm-dd)'),
             ),
             const SizedBox(height: 16.0),
             TextField(
