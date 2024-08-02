@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:location/location.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
@@ -80,8 +81,22 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
             const SizedBox(height: 16.0),
             TextField(
               controller: _fechaVisita,
-              decoration:
-                  const InputDecoration(labelText: 'Fecha Visita(YYYY-mm-dd)'),
+              decoration: const InputDecoration(
+                  icon: Icon(Icons.date_range_rounded),
+                  labelText: "Fecha Visita"),
+              onTap: () async {
+                DateTime? pickeddate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2100));
+                if (pickeddate != null) {
+                  setState(() {
+                    _fechaVisita.text =
+                        DateFormat('yyy-MM-dd').format(pickeddate);
+                  });
+                }
+              },
             ),
             const SizedBox(height: 16.0),
             TextField(

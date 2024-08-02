@@ -159,7 +159,7 @@ FutureOr<String> visitasEdit(
     String visita,
     String observacion,
     String latitud,
-    String longitud) async {
+    String longitud, String text, String text, String text, String text, String text, String text, String text, String text, String text, String longitud, String latitud) async {
   Map<String, dynamic> data = {
     'FincaID': int.parse(fincaId),
     'ProductorID': int.parse(productoId),
