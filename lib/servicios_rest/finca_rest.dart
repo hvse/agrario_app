@@ -7,7 +7,7 @@ import 'package:agrario_app/configuracion/configuracion.dart' as config;
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<List<finca_model>> FincaRest() async {
+Future<List<FincaModel>> FincaRest() async {
   // URL de la API
   final String apiUrl = '${config.BASE}index.php?action=FincaID';
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -35,6 +35,55 @@ Future<List<finca_model>> FincaRest() async {
     throw Error();
   }
 }
+
+FutureOr<String> fincaAddLocal(String visitasID, String fincaId, String proyectoId,
+    String visita, String observacion, String latitud, String longitud) async {
+  Map<String, dynamic> data = {
+    'VisitasID': int.parse(visitasID),
+    'FincaID': int.parse(fincaId),
+    'ProyectoID': int.parse(proyectoId),
+    'FechaVisita': visita,
+    'Observaciones': observacion,
+    'longitud': longitud,
+    'latitud': latitud
+  };
+
+  // Convierte los datos a formato JSON
+  String jsonData = jsonEncode(data);
+  print("url: ${config.BASE}");
+  print("json a enviar:");
+  print(jsonData);
+
+  // URL de la API
+  final String apiUrl =
+      '${config.BASE}index.php?action=verificar_sesion&action=actualizar';
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? cokie = prefs.getString('session');
+  // Realiza la solicitud POST
+  final response = await http.post(
+    Uri.parse(apiUrl),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Cookie': '$cokie',
+
+      // Agrega cualquier otro encabezado necesario
+    },
+    body: jsonData,
+  );
+
+  // Verifica el código de estado de la respuesta
+  if (response.statusCode == 200) {
+    // Procesa la respuesta si es exitosa
+    Map<String, dynamic> finca = json.decode(response.body);
+    //print(visitas['visitas']);
+    return finca['finca'];
+  } else {
+    // Maneja errores de la respuesta
+    throw Error();
+  }
+}
+
+
 
 FutureOr<String> fincaAdd(String visitasID, String fincaId, String productoId,
     String visita, String observacion, String latitud, String longitud) async {

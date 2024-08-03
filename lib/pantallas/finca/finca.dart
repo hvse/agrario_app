@@ -20,13 +20,13 @@ class Finca extends StatefulWidget {
 }
 
 class _FincaState extends State<Finca> {
-  List<finca_model> data = [];
+  List<FincaModel> data = [];
   bool isLoading = true;
 
   String visitaId = "";
 
   // Método para obtener datos de Finca
-  Future<List<finca_model>> obtenerDatos() async {
+  Future<List<FincaModel>> obtenerDatos() async {
     final String apiUrl = '${config.BASE}index.php?action=FincaID';
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? cookie = prefs.getString('session');
@@ -45,8 +45,8 @@ class _FincaState extends State<Finca> {
         var datos = jsonDecode(response.body);
         print("datos recibidos:...");
         print(datos['finca']);
-        return List<finca_model>.from(
-          datos['finca'].map((dato) => finca_model.fromJson(dato)),
+        return List<FincaModel>.from(
+          datos['finca'].map((dato) => FincaModel.fromJson(dato)),
         );
       } else {
         throw Exception('Error en la solicitud: ${response.statusCode}');
@@ -112,19 +112,16 @@ class _FincaState extends State<Finca> {
                         itemBuilder: (context, index) {
                           return ListTile(
                               title: Text("FincaID: " +
-                                  data[index].FincaID.toString() +
+                                  data[index].fincaId.toString() +
                                   "\n" +
                                   "Nombre Finca: " +
-                                  data[index].NombreFinca +
+                                  data[index].nombreFinca +
                                   "\n" +
                                   "Ubicacion Finca: " +
-                                  data[index].UbicacionFinca +
+                                  data[index].ubicacionFinca +
                                   "\n" +
                                   "Area Total: " +
-                                  data[index].AreaTotal +
-                                  "\n" +
-                                  "Mapa Fincas: " +
-                                  data[index].MapaFincas),
+                                  data[index].ubicacionFinca),
                               // Puedes agregar más widgets aquí según tus necesidades
                               trailing: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
@@ -135,14 +132,14 @@ class _FincaState extends State<Finca> {
                                       onPressed: () {
                                         print("Editing ");
                                         this.visitaId =
-                                            data[index].FincaID.toString();
+                                            data[index].fincaId.toString();
                                         _showEditDeletOption(
                                             context,
-                                            data[index].FincaID.toString(),
-                                            data[index].NombreFinca,
-                                            data[index].UbicacionFinca,
-                                            data[index].AreaTotal,
-                                            data[index].MapaFincas);
+                                            data[index].fincaId.toString(),
+                                            data[index].nombreCampo,
+                                            data[index].ubicacionFinca,
+                                            data[index].actividad,
+                                            data[index].actividad);
                                       },
                                     ),
                                   ],

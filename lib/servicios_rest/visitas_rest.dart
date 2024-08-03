@@ -1,12 +1,15 @@
 import 'dart:convert';
+import 'package:agrario_app/collections/vista_collection.dart';
 import 'package:agrario_app/modelos/visitas_model.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:agrario_app/servicios_rest/isar_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:agrario_app/configuracion/configuracion.dart' as config;
+import 'package:isar/isar.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<List<visitas_model>> visitasRest() async {
+Future<List<VisitaModel>> visitasRest() async {
   // URL de la API
   final String apiUrl = '${config.BASE}index.php?action=VisitaID';
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -35,7 +38,7 @@ Future<List<visitas_model>> visitasRest() async {
       Map<String, dynamic> visitas = json.decode(response.body);
       // Assuming visitas['visitas'] is a List
       return (visitas['visitas'] as List)
-          .map((data) => visitas_model.fromJson(data))
+          .map((data) => VisitaModel.fromJson(data))
           .toList();
     } else {
       // Log response details for debugging
@@ -49,53 +52,58 @@ Future<List<visitas_model>> visitasRest() async {
   }
 }
 
-FutureOr<String> visitasAdd(
-    String visitasID,
-    String fincaId,
-    String productoId,
-    String visita,
-    String observacion,
-    String cultivo_vecino,
-    String cosecha_mecanica,
-    String canha_organica,
-    String canha_conversion,
-    String tierra_descanso,
-    String maquinarias_utilizadas,
-    String anho,
-    String forma_cosecha,
-    String apto_maquina,
-    String otros_cultivos,
-    String fotos,
-    String latitud,
-    String longitud) async {
-  Map<String, dynamic> data = {
-    'VisitasID': int.parse(visitasID),
-    'FincaID': int.parse(fincaId),
-    'ProductorID': int.parse(productoId),
-    'FechaVisita': visita,
-    'Observaciones': observacion,
-    'cultivo_vecino': cultivo_vecino,
-    'cosecha_mecanica': cosecha_mecanica,
-    'canha_organica': canha_organica,
-    'canha_conversion': canha_conversion,
-    'tierra_descanso': tierra_descanso,
-    'maquinarias_utilizadas': maquinarias_utilizadas,
-    'anho': anho,
-    'forma_cosecha': forma_cosecha,
-    'apto_maquina': apto_maquina,
-    'otros_cultivos': otros_cultivos,
-    'fotos': fotos,
-    'longitud': longitud,
-    'latitud': latitud
-  };
+FutureOr<String> visitaAddlocal(VisitaModel visita) async {
+  final Isar isar = IsarService().isar;
+  try {
+    final VisitaCollection visitaCollection =
+        visitasCollectionFromListJson(visita);
+    await isar.writeTxn(() async {
+      await isar.visitaCollections.put(visitaCollection);
+    });
+    return 'OK';
+  } catch (e) {
+    debugPrint('Error: $e');
+    throw Error();
+  }
+}
 
-  // Convierte los datos a formato JSON
-  String jsonData = jsonEncode(data);
-  print("url: ${config.BASE}");
-  print("json a enviar:");
-  print(jsonData);
+FutureOr<String> visitaDeletelocal(int id) async {
+  final Isar isar = IsarService().isar;
+  try {
+    await isar.writeTxn(() async {
+      await isar.visitaCollections.delete((id));
+    });
+    return 'OK';
+  } catch (e) {
+    debugPrint('Error: $e');
+    throw Error();
+  }
+}
 
-  // URL de la API
+FutureOr<List<VisitaModel>> visitaGetLocal() async {
+  final Isar isar = IsarService().isar;
+  try {
+    final List<VisitaCollection> visitas =
+        await isar.visitaCollections.where().findAll();
+    return visitasFromListCollection(visitas);
+  } catch (e) {
+    debugPrint('Error: $e');
+    throw Error();
+  }
+}
+
+FutureOr<String> syncVisitas() async {
+  List<VisitaModel> visitas = await visitaGetLocal();
+  for (var i = 0; i < visitas.length; i++) {
+    final response = await visitasAdd(visitas[i]);
+    if (response == 'OK') {
+      await visitaDeletelocal(visitas[i].id!);
+    }
+  }
+  return 'OK';
+}
+
+FutureOr<String> visitasAdd(VisitaModel visita) async {
   final String apiUrl = '${config.BASE}index.php?action=crear';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
@@ -105,21 +113,15 @@ FutureOr<String> visitasAdd(
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Cookie': '$cokie',
-
-      // Agrega cualquier otro encabezado necesario
     },
-    body: jsonData,
+    body: jsonEncode(visita.toJson()),
   );
 
   print(response);
-  // Verifica el código de estado de la respuesta
+
   if (response.statusCode == 200) {
-    // Procesa la respuesta si es exitosa
-    Map<String, dynamic> visitas = json.decode(response.body);
-    print(response.body);
-    return visitas['mensaje'];
+    return "OK";
   } else {
-    // Maneja errores de la respuesta
     throw Error();
   }
 }
@@ -159,7 +161,7 @@ FutureOr<String> visitasEdit(
     String visita,
     String observacion,
     String latitud,
-    String longitud, String text, String text, String text, String text, String text, String text, String text, String text, String text, String longitud, String latitud) async {
+    String longitud) async {
   Map<String, dynamic> data = {
     'FincaID': int.parse(fincaId),
     'ProductorID': int.parse(productoId),
@@ -193,16 +195,17 @@ FutureOr<String> visitasEdit(
     body: jsonData,
   );
 
-  print(response);
+  print(response.body);
+  Map<String, dynamic> visitas = json.decode(response.body);
   // Verifica el código de estado de la respuesta
   if (response.statusCode == 200) {
     // Procesa la respuesta si es exitosa
-    Map<String, dynamic> visitas = json.decode(response.body);
+
     print(response.body);
     return visitas['mensaje'];
   } else {
     // Maneja errores de la respuesta
-    throw Error();
+    return visitas['error'];
   }
 }
 

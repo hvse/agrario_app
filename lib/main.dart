@@ -1,8 +1,11 @@
 import 'package:agrario_app/pantallas/login.dart';
+import 'package:agrario_app/servicios_rest/isar_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await IsarService().init();
   runApp(const MyApp());
 }
 

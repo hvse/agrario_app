@@ -1,5 +1,6 @@
 import 'package:agrario_app/pantallas/finca/finca.dart';
 import 'package:agrario_app/pantallas/login.dart';
+import 'package:agrario_app/pantallas/sincronizar/sincronizar.dart';
 import 'package:agrario_app/pantallas/visitas/visitas.dart';
 import 'package:agrario_app/servicios_rest/salir_rest.dart';
 import 'package:flutter/cupertino.dart';
@@ -42,6 +43,12 @@ class Menu extends StatelessWidget {
               Navigator.push(context,
                   MaterialPageRoute(builder: ((context) => Visitas())));
             },
+          ),
+          ListTile(
+            leading: const Icon(Icons.sync),
+            title: const Text('Sincronizar'),
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: ((context) => Sincronizar()))),
           ),
           ListTile(
             leading: const Icon(Icons.home),

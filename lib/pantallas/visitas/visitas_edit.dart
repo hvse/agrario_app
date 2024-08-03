@@ -217,24 +217,14 @@ class _VisitasEditPageState extends State<VisitasEditPage> {
                 print('Contraseña: ${_observaciones.text}');
                 // Resto del código de manejo de los datos
                 var respuesta = await visitasEdit(
-                    this._visitasId.text,
-                    this._fincaId.text,
-                    this._productoId.text,
-                    this._fechaVisita.text,
-                    this._observaciones.text,
-                    this._cultivo_vecino.text,
-                    this._cosecha_mecanica.text,
-                    this._canha_organica.text,
-                    this._canha_conversion.text,
-                    this._tierra_descanso.text,
-                    this._maquinarias_utilizadas.text,
-                    this._anho.text,
-                    this._forma_cosecha.text,
-                    this._apto_maquina.text,
-                    this._otros_cultivos.text,
-                    this._fotos.text,
-                    this.longitud,
-                    this.latitud);
+                  this._visitasId.text,
+                  this._fincaId.text,
+                  this._productoId.text,
+                  this._fechaVisita.text,
+                  this._observaciones.text,
+                  this.longitud,
+                  this.latitud,
+                );
                 if (respuesta.toString().contains("Visita actualizada")) {
                   print("creo puretemente");
                   EasyLoading.dismiss();
@@ -242,7 +232,7 @@ class _VisitasEditPageState extends State<VisitasEditPage> {
                       MaterialPageRoute(builder: ((context) => Visitas())));
                 } else {
                   EasyLoading.dismiss();
-                  _showAlertDialog(context);
+                  _showAlertDialog(context, respuesta);
                 }
               },
               child: const Text('Guardar'),
@@ -254,12 +244,12 @@ class _VisitasEditPageState extends State<VisitasEditPage> {
   }
 
   // This shows a CupertinoModalPopup which hosts a CupertinoAlertDialog.
-  void _showAlertDialog(BuildContext context) {
+  void _showAlertDialog(BuildContext context, String message) {
     showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) => CupertinoAlertDialog(
         title: const Text('Alert'),
-        content: const Text('Error al actualizar'),
+        content: Text(message),
         actions: <CupertinoDialogAction>[
           CupertinoDialogAction(
             /// This parameter indicates the action would perform

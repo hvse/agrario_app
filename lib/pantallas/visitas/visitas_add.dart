@@ -1,3 +1,4 @@
+import 'package:agrario_app/modelos/visitas_model.dart';
 import 'package:agrario_app/pantallas/visitas/visitas.dart';
 import 'package:agrario_app/servicios_rest/visitas_rest.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,6 +48,8 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
   final TextEditingController _apto_maquina = TextEditingController();
   final TextEditingController _otros_cultivos = TextEditingController();
   final TextEditingController _fotos = TextEditingController();
+  final TextEditingController _nombrefinca = TextEditingController();
+  final TextEditingController _nombreproducto = TextEditingController();
 
   String resultadologin = '';
   String latitud = '';
@@ -148,6 +151,14 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
               controller: _fotos,
               decoration: const InputDecoration(labelText: 'Fotos'),
             ),
+            TextField(
+              controller: _nombrefinca,
+              decoration: const InputDecoration(labelText: 'Nombre Finca'),
+            ),
+            TextField(
+              controller: _nombreproducto,
+              decoration: const InputDecoration(labelText: 'Nombre Producto'),
+            ),
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () async {
@@ -158,27 +169,34 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
                 print('Contraseña: ${_productoId.text}');
                 print('Contraseña: ${_visitasId.text}');
                 print('cultivo vecino: ${_observaciones.text}');
-                var respuesta = await visitasAdd(
-                    this._visitasId.text,
-                    this._fincaId.text,
-                    this._productoId.text,
-                    this._fechaVisita.text,
-                    this._observaciones.text,
-                    this._cultivo_vecino.text,
-                    this._cosecha_mecanica.text,
-                    this._canha_organica.text,
-                    this._canha_conversion.text,
-                    this._tierra_descanso.text,
-                    this._maquinarias_utilizadas.text,
-                    this._anho.text,
-                    this._forma_cosecha.text,
-                    this._apto_maquina.text,
-                    this._otros_cultivos.text,
-                    this._fotos.text,
-                    this.latitud,
-                    this.longitud);
 
-                if (respuesta.toString().contains("Visita creada")) {
+                VisitaModel visitaModel = VisitaModel(
+                  id: null,
+                  visitaId: _visitasId.text,
+                  fincaId: _fincaId.text,
+                  productorId: _productoId.text,
+                  fechaVisita: DateTime.parse(_fechaVisita.text),
+                  observaciones: _observaciones.text,
+                  cultivoVecino: _cultivo_vecino.text,
+                  cosechaMecanica: _cosecha_mecanica.text,
+                  canhaOrganica: _canha_organica.text,
+                  canhaConversion: _canha_conversion.text,
+                  tierraDescanso: _tierra_descanso.text,
+                  maquinariasUtilizadas: _maquinarias_utilizadas.text,
+                  anho: _anho.text,
+                  formaCosecha: _forma_cosecha.text,
+                  aptoMaquina: _apto_maquina.text,
+                  otrosCultivos: _otros_cultivos.text,
+                  fotos: _fotos.text,
+                  longitud: this.longitud,
+                  latitud: this.latitud,
+                  nombreFinca: _nombrefinca.text,
+                  nombreProductor: _nombreproducto.text,
+                );
+
+                var respuesta = await visitaAddlocal(visitaModel);
+
+                if (respuesta.toString().contains("OK")) {
                   print("creo puretemente");
                   EasyLoading.dismiss();
                   Navigator.push(context,

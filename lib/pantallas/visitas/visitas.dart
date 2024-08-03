@@ -1,6 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison
 
-import 'dart:convert';
 import 'package:agrario_app/pantallas/menu.dart';
 import 'package:agrario_app/pantallas/visitas/visitas_add.dart';
 import 'package:agrario_app/pantallas/visitas/visitas_edit.dart';
@@ -12,7 +10,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart' as http;
 import 'package:agrario_app/configuracion/configuracion.dart' as config;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:location/location.dart';
 
 class Visitas extends StatefulWidget {
   @override
@@ -20,13 +17,13 @@ class Visitas extends StatefulWidget {
 }
 
 class _VisitasState extends State<Visitas> {
-  List<visitas_model> data = [];
+  final List<VisitaModel> data = [];
   bool isLoading = true;
 
   String visitaId = "";
 
   // Método para obtener datos de visitas
-  Future<List<visitas_model>> obtenerDatos() async {
+  Future<List<VisitaModel>> obtenerDatos() async {
     final String apiUrl = '${config.BASE}index.php?action=VisitaID';
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? cookie = prefs.getString('session');
@@ -42,11 +39,7 @@ class _VisitasState extends State<Visitas> {
 
       if (response.statusCode == 200) {
         print(response.body);
-        var datos = jsonDecode(response.body);
-        print(datos['visitas']);
-        return List<visitas_model>.from(
-          datos['visitas'].map((dato) => visitas_model.fromJson(dato)),
-        );
+        return visitasResponseFromListJson(response.body);
       } else {
         throw Exception('Error en la solicitud: ${response.statusCode}');
       }
@@ -111,22 +104,22 @@ class _VisitasState extends State<Visitas> {
                         itemBuilder: (context, index) {
                           return ListTile(
                               title: Text("VisitaId: " +
-                                  data[index].visitaID.toString() +
+                                  data[index].visitaId.toString() +
                                   "\n" +
                                   "FincaId: " +
-                                  data[index].fincaID.toString() +
+                                  data[index].fincaId.toString() +
                                   "\n" +
                                   "ProductorId: " +
-                                  data[index].productorID.toString() +
+                                  data[index].productorId.toString() +
                                   "\n" +
                                   "Observaciones: " +
                                   data[index].observaciones +
                                   "\n" +
                                   "FechaVisita: " +
-                                  data[index].fechaVisita +
+                                  data[index].fechaVisita.toString() +
                                   "\n" +
                                   "Cultivo Vecino: " +
-                                  data[index].cultivo_vecino),
+                                  data[index].cultivoVecino),
 
                               // Puedes agregar más widgets aquí según tus necesidades
                               trailing: SingleChildScrollView(
@@ -136,15 +129,11 @@ class _VisitasState extends State<Visitas> {
                                     ElevatedButton(
                                       child: Icon(Icons.more_vert),
                                       onPressed: () {
-                                        print("Editing " +
-                                            data[index].visitaID.toString());
-                                        this.visitaId =
-                                            data[index].visitaID.toString();
                                         _showEditDeletOption(
                                             context,
-                                            data[index].visitaID.toString(),
-                                            data[index].fincaID.toString(),
-                                            data[index].productorID.toString(),
+                                            data[index].visitaId.toString(),
+                                            data[index].fincaId.toString(),
+                                            data[index].productorId.toString(),
                                             data[index].fechaVisita.toString(),
                                             data[index]
                                                 .observaciones
@@ -202,6 +191,17 @@ class _VisitasState extends State<Visitas> {
                             productoid: productoid,
                             fechavisita: fecha,
                             observaciones: observaciones,
+                            cultivo_vecino: '',
+                            cosecha_mecanica: '',
+                            cana_organica: '',
+                            cana_conversion: '',
+                            tierra_descanso: '',
+                            maquinarias_utlizadas: '',
+                            anho: '',
+                            forma_cosecha: '',
+                            apto_maquina: '',
+                            otros_cultivos: '',
+                            fotos: '',
                           ))));
             },
           ),
