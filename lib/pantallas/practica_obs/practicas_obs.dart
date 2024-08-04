@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'dart:convert';
+import 'package:agrario_app/pantallas/menu.dart';
 import 'package:agrario_app/pantallas/finca/fincaAddPage.dart';
 import 'package:agrario_app/pantallas/finca/fincaEditPage.dart';
 import 'package:agrario_app/pantallas/scaffold_custom.dart';
@@ -8,20 +9,54 @@ import 'package:agrario_app/servicios_rest/finca_rest.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:agrario_app/modelos/finca_model.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart' as http;
 import 'package:agrario_app/configuracion/configuracion.dart' as config;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:location/location.dart';
 
-class Finca extends StatefulWidget {
+class PracticasObs extends StatefulWidget {
   @override
-  _FincaState createState() => _FincaState();
+  _PracticasObsState createState() => _PracticasObsState();
 }
 
-class _FincaState extends State<Finca> {
+class _PracticasObsState extends State<PracticasObs> {
   List<FincaModel> data = [];
   bool isLoading = true;
 
   String visitaId = "";
+
+  // Método para obtener datos de Finca
+  Future<List<FincaModel>> obtenerDatos() async {
+    final String apiUrl = '${config.BASE}index.php?action=FincaID';
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? cookie = prefs.getString('session');
+
+    try {
+      var response = await http.get(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Cookie': '$cookie',
+        },
+      ).timeout(Duration(seconds: 90));
+
+      if (response.statusCode == 200) {
+        print(response.body);
+        var datos = jsonDecode(response.body);
+        print("datos recibidos:...");
+        print(datos['finca']);
+        return List<FincaModel>.from(
+          datos['finca'].map((dato) => FincaModel.fromJson(dato)),
+        );
+      } else {
+        throw Exception('Error en la solicitud: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error: $error');
+      throw Exception('Error general en la solicitud: $error');
+    }
+  }
 
   @override
   void initState() {
@@ -31,7 +66,7 @@ class _FincaState extends State<Finca> {
 
   Future<void> cargarDatos() async {
     try {
-      var result = await FincaRest();
+      var result = await obtenerDatos();
       setState(() {
         data.addAll(result);
         isLoading = false;
@@ -113,19 +148,23 @@ class _FincaState extends State<Finca> {
                       )
                     : Center(child: Text('No hay datos')),
           ),
+          Padding(
+            padding:
+                EdgeInsets.only(bottom: 15.0, left: screenWidth(context) - 80),
+            child: FloatingActionButton(
+              //backgroundColor: Colors.grey,
+              elevation: 5,
+              onPressed: () {
+                print("agregar visita");
+                Navigator.push(context,
+                    MaterialPageRoute(builder: ((context) => FincaAddPage())));
+              },
+              child: Icon(Icons.add),
+            ),
+          )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        //backgroundColor: Colors.grey,
-        elevation: 5,
-        onPressed: () {
-          print("agregar visita");
-          Navigator.push(context,
-              MaterialPageRoute(builder: ((context) => FincaAddPage())));
-        },
-        child: Icon(Icons.add),
-      ),
-      title: 'Lista de Fincas',
+      title: 'Lista de Practicas Observadas',
     );
   }
 
@@ -165,4 +204,6 @@ class _FincaState extends State<Finca> {
       ),
     );
   }
+
+
 }

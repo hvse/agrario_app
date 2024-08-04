@@ -63,7 +63,7 @@ FutureOr<String> visitaAddlocal(VisitaModel visita) async {
     return 'OK';
   } catch (e) {
     debugPrint('Error: $e');
-    throw Error();
+    return 'Error';
   }
 }
 
@@ -154,45 +154,17 @@ FutureOr<String> deleteVisitas(String visitaID) async {
 }
 
 //Funcion para editar
-FutureOr<String> visitasEdit(
-    String visitasID,
-    String fincaId,
-    String productoId,
-    String visita,
-    String observacion,
-    String latitud,
-    String longitud) async {
-  Map<String, dynamic> data = {
-    'FincaID': int.parse(fincaId),
-    'ProductorID': int.parse(productoId),
-    'FechaVisita': visita,
-    'Observaciones': observacion,
-    'longitud': longitud,
-    'latitud': latitud
-  };
-
-  // Convierte los datos a formato JSON
-  String jsonData = jsonEncode(data);
-
-  // URL de la API
-  final String apiUrl = '${config.BASE}index.php?VisitaID=${visitasID}';
+FutureOr<String> visitasEdit(VisitaModel visita) async {
+  final String apiUrl = '${config.BASE}index.php?VisitaID=${visita.visitaId}';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
-
-  print("url: ${apiUrl}");
-  print("json a enviar:");
-  print(jsonData);
-
-  // Realiza la solicitud PUT
   final response = await http.put(
     Uri.parse(apiUrl),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Cookie': '$cokie',
-
-      // Agrega cualquier otro encabezado necesario
     },
-    body: jsonData,
+    body: jsonEncode(visita.toJson()),
   );
 
   print(response.body);

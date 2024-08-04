@@ -1,24 +1,9 @@
+import 'package:agrario_app/modelos/finca_model.dart';
 import 'package:agrario_app/pantallas/Finca/Finca.dart';
 import 'package:agrario_app/servicios_rest/finca_rest.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:agrario_app/servicios_rest/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:location/location.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: FincaAddPage(), // Establece FincaAddPage como la pantalla inicial
-    );
-  }
-}
 
 class FincaAddPage extends StatefulWidget {
   const FincaAddPage({super.key});
@@ -29,32 +14,49 @@ class FincaAddPage extends StatefulWidget {
 }
 
 class _FincaAddPageState extends State<FincaAddPage> {
-  final TextEditingController _FincaId = TextEditingController();
-  final TextEditingController _fincaId = TextEditingController();
-  final TextEditingController _productoId = TextEditingController();
-  final TextEditingController _fechaVisita = TextEditingController();
-  final TextEditingController _observaciones = TextEditingController();
+  final _fincaId = TextEditingController();
+  final _nombreFinca = TextEditingController();
+  final _ubicacionFinca = TextEditingController();
+  final _nombreCampo = TextEditingController();
+  final _actividad = TextEditingController();
+  final _fincasOrganicos = TextEditingController();
+  final _educacion = TextEditingController();
+  final _infraestructura = TextEditingController();
+  final _salud = TextEditingController();
+  final _otros = TextEditingController();
+  final _productorId = TextEditingController();
 
   String resultadologin = '';
   String latitud = '';
   String longitud = '';
 
+  Future<void> getLocationAndUpdateState() async {
+    final location = await getLocation();
+    if (location != null) {
+      if (mounted) {
+        setState(() {
+          latitud = location.latitude.toString();
+          longitud = location.longitude.toString();
+        });
+      }
+    } else {
+      // Manejar el caso cuando location es null
+      print('Error: No se pudo obtener la ubicación.');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    _getLocation();
+    getLocationAndUpdateState();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Agregar Visita'),
+        title: const Text('Agregar Finca'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
-              controller: _FincaId,
-              decoration: const InputDecoration(labelText: 'Visita'),
-            ),
             const SizedBox(height: 16.0),
             TextField(
               controller: _fincaId,
@@ -62,46 +64,73 @@ class _FincaAddPageState extends State<FincaAddPage> {
             ),
             const SizedBox(height: 16.0),
             TextField(
-              controller: _productoId,
-              decoration: const InputDecoration(labelText: 'Producto'),
+              controller: _nombreFinca,
+              decoration: const InputDecoration(labelText: 'Nombre'),
             ),
             const SizedBox(height: 16.0),
             TextField(
-              controller: _fechaVisita,
-              decoration: const InputDecoration(labelText: 'Visita'),
+              controller: _ubicacionFinca,
+              decoration: const InputDecoration(labelText: 'Ubicación'),
             ),
             const SizedBox(height: 16.0),
             TextField(
-              controller: _observaciones,
-              decoration: const InputDecoration(labelText: 'Observaciones'),
+              controller: _nombreCampo,
+              decoration: const InputDecoration(labelText: 'Nombre del Campo'),
+            ),
+            TextField(
+              controller: _fincasOrganicos,
+              decoration: const InputDecoration(labelText: 'Finca Organica'),
+            ),
+            TextField(
+              controller: _educacion,
+              decoration: const InputDecoration(labelText: 'Educacion'),
+            ),
+            TextField(
+              controller: _actividad,
+              decoration: const InputDecoration(labelText: 'Actividad'),
+            ),
+            TextField(
+              controller: _infraestructura,
+              decoration: const InputDecoration(labelText: 'Infraestructura'),
+            ),
+            TextField(
+              controller: _salud,
+              decoration: const InputDecoration(labelText: 'Salud'),
+            ),
+            TextField(
+              controller: _otros,
+              decoration: const InputDecoration(labelText: 'Otros'),
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () async {
                 EasyLoading.show(status: 'Cargando...');
-                print('Usuario: ${_fincaId.text}');
-                print('Contraseña: ${_FincaId.text}');
-                print('Contraseña: ${_fincaId.text}');
-                print('Contraseña: ${_productoId.text}');
-                print('Contraseña: ${_FincaId.text}');
-                print('Contraseña: ${_observaciones.text}');
-                var respuesta = await fincaAdd(
-                    this._FincaId.text,
-                    this._fincaId.text,
-                    this._productoId.text,
-                    this._fechaVisita.text,
-                    this._observaciones.text,
-                    this.latitud,
-                    this.longitud);
 
-                if (respuesta.toString().contains("Visita creada")) {
-                  print("creo puretemente");
+                final FincaModel fincaModel = FincaModel(
+                  fincaId: _fincaId.text,
+                  nombreFinca: _nombreFinca.text,
+                  ubicacionFinca: _ubicacionFinca.text,
+                  nombreCampo: _nombreCampo.text,
+                  actividad: _actividad.text,
+                  fincasOrganicosDatosProducto: _fincasOrganicos.text,
+                  educacion: _educacion.text,
+                  infraestructura: _infraestructura.text,
+                  salud: _salud.text,
+                  otros: _otros.text,
+                  latitud: this.latitud,
+                  longitud: this.longitud,
+                  Id: null,
+                  productorID: _productorId.text,
+                );
+                debugPrint('fincaModel: ${fincaModel.toJson()}');
+                var respuesta = await fincaAddLocal(fincaModel);
+                if (respuesta.toString().contains("OK")) {
                   EasyLoading.dismiss();
                   Navigator.push(context,
                       MaterialPageRoute(builder: ((context) => Finca())));
                 } else {
                   EasyLoading.dismiss();
-                  _showAlertDialog(context);
+                  showAlertDialog(context, respuesta.toString());
                 }
               },
               child: const Text('Guardar'),
@@ -110,46 +139,5 @@ class _FincaAddPageState extends State<FincaAddPage> {
         ),
       ),
     );
-  }
-
-  // This shows a CupertinoModalPopup which hosts a CupertinoAlertDialog.
-  void _showAlertDialog(BuildContext context) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => CupertinoAlertDialog(
-        title: const Text('Alert'),
-        content: const Text('Error al iniciar sesión'),
-        actions: <CupertinoDialogAction>[
-          CupertinoDialogAction(
-            /// This parameter indicates the action would perform
-            /// a destructive action such as deletion, and turns
-            /// the action's text color to red.
-            isDestructiveAction: true,
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Ok'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  //Obtener la geolocalizacion del man
-  Future<void> _getLocation() async {
-    Location location = Location();
-    LocationData? currentLocation;
-
-    try {
-      var _location = await location.getLocation();
-
-      currentLocation = _location;
-      this.latitud = currentLocation.latitude.toString();
-      this.longitud = currentLocation.longitude.toString();
-      print(
-          "Longitud: ${currentLocation.longitude} Latitud:  ${currentLocation.latitude}");
-    } catch (e) {
-      print('Error: $e');
-    }
   }
 }

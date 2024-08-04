@@ -1,3 +1,4 @@
+import 'package:agrario_app/collections/finca_collection.dart';
 import 'package:agrario_app/collections/vista_collection.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -18,6 +19,7 @@ class IsarService {
       _isar = await Isar.open(
         [
           VisitaCollectionSchema,
+          FincaCollectionSchema,
         ],
         directory: dir.path,
       );

@@ -1,30 +1,15 @@
 import 'package:agrario_app/modelos/visitas_model.dart';
 import 'package:agrario_app/pantallas/visitas/visitas.dart';
+import 'package:agrario_app/servicios_rest/finca_rest.dart';
+import 'package:agrario_app/servicios_rest/utils.dart';
 import 'package:agrario_app/servicios_rest/visitas_rest.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:location/location.dart';
 import 'package:intl/intl.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home:
-          VisitasAddPage(), // Establece VisitasAddPage como la pantalla inicial
-    );
-  }
-}
-
 class VisitasAddPage extends StatefulWidget {
-  const VisitasAddPage({super.key});
+  final VisitaModel? visita;
+  const VisitasAddPage({super.key, this.visita});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -32,226 +17,325 @@ class VisitasAddPage extends StatefulWidget {
 }
 
 class _VisitasAddPageState extends State<VisitasAddPage> {
-  final TextEditingController _visitasId = TextEditingController();
-  final TextEditingController _fincaId = TextEditingController();
-  final TextEditingController _productoId = TextEditingController();
-  final TextEditingController _fechaVisita = TextEditingController();
-  final TextEditingController _observaciones = TextEditingController();
-  final TextEditingController _cultivo_vecino = TextEditingController();
-  final TextEditingController _cosecha_mecanica = TextEditingController();
-  final TextEditingController _canha_organica = TextEditingController();
-  final TextEditingController _canha_conversion = TextEditingController();
-  final TextEditingController _tierra_descanso = TextEditingController();
-  final TextEditingController _maquinarias_utilizadas = TextEditingController();
-  final TextEditingController _anho = TextEditingController();
-  final TextEditingController _forma_cosecha = TextEditingController();
-  final TextEditingController _apto_maquina = TextEditingController();
-  final TextEditingController _otros_cultivos = TextEditingController();
-  final TextEditingController _fotos = TextEditingController();
-  final TextEditingController _nombrefinca = TextEditingController();
-  final TextEditingController _nombreproducto = TextEditingController();
-
-  String resultadologin = '';
+  late TextEditingController _visitasId;
+  late TextEditingController _fincaId;
+  late TextEditingController _productoId;
+  late TextEditingController _fechaVisita;
+  late TextEditingController _observaciones;
+  late TextEditingController _cultivo_vecino;
+  late TextEditingController _cosecha_mecanica;
+  late TextEditingController _canha_organica;
+  late TextEditingController _canha_conversion;
+  late TextEditingController _tierra_descanso;
+  late TextEditingController _maquinarias_utilizadas;
+  late TextEditingController _anho;
+  late TextEditingController _forma_cosecha;
+  late TextEditingController _apto_maquina;
+  late TextEditingController _otros_cultivos;
+  late TextEditingController _fotos;
+  late TextEditingController _nombrefinca;
+  late TextEditingController _nombreproducto;
+  bool isLoading = true;
+  late List<DropdownMenuItem<Object>>? fincas;
+  late String fincaId;
   String latitud = '';
   String longitud = '';
 
   @override
+  void initState() {
+    if (widget.visita == null) {
+      _visitasId = TextEditingController();
+      _fincaId = TextEditingController();
+      _productoId = TextEditingController();
+      _fechaVisita = TextEditingController();
+      _observaciones = TextEditingController();
+      _cultivo_vecino = TextEditingController();
+      _cosecha_mecanica = TextEditingController();
+      _canha_organica = TextEditingController();
+      _canha_conversion = TextEditingController();
+      _tierra_descanso = TextEditingController();
+      _maquinarias_utilizadas = TextEditingController();
+      _anho = TextEditingController();
+      _forma_cosecha = TextEditingController();
+      _apto_maquina = TextEditingController();
+      _otros_cultivos = TextEditingController();
+      _fotos = TextEditingController();
+      _nombrefinca = TextEditingController();
+      _nombreproducto = TextEditingController();
+    } else {
+      _visitasId =
+          TextEditingController(text: widget.visita!.visitaId.toString());
+      _fincaId = TextEditingController(text: widget.visita!.fincaId.toString());
+      _productoId =
+          TextEditingController(text: widget.visita!.productorId.toString());
+      _fechaVisita =
+          TextEditingController(text: widget.visita!.fechaVisita.toString());
+      _observaciones =
+          TextEditingController(text: widget.visita!.observaciones.toString());
+      _cultivo_vecino =
+          TextEditingController(text: widget.visita!.cultivoVecino.toString());
+      _cosecha_mecanica = TextEditingController(
+          text: widget.visita!.cosechaMecanica.toString());
+      _canha_organica =
+          TextEditingController(text: widget.visita!.canhaOrganica.toString());
+      _canha_conversion = TextEditingController(
+          text: widget.visita!.canhaConversion.toString());
+      _tierra_descanso =
+          TextEditingController(text: widget.visita!.tierraDescanso.toString());
+      _maquinarias_utilizadas = TextEditingController(
+          text: widget.visita!.maquinariasUtilizadas.toString());
+      _anho = TextEditingController(text: widget.visita!.anho.toString());
+      _forma_cosecha =
+          TextEditingController(text: widget.visita!.formaCosecha.toString());
+      _apto_maquina =
+          TextEditingController(text: widget.visita!.aptoMaquina.toString());
+      _otros_cultivos =
+          TextEditingController(text: widget.visita!.otrosCultivos.toString());
+      _fotos = TextEditingController(text: widget.visita!.fotos.toString());
+      _nombrefinca =
+          TextEditingController(text: widget.visita!.nombreFinca.toString());
+      _nombreproducto = TextEditingController(
+          text: widget.visita!.nombreProductor.toString());
+    }
+    super.initState();
+    getLocationAndUpdateState();
+    cargarDatos();
+  }
+
+  Future<void> getLocationAndUpdateState() async {
+    final location = await getLocation();
+    if (location != null) {
+      if (mounted) {
+        setState(() {
+          latitud = location.latitude.toString();
+          longitud = location.longitude.toString();
+        });
+      }
+    } else {
+      // Manejar el caso cuando location es null
+      print('Error: No se pudo obtener la ubicación.');
+    }
+  }
+
+  Future<void> cargarDatos() async {
+    try {
+      var result = await FincaRest();
+      debugPrint('result $result');
+      setState(() {
+        fincaId = result.firstOrNull?.fincaId.toString() ?? '';
+        fincas = result.map((finca) {
+          return DropdownMenuItem(
+            value: finca.fincaId.toString(),
+            child: Text(finca.nombreFinca.toString()),
+          );
+        }).toList();
+      });
+      isLoading = false;
+    } catch (error) {
+      // Manejar el error, por ejemplo, mostrar un SnackBar
+      print('Error al cargar datos: $error');
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Error al cargar datos'),
+        duration: Duration(seconds: 3),
+      ));
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    _getLocation();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Agregar Visita'),
+        title: widget.visita == null
+            ? const Text('Agregar Visita')
+            : const Text('Editar Visita'),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _visitasId,
-              decoration: const InputDecoration(labelText: 'Visita(número)'),
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _fincaId,
-              decoration: const InputDecoration(labelText: 'Finca(número)'),
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _productoId,
-              decoration: const InputDecoration(labelText: 'Producto(número)'),
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _fechaVisita,
-              decoration: const InputDecoration(
-                  icon: Icon(Icons.date_range_rounded),
-                  labelText: "Fecha Visita"),
-              onTap: () async {
-                DateTime? pickeddate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2100));
-                if (pickeddate != null) {
-                  setState(() {
-                    _fechaVisita.text =
-                        DateFormat('yyy-MM-dd').format(pickeddate);
-                  });
-                }
-              },
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _observaciones,
-              decoration: const InputDecoration(labelText: 'Observaciones'),
-            ),
-            TextField(
-              controller: _cultivo_vecino,
-              decoration: const InputDecoration(labelText: 'Cultivo vecino'),
-            ),
-            TextField(
-              controller: _cosecha_mecanica,
-              decoration: const InputDecoration(labelText: 'Cosecha Mecanica'),
-            ),
-            TextField(
-              controller: _canha_organica,
-              decoration: const InputDecoration(labelText: 'Caña Organica'),
-            ),
-            TextField(
-              controller: _canha_conversion,
-              decoration: const InputDecoration(labelText: 'Caña conversion'),
-            ),
-            TextField(
-              controller: _tierra_descanso,
-              decoration: const InputDecoration(labelText: 'Tierra Descanso'),
-            ),
-            TextField(
-              controller: _maquinarias_utilizadas,
-              decoration:
-                  const InputDecoration(labelText: 'Maquinarias Utilizadas'),
-            ),
-            TextField(
-              controller: _anho,
-              decoration: const InputDecoration(labelText: 'Año'),
-            ),
-            TextField(
-              controller: _forma_cosecha,
-              decoration: const InputDecoration(labelText: 'Forma cosecha'),
-            ),
-            TextField(
-              controller: _apto_maquina,
-              decoration: const InputDecoration(labelText: 'Apto maquina'),
-            ),
-            TextField(
-              controller: _otros_cultivos,
-              decoration: const InputDecoration(labelText: 'Otros cultivos'),
-            ),
-            TextField(
-              controller: _fotos,
-              decoration: const InputDecoration(labelText: 'Fotos'),
-            ),
-            TextField(
-              controller: _nombrefinca,
-              decoration: const InputDecoration(labelText: 'Nombre Finca'),
-            ),
-            TextField(
-              controller: _nombreproducto,
-              decoration: const InputDecoration(labelText: 'Nombre Producto'),
-            ),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () async {
-                EasyLoading.show(status: 'Cargando...');
-                print('Usuario: ${_fincaId.text}');
-                print('Contraseña: ${_visitasId.text}');
-                print('Contraseña: ${_fincaId.text}');
-                print('Contraseña: ${_productoId.text}');
-                print('Contraseña: ${_visitasId.text}');
-                print('cultivo vecino: ${_observaciones.text}');
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (widget.visita != null)
+                    TextField(
+                      controller: _visitasId,
+                      decoration: const InputDecoration(labelText: 'Visita Id'),
+                    ),
+                  DropdownButtonFormField(
+                      value: fincaId,
+                      items: fincas,
+                      onChanged: (value) => setState(() {
+                            _fincaId.text = value.toString();
+                          })),
+                  const SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
+                  TextField(
+                    controller: _productoId,
+                    keyboardType: TextInputType.number,
+                    decoration:
+                        const InputDecoration(labelText: 'Producto(número)'),
+                  ),
+                  const SizedBox(height: 16.0),
+                  TextField(
+                    controller: _fechaVisita,
+                    decoration: const InputDecoration(
+                        icon: Icon(Icons.date_range_rounded),
+                        labelText: "Fecha Visita"),
+                    onTap: () async {
+                      DateTime? pickeddate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2100));
+                      if (pickeddate != null) {
+                        setState(() {
+                          _fechaVisita.text =
+                              DateFormat('yyy-MM-dd').format(pickeddate);
+                        });
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 16.0),
+                  TextField(
+                    controller: _observaciones,
+                    decoration:
+                        const InputDecoration(labelText: 'Observaciones'),
+                  ),
+                  TextField(
+                    controller: _cultivo_vecino,
+                    decoration:
+                        const InputDecoration(labelText: 'Cultivo vecino'),
+                  ),
+                  TextField(
+                    controller: _cosecha_mecanica,
+                    decoration:
+                        const InputDecoration(labelText: 'Cosecha Mecanica'),
+                  ),
+                  TextField(
+                    controller: _canha_organica,
+                    decoration:
+                        const InputDecoration(labelText: 'Caña Organica'),
+                  ),
+                  TextField(
+                    controller: _canha_conversion,
+                    decoration:
+                        const InputDecoration(labelText: 'Caña conversion'),
+                  ),
+                  TextField(
+                    controller: _tierra_descanso,
+                    decoration:
+                        const InputDecoration(labelText: 'Tierra Descanso'),
+                  ),
+                  TextField(
+                    controller: _maquinarias_utilizadas,
+                    decoration: const InputDecoration(
+                        labelText: 'Maquinarias Utilizadas'),
+                  ),
+                  TextField(
+                    controller: _anho,
+                    decoration: const InputDecoration(labelText: 'Año'),
+                  ),
+                  TextField(
+                    controller: _forma_cosecha,
+                    decoration:
+                        const InputDecoration(labelText: 'Forma cosecha'),
+                  ),
+                  TextField(
+                    controller: _apto_maquina,
+                    decoration:
+                        const InputDecoration(labelText: 'Apto maquina'),
+                  ),
+                  TextField(
+                    controller: _otros_cultivos,
+                    decoration:
+                        const InputDecoration(labelText: 'Otros cultivos'),
+                  ),
+                  TextField(
+                    controller: _fotos,
+                    decoration: const InputDecoration(labelText: 'Fotos'),
+                  ),
+                  TextField(
+                    controller: _nombrefinca,
+                    decoration:
+                        const InputDecoration(labelText: 'Nombre Finca'),
+                  ),
+                  TextField(
+                    controller: _nombreproducto,
+                    decoration:
+                        const InputDecoration(labelText: 'Nombre Producto'),
+                  ),
+                  const SizedBox(height: 16.0),
+                  ElevatedButton(
+                    onPressed: () async {
+                      EasyLoading.show(status: 'Cargando...');
+                      print('Usuario: ${_fincaId.text}');
+                      print('Contraseña: ${_visitasId.text}');
+                      print('Contraseña: ${_fincaId.text}');
+                      print('Contraseña: ${_productoId.text}');
+                      print('Contraseña: ${_visitasId.text}');
+                      print('cultivo vecino: ${_observaciones.text}');
 
-                VisitaModel visitaModel = VisitaModel(
-                  id: null,
-                  visitaId: _visitasId.text,
-                  fincaId: _fincaId.text,
-                  productorId: _productoId.text,
-                  fechaVisita: DateTime.parse(_fechaVisita.text),
-                  observaciones: _observaciones.text,
-                  cultivoVecino: _cultivo_vecino.text,
-                  cosechaMecanica: _cosecha_mecanica.text,
-                  canhaOrganica: _canha_organica.text,
-                  canhaConversion: _canha_conversion.text,
-                  tierraDescanso: _tierra_descanso.text,
-                  maquinariasUtilizadas: _maquinarias_utilizadas.text,
-                  anho: _anho.text,
-                  formaCosecha: _forma_cosecha.text,
-                  aptoMaquina: _apto_maquina.text,
-                  otrosCultivos: _otros_cultivos.text,
-                  fotos: _fotos.text,
-                  longitud: this.longitud,
-                  latitud: this.latitud,
-                  nombreFinca: _nombrefinca.text,
-                  nombreProductor: _nombreproducto.text,
-                );
+                      VisitaModel visitaModel = VisitaModel(
+                        id: null,
+                        visitaId: _visitasId.text,
+                        fincaId: fincaId,
+                        productorId: _productoId.text,
+                        fechaVisita: DateTime.parse(_fechaVisita.text),
+                        observaciones: _observaciones.text,
+                        cultivoVecino: _cultivo_vecino.text,
+                        cosechaMecanica: _cosecha_mecanica.text,
+                        canhaOrganica: _canha_organica.text,
+                        canhaConversion: _canha_conversion.text,
+                        tierraDescanso: _tierra_descanso.text,
+                        maquinariasUtilizadas: _maquinarias_utilizadas.text,
+                        anho: _anho.text,
+                        formaCosecha: _forma_cosecha.text,
+                        aptoMaquina: _apto_maquina.text,
+                        otrosCultivos: _otros_cultivos.text,
+                        fotos: _fotos.text,
+                        longitud: latitud,
+                        latitud: longitud,
+                        nombreFinca: _nombrefinca.text,
+                        nombreProductor: _nombreproducto.text,
+                      );
 
-                var respuesta = await visitaAddlocal(visitaModel);
+                      if (widget.visita == null) {
+                        var respuesta = await visitaAddlocal(visitaModel);
 
-                if (respuesta.toString().contains("OK")) {
-                  print("creo puretemente");
-                  EasyLoading.dismiss();
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: ((context) => Visitas())));
-                } else {
-                  EasyLoading.dismiss();
-                  _showAlertDialog(context);
-                }
-              },
-              child: const Text('Guardar'),
+                        if (respuesta.toString().contains("OK")) {
+                          EasyLoading.dismiss();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => Visitas())));
+                        } else {
+                          EasyLoading.dismiss();
+                          showAlertDialog(context, 'Error al registrar');
+                        }
+                      } else {
+                        var respuesta = await visitasEdit(visitaModel);
+                        if (respuesta
+                            .toString()
+                            .contains("Visita actualizada")) {
+                          EasyLoading.dismiss();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => Visitas())));
+                        } else {
+                          EasyLoading.dismiss();
+                          showAlertDialog(context, respuesta);
+                        }
+                      }
+                    },
+                    child: const Text('Guardar'),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
     );
-  }
-
-  // This shows a CupertinoModalPopup which hosts a CupertinoAlertDialog.
-  void _showAlertDialog(BuildContext context) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => CupertinoAlertDialog(
-        title: const Text('Alert'),
-        content: const Text('Error al iniciar sesión'),
-        actions: <CupertinoDialogAction>[
-          CupertinoDialogAction(
-            /// This parameter indicates the action would perform
-            /// a destructive action such as deletion, and turns
-            /// the action's text color to red.
-            isDestructiveAction: true,
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text('Ok'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  //Obtener la geolocalizacion del man
-  Future<void> _getLocation() async {
-    Location location = Location();
-    LocationData? currentLocation;
-
-    try {
-      var _location = await location.getLocation();
-
-      currentLocation = _location;
-      this.latitud = currentLocation.latitude.toString();
-      this.longitud = currentLocation.longitude.toString();
-      print(
-          "Longitud: ${currentLocation.longitude} Latitud:  ${currentLocation.latitude}");
-    } catch (e) {
-      print('Error: $e');
-    }
   }
 }

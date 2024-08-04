@@ -1,12 +1,8 @@
-
 import 'package:agrario_app/pantallas/menu.dart';
 import 'package:agrario_app/pantallas/visitas/visitas_add.dart';
-import 'package:agrario_app/pantallas/visitas/visitas_edit.dart';
-import 'package:agrario_app/servicios_rest/visitas_rest.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:agrario_app/servicios_rest/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:agrario_app/modelos/visitas_model.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart' as http;
 import 'package:agrario_app/configuracion/configuracion.dart' as config;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -128,17 +124,16 @@ class _VisitasState extends State<Visitas> {
                                   children: [
                                     ElevatedButton(
                                       child: Icon(Icons.more_vert),
-                                      onPressed: () {
-                                        _showEditDeletOption(
+                                      onPressed: () =>
+                                          showEditDeletOption(context, () {
+                                        Navigator.push(
                                             context,
-                                            data[index].visitaId.toString(),
-                                            data[index].fincaId.toString(),
-                                            data[index].productorId.toString(),
-                                            data[index].fechaVisita.toString(),
-                                            data[index]
-                                                .observaciones
-                                                .toString());
-                                      },
+                                            MaterialPageRoute(
+                                                builder: ((context) =>
+                                                    VisitasAddPage(
+                                                      visita: data[index],
+                                                    ))));
+                                      }),
                                     ),
                                   ],
                                 ),
@@ -147,109 +142,17 @@ class _VisitasState extends State<Visitas> {
                       )
                     : Center(child: Text('No hay datos')),
           ),
-          Padding(
-            padding:
-                EdgeInsets.only(bottom: 15.0, left: screenWidth(context) - 80),
-            child: FloatingActionButton(
-              //backgroundColor: Colors.grey,
-              elevation: 5,
-              onPressed: () {
-                print("agregar visita");
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: ((context) => VisitasAddPage())));
-              },
-              child: Icon(Icons.add),
-            ),
-          )
         ],
       ),
-    );
-  }
-
-  // This shows a CupertinoModalPopup which hosts a CupertinoAlertDialog.
-  void _showEditDeletOption(BuildContext context, String visitaid,
-      String fincaid, String productoid, String fecha, String observaciones) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => CupertinoActionSheet(
-        title: Text('Acciones'),
-        message: Text('Seleccione una Acción'),
-        actions: <Widget>[
-          CupertinoActionSheetAction(
-            child: Text('Editar Registro'),
-            onPressed: () {
-              print(visitaid);
-              Navigator.pop(context);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: ((context) => VisitasEditPage(
-                            visitadid: visitaid,
-                            fincaid: fincaid,
-                            productoid: productoid,
-                            fechavisita: fecha,
-                            observaciones: observaciones,
-                            cultivo_vecino: '',
-                            cosecha_mecanica: '',
-                            cana_organica: '',
-                            cana_conversion: '',
-                            tierra_descanso: '',
-                            maquinarias_utlizadas: '',
-                            anho: '',
-                            forma_cosecha: '',
-                            apto_maquina: '',
-                            otros_cultivos: '',
-                            fotos: '',
-                          ))));
-            },
-          ),
-          CupertinoActionSheetAction(
-            isDestructiveAction: true,
-            child: Text('Eliminar Registro'),
-            onPressed: () {
-              print(visitaid);
-              Navigator.pop(context);
-              _confirmEditDeletOption(context, visitaid);
-            },
-          ),
-        ],
-        cancelButton: CupertinoButton(
-          child: Icon(Icons.clear),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-    );
-  }
-
-  void _confirmEditDeletOption(BuildContext context, String visitaid) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => CupertinoAlertDialog(
-        title: const Text('Selecciona opción'),
-        content: Text("Eliminar Registro? ${visitaid} "),
-        actions: <CupertinoDialogAction>[
-          CupertinoDialogAction(
-            isDestructiveAction: true,
-            onPressed: () async {
-              EasyLoading.show();
-
-              var resultado = await deleteVisitas(visitaid);
-
-              if (resultado.toString().contains("Visita eliminada")) {
-                EasyLoading.dismiss();
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => Visitas()),
-                  (route) => false,
-                );
-              }
-            },
-            child: const Text("Eliminar"),
-          ),
-        ],
+      floatingActionButton: FloatingActionButton(
+        //backgroundColor: Colors.grey,
+        elevation: 5,
+        onPressed: () {
+          print("agregar visita");
+          Navigator.push(context,
+              MaterialPageRoute(builder: ((context) => VisitasAddPage())));
+        },
+        child: Icon(Icons.add),
       ),
     );
   }

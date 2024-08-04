@@ -1,5 +1,7 @@
 import 'package:agrario_app/pantallas/finca/finca.dart';
 import 'package:agrario_app/pantallas/login.dart';
+import 'package:agrario_app/pantallas/mano_obra/mano_obra.dart';
+import 'package:agrario_app/pantallas/practica_obs/practicas_obs.dart';
 import 'package:agrario_app/pantallas/sincronizar/sincronizar.dart';
 import 'package:agrario_app/pantallas/visitas/visitas.dart';
 import 'package:agrario_app/servicios_rest/salir_rest.dart';
@@ -42,6 +44,24 @@ class Menu extends StatelessWidget {
               print("menu 2");
               Navigator.push(context,
                   MaterialPageRoute(builder: ((context) => Visitas())));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.trending_flat),
+            title: const Text('Practicas Observadas'),
+            onTap: () {
+              print("menu 2");
+              Navigator.push(context,
+                  MaterialPageRoute(builder: ((context) => PracticasObs())));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.trending_flat),
+            title: const Text('Mano de Obra'),
+            onTap: () {
+              print("menu 2");
+              Navigator.push(context,
+                  MaterialPageRoute(builder: ((context) => ManoObra())));
             },
           ),
           ListTile(
