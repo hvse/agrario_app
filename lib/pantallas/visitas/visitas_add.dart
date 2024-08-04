@@ -148,9 +148,7 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: widget.visita == null
-            ? const Text('Agregar Visita')
-            : const Text('Editar Visita'),
+        title: widget.visita == null ? const Text('Agregar Visita') : const Text('Editar Visita'),
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())

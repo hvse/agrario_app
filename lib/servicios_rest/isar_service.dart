@@ -1,4 +1,5 @@
 import 'package:agrario_app/collections/finca_collection.dart';
+import 'package:agrario_app/collections/mano_obra_collection.dart';
 import 'package:agrario_app/collections/vista_collection.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -20,6 +21,7 @@ class IsarService {
         [
           VisitaCollectionSchema,
           FincaCollectionSchema,
+          ManoObraCollectionSchema,
         ],
         directory: dir.path,
       );

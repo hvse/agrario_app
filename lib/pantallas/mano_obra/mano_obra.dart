@@ -1,8 +1,10 @@
 import 'package:agrario_app/modelos/mano_obra_model.dart';
 import 'package:agrario_app/pantallas/finca/fincaAddPage.dart';
+import 'package:agrario_app/pantallas/mano_obra/mano_obra_add.dart';
 
 import 'package:agrario_app/pantallas/scaffold_custom.dart';
 import 'package:agrario_app/servicios_rest/mano_obra_rest.dart';
+import 'package:agrario_app/servicios_rest/utils.dart';
 
 import 'package:flutter/material.dart';
 
@@ -92,18 +94,18 @@ class _ManoObraState extends State<ManoObra> {
                                   children: [
                                     ElevatedButton(
                                       child: Icon(Icons.more_vert),
-                                      onPressed: () {
-                                        // print("Editing ");
-                                        // this.visitaId =
-                                        //     data[index].fincaId.toString();
-                                        // _showEditDeletOption(
-                                        //     context,
-                                        //     data[index].fincaId.toString(),
-                                        //     data[index].nombreCampo,
-                                        //     data[index].ubicacionFinca,
-                                        //     data[index].actividad,
-                                        //     data[index].actividad);
-                                      },
+                                      onPressed: () => showEditDeletOption(
+                                        context,
+                                        () async {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: ((context) =>
+                                                      ManoObraAdd(
+                                                        mano: data[index],
+                                                      ))));
+                                        },
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -120,7 +122,7 @@ class _ManoObraState extends State<ManoObra> {
         onPressed: () {
           print("agregar visita");
           Navigator.push(context,
-              MaterialPageRoute(builder: ((context) => FincaAddPage())));
+              MaterialPageRoute(builder: ((context) => ManoObraAdd())));
         },
         child: Icon(Icons.add),
       ),

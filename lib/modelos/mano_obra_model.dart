@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:agrario_app/collections/mano_obra_collection.dart';
+
 List<ManoObraModel> manoObraFromJson(String str) {
   final Map<String, dynamic> data = json.decode(str);
   final List<ManoObraModel> packageList = [];
@@ -11,8 +13,44 @@ List<ManoObraModel> manoObraFromJson(String str) {
   return packageList;
 }
 
+ManoObraCollection manoCollectionFromListJson(ManoObraModel mano) {
+  return ManoObraCollection()
+    ..actividad = mano.actividad
+    ..costoProduccion = mano.costoProduccion
+    ..fincaId = mano.fincaId
+    ..fechaUso = mano.fechaUso
+    ..horasTrabajadas = mano.horasTrabajadas
+    ..latitud = mano.latitud
+    ..longitud = mano.longitud
+    ..trabajoId = mano.trabajoId!
+    ..tipoRecurso = mano.tipoRecurso
+    ..cantidad = mano.cantidad;
+}
+
+List<ManoObraModel> manoFromListCollection(List<ManoObraCollection> mano) {
+  final List<ManoObraModel> packageList = [];
+  for (final entry in mano) {
+    final ManoObraModel status = ManoObraModel(
+      id: entry.id,
+      trabajoId: entry.trabajoId,
+      fincaId: entry.fincaId!,
+      horasTrabajadas: entry.horasTrabajadas!,
+      costoProduccion: entry.costoProduccion!,
+      actividad: entry.actividad,
+      tipoRecurso: entry.tipoRecurso,
+      cantidad: entry.cantidad,
+      fechaUso: entry.fechaUso,
+      latitud: entry.latitud,
+      longitud: entry.longitud,
+    );
+    packageList.add(status);
+  }
+  return packageList;
+}
+
 class ManoObraModel {
-  final int trabajoId;
+  final int? id;
+  final int? trabajoId;
   final int fincaId;
   final int horasTrabajadas;
   final String costoProduccion;
@@ -24,6 +62,7 @@ class ManoObraModel {
   final dynamic longitud;
 
   ManoObraModel({
+    required this.id,
     required this.trabajoId,
     required this.fincaId,
     required this.horasTrabajadas,
@@ -42,6 +81,7 @@ class ManoObraModel {
   String toRawJson() => json.encode(toJson());
 
   factory ManoObraModel.fromJson(Map<String, dynamic> json) => ManoObraModel(
+        id: null,
         trabajoId: json["TrabajoID"],
         fincaId: json["FincaID"],
         horasTrabajadas: json["HorasTrabajadas"] ?? "",
@@ -55,8 +95,8 @@ class ManoObraModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "TrabajoID": trabajoId,
-        "FincaID": fincaId,
+        "TrabajoID": trabajoId == "" ? null : int.parse(trabajoId.toString()),
+        "FincaID": int.parse(fincaId.toString()),
         "HorasTrabajadas": horasTrabajadas,
         "CostoProduccion": costoProduccion,
         "Actividad": actividad,
