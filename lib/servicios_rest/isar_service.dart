@@ -1,6 +1,7 @@
 import 'package:agrario_app/collections/finca_collection.dart';
 import 'package:agrario_app/collections/mano_obra_collection.dart';
 import 'package:agrario_app/collections/practica_collection.dart';
+import 'package:agrario_app/collections/rendimiento_azucar_collection.dart';
 import 'package:agrario_app/collections/vista_collection.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -24,6 +25,7 @@ class IsarService {
           FincaCollectionSchema,
           ManoObraCollectionSchema,
           PracticaCollectionSchema,
+          RendimientoAzucarCollectionSchema,
         ],
         directory: dir.path,
       );

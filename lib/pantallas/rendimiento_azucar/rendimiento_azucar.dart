@@ -5,12 +5,12 @@ import 'package:agrario_app/servicios_rest/practicas_rest.dart';
 import 'package:agrario_app/servicios_rest/utils.dart';
 import 'package:flutter/material.dart';
 
-class PracticasObs extends StatefulWidget {
+class RendimienntoAzucar extends StatefulWidget {
   @override
-  _PracticasObsState createState() => _PracticasObsState();
+  _RendimienntoAzucarState createState() => _RendimienntoAzucarState();
 }
 
-class _PracticasObsState extends State<PracticasObs> {
+class _RendimienntoAzucarState extends State<RendimienntoAzucar> {
   List<PracticaModel> data = [];
   bool isLoading = true;
 

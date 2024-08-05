@@ -1,7 +1,5 @@
 import 'package:agrario_app/modelos/practicas_model.dart';
-import 'package:agrario_app/pantallas/mano_obra/mano_obra.dart';
 import 'package:agrario_app/pantallas/practica_obs/practicas_obs.dart';
-import 'package:agrario_app/pantallas/visitas/visitas.dart';
 import 'package:agrario_app/servicios_rest/finca_rest.dart';
 import 'package:agrario_app/servicios_rest/practicas_rest.dart';
 import 'package:agrario_app/servicios_rest/utils.dart';
