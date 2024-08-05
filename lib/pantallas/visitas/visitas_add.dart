@@ -122,7 +122,14 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
       var result = await FincaRest();
       debugPrint('result $result');
       setState(() {
-        fincaId = result.firstOrNull?.fincaId.toString() ?? '';
+        if (widget.visita != null) {
+          fincaId = widget.visita!.fincaId.toString();
+          _fincaId.text = fincaId;
+        } else {
+          fincaId = widget.visita!.fincaId.toString();
+          _fincaId.text = fincaId;
+        }
+
         fincas = result.map((finca) {
           return DropdownMenuItem(
             value: finca.fincaId.toString(),
@@ -148,7 +155,9 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: widget.visita == null ? const Text('Agregar Visita') : const Text('Editar Visita'),
+        title: widget.visita == null
+            ? const Text('Agregar Visita')
+            : const Text('Editar Visita'),
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())

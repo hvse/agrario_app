@@ -1,23 +1,21 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:agrario_app/collections/mano_obra_collection.dart';
-import 'package:agrario_app/modelos/mano_obra_model.dart';
+import 'package:agrario_app/collections/practica_collection.dart';
+import 'package:agrario_app/configuracion/configuracion.dart';
+import 'package:agrario_app/modelos/practicas_model.dart';
 import 'package:agrario_app/servicios_rest/isar_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:isar/isar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-import '../configuracion/configuracion.dart';
-
-Future<List<ManoObraModel>> manoObraGet() async {
+Future<List<PracticaModel>> practicasGet() async {
   // URL de la API
-  final String apiUrl = '${BASE}index.php?action=TrabajoID';
+  final String apiUrl = '${BASE}index.php?action=id_practicas_observadas';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
-
-  // Realiza la solicitud POST
+  debugPrint(cokie);
   final response = await http.get(
     Uri.parse(apiUrl),
     headers: <String, String>{
@@ -25,20 +23,21 @@ Future<List<ManoObraModel>> manoObraGet() async {
       'Cookie': '$cokie',
     },
   );
+  debugPrint(response.body);
   if (response.statusCode == 200) {
-    return manoObraFromJson(response.body);
+    return practicaFromJson(response.body);
   } else {
     throw Error();
   }
 }
 
-FutureOr<String> manoAddlocal(ManoObraModel mano) async {
+FutureOr<String> practicaAddlocal(PracticaModel practica) async {
   final Isar isar = IsarService().isar;
   try {
-    final ManoObraCollection manoObraCollection =
-        manoCollectionFromListJson(mano);
+    final PracticaCollection manoObraCollection =
+        practicallectionFromListJson(practica);
     await isar.writeTxn(() async {
-      await isar.manoObraCollections.put(manoObraCollection);
+      await isar.practicaCollections.put(manoObraCollection);
     });
     return 'OK';
   } catch (e) {
@@ -51,7 +50,7 @@ FutureOr<String> manoDeletelocal(int id) async {
   final Isar isar = IsarService().isar;
   try {
     await isar.writeTxn(() async {
-      await isar.manoObraCollections.delete((id));
+      await isar.practicaCollections.delete((id));
     });
     return 'OK';
   } catch (e) {
@@ -60,22 +59,22 @@ FutureOr<String> manoDeletelocal(int id) async {
   }
 }
 
-FutureOr<List<ManoObraModel>> manoGetLocal() async {
+FutureOr<List<PracticaModel>> manoGetLocal() async {
   final Isar isar = IsarService().isar;
   try {
-    final List<ManoObraCollection> visitas =
-        await isar.manoObraCollections.where().findAll();
-    return manoFromListCollection(visitas);
+    final List<PracticaCollection> practicas =
+        await isar.practicaCollections.where().findAll();
+    return practicaFromListCollection(practicas);
   } catch (e) {
     debugPrint('Error: $e');
     throw Error();
   }
 }
 
-FutureOr<String> syncMano() async {
-  List<ManoObraModel> manos = await manoGetLocal();
+FutureOr<String> syncPractica() async {
+  List<PracticaModel> manos = await manoGetLocal();
   for (var i = 0; i < manos.length; i++) {
-    final response = await manoAdd(manos[i]);
+    final response = await practicaAdd(manos[i]);
     if (response == 'OK') {
       await manoDeletelocal(manos[i].id!);
     }
@@ -83,8 +82,8 @@ FutureOr<String> syncMano() async {
   return 'OK';
 }
 
-FutureOr<String> manoAdd(ManoObraModel mano) async {
-  final String apiUrl = '${BASE}index.php?action=crearManoDeObra';
+FutureOr<String> practicaAdd(PracticaModel mano) async {
+  final String apiUrl = '${BASE}index.php?action=CrearPracticasObservadas';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
   // Realiza la solicitud POST
@@ -106,17 +105,19 @@ FutureOr<String> manoAdd(ManoObraModel mano) async {
   }
 }
 
-FutureOr<String> manosEdit(ManoObraModel mano) async {
-  final String apiUrl = '${BASE}index.php?TrabajoID=2${mano.trabajoId}';
+FutureOr<String> practicaEdit(PracticaModel practica) async {
+  final String apiUrl =
+      '${BASE}index.php?id_practicas_observadas=${practica.idPracticasObservadas}';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
+  debugPrint(practica.toJson().toString());
   final response = await http.put(
     Uri.parse(apiUrl),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Cookie': '$cokie',
     },
-    body: jsonEncode(mano.toJson()),
+    body: jsonEncode(practica.toJson()),
   );
 
   print(response.body);

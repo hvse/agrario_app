@@ -1,6 +1,3 @@
-// ignore_for_file: unnecessary_null_comparison
-
-import 'dart:convert';
 import 'package:agrario_app/pantallas/finca/fincaAddPage.dart';
 import 'package:agrario_app/pantallas/finca/fincaEditPage.dart';
 import 'package:agrario_app/pantallas/scaffold_custom.dart';
@@ -8,9 +5,6 @@ import 'package:agrario_app/servicios_rest/finca_rest.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:agrario_app/modelos/finca_model.dart';
-import 'package:http/http.dart' as http;
-import 'package:agrario_app/configuracion/configuracion.dart' as config;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Finca extends StatefulWidget {
   @override

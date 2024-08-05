@@ -10,45 +10,28 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<List<VisitaModel>> visitasRest() async {
-  // URL de la API
   final String apiUrl = '${config.BASE}index.php?action=VisitaID';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cookie = prefs.getString('session');
 
-  if (cookie == null) {
-    throw Exception('No session cookie found');
-  }
-
-  print('VISITAS: $apiUrl');
-  print('VISITAS: $cookie');
-
   try {
-    // Realiza la solicitud GET
-    final response = await http.get(
+    var response = await http.get(
       Uri.parse(apiUrl),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Cookie': 'session=$cookie;',
+        'Cookie': '$cookie',
       },
-    );
+    ).timeout(Duration(seconds: 90));
 
-    // Verifica el código de estado de la respuesta
     if (response.statusCode == 200) {
-      // Procesa la respuesta si es exitosa
-      Map<String, dynamic> visitas = json.decode(response.body);
-      // Assuming visitas['visitas'] is a List
-      return (visitas['visitas'] as List)
-          .map((data) => VisitaModel.fromJson(data))
-          .toList();
+      print(response.body);
+      return visitasResponseFromListJson(response.body);
     } else {
-      // Log response details for debugging
-      print('Error en la solicitud: ${response.statusCode}');
-      print('Response body: ${response.body}');
       throw Exception('Error en la solicitud: ${response.statusCode}');
     }
-  } catch (e) {
-    print('Error general en la solicitud: $e');
-    throw Exception('Error general en la solicitud: $e');
+  } catch (error) {
+    print('Error: $error');
+    throw Exception('Error general en la solicitud: $error');
   }
 }
 

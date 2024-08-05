@@ -1,7 +1,5 @@
 import 'package:agrario_app/modelos/mano_obra_model.dart';
-import 'package:agrario_app/pantallas/finca/fincaAddPage.dart';
 import 'package:agrario_app/pantallas/mano_obra/mano_obra_add.dart';
-
 import 'package:agrario_app/pantallas/scaffold_custom.dart';
 import 'package:agrario_app/servicios_rest/mano_obra_rest.dart';
 import 'package:agrario_app/servicios_rest/utils.dart';

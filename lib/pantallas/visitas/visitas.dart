@@ -1,11 +1,9 @@
 import 'package:agrario_app/pantallas/menu.dart';
 import 'package:agrario_app/pantallas/visitas/visitas_add.dart';
 import 'package:agrario_app/servicios_rest/utils.dart';
+import 'package:agrario_app/servicios_rest/visitas_rest.dart';
 import 'package:flutter/material.dart';
 import 'package:agrario_app/modelos/visitas_model.dart';
-import 'package:http/http.dart' as http;
-import 'package:agrario_app/configuracion/configuracion.dart' as config;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Visitas extends StatefulWidget {
   @override
@@ -18,32 +16,7 @@ class _VisitasState extends State<Visitas> {
 
   String visitaId = "";
 
-  // Método para obtener datos de visitas
-  Future<List<VisitaModel>> obtenerDatos() async {
-    final String apiUrl = '${config.BASE}index.php?action=VisitaID';
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? cookie = prefs.getString('session');
-
-    try {
-      var response = await http.get(
-        Uri.parse(apiUrl),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Cookie': '$cookie',
-        },
-      ).timeout(Duration(seconds: 90));
-
-      if (response.statusCode == 200) {
-        print(response.body);
-        return visitasResponseFromListJson(response.body);
-      } else {
-        throw Exception('Error en la solicitud: ${response.statusCode}');
-      }
-    } catch (error) {
-      print('Error: $error');
-      throw Exception('Error general en la solicitud: $error');
-    }
-  }
+  // Método para obtener datos de visita
 
   @override
   void initState() {
@@ -53,7 +26,7 @@ class _VisitasState extends State<Visitas> {
 
   Future<void> cargarDatos() async {
     try {
-      var result = await obtenerDatos();
+      var result = await visitasRest();
       setState(() {
         data.addAll(result);
         isLoading = false;

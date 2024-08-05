@@ -85,8 +85,13 @@ class _ManoObraAddState extends State<ManoObraAdd> {
       var result = await FincaRest();
       debugPrint('result $result');
       setState(() {
-        fincaId = result.firstOrNull?.fincaId.toString() ?? '';
-        _fincaId.text = fincaId;
+        if (widget.mano != null) {
+          fincaId = widget.mano!.fincaId.toString();
+          _fincaId.text = fincaId;
+        } else {
+          fincaId = widget.mano!.fincaId.toString();
+          _fincaId.text = fincaId;
+        }
         fincas = result.map((finca) {
           return DropdownMenuItem(
             value: finca.fincaId.toString(),
