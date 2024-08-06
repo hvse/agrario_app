@@ -6,6 +6,7 @@ part 'sostentabilidad_organica_collection.g.dart';
 class SostentabilidadOrganicaCollection {
   Id id = Isar.autoIncrement;
 
+  late String? idSostentabilidadOrganica;
   late String? cobertura;
   late String? diversificacionCultivo;
   late String? abonosVerdes;

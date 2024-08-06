@@ -5,6 +5,7 @@ import 'package:agrario_app/pantallas/practica_obs/practicas_obs.dart';
 import 'package:agrario_app/pantallas/rendimiento_azucar/rendimiento_azucar.dart';
 import 'package:agrario_app/pantallas/rendimiento_otro/rendimiento_otro.dart';
 import 'package:agrario_app/pantallas/sincronizar/sincronizar.dart';
+import 'package:agrario_app/pantallas/sostenibilidad_organica/sostenibilidad_organica.dart';
 import 'package:agrario_app/pantallas/visitas/visitas.dart';
 import 'package:agrario_app/servicios_rest/salir_rest.dart';
 import 'package:flutter/cupertino.dart';
@@ -86,6 +87,18 @@ class Menu extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: ((context) => RendimientoOtro()),
+                  ));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.trending_flat),
+            title: const Text('Sostentabilidad organica'),
+            onTap: () {
+              print("menu 2");
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) => SostenibilidadOrganica()),
                   ));
             },
           ),

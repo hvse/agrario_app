@@ -5,7 +5,7 @@ import 'package:agrario_app/collections/sostentabilidad_organica_collection.dart
 List<SostentabilidadOrganicaModel> sosOrganicaFromJson(String str) {
   final Map<String, dynamic> data = json.decode(str);
   final List<SostentabilidadOrganicaModel> packageList = [];
-  for (final entry in data['rendimiento_azucar']) {
+  for (final entry in data['plan_sostenibilidad_organica']) {
     final Map<String, dynamic> data = entry;
     final SostentabilidadOrganicaModel status =
         SostentabilidadOrganicaModel.fromJson(data);
@@ -17,6 +17,7 @@ List<SostentabilidadOrganicaModel> sosOrganicaFromJson(String str) {
 SostentabilidadOrganicaCollection sosOrganicaCollectionFromListJson(
     SostentabilidadOrganicaModel praxticas) {
   return SostentabilidadOrganicaCollection()
+    ..idSostentabilidadOrganica = praxticas.idSostentabilidadOrganica
     ..abonoOrganico = praxticas.abonoOrganico
     ..abonosVerdes = praxticas.abonosVerdes
     ..calAgrico = praxticas.calAgrico
@@ -36,6 +37,7 @@ List<SostentabilidadOrganicaModel> sosOrganicaFromListCollection(
   for (final entry in practicas) {
     final SostentabilidadOrganicaModel status = SostentabilidadOrganicaModel(
       id: entry.id,
+      idSostentabilidadOrganica: entry.idSostentabilidadOrganica!,
       abonoOrganico: entry.abonoOrganico!,
       abonosVerdes: entry.abonosVerdes!,
       calAgrico: entry.calAgrico!,
@@ -55,6 +57,7 @@ List<SostentabilidadOrganicaModel> sosOrganicaFromListCollection(
 
 class SostentabilidadOrganicaModel {
   final int? id;
+  final String idSostentabilidadOrganica;
   final String cobertura;
   final String diversificacionCultivo;
   final String abonosVerdes;
@@ -68,6 +71,7 @@ class SostentabilidadOrganicaModel {
   final String idProductor;
 
   SostentabilidadOrganicaModel({
+    required this.idSostentabilidadOrganica,
     required this.cobertura,
     required this.diversificacionCultivo,
     required this.abonosVerdes,
@@ -89,6 +93,8 @@ class SostentabilidadOrganicaModel {
 
   factory SostentabilidadOrganicaModel.fromJson(Map<String, dynamic> json) =>
       SostentabilidadOrganicaModel(
+        idSostentabilidadOrganica:
+            json["id_plan_sostenibilidad_organica"].toString(),
         cobertura: json["cobertura"],
         diversificacionCultivo: json["diversificacion_cultivo"],
         abonosVerdes: json["abonos_verdes"],
@@ -98,11 +104,12 @@ class SostentabilidadOrganicaModel {
         asistenciaCapacitaciones: json["asistencia_capacitaciones"],
         latitud: json["latitud"],
         longitud: json["longitud"],
-        visitaId: json["VisitaID"],
-        idProductor: json["id_productor"],
+        visitaId: json["VisitaID"].toString(),
+        idProductor: json["id_productor"].toString(),
       );
 
   Map<String, dynamic> toJson() => {
+        "id_plan_sostenibilidad_organica": idSostentabilidadOrganica,
         "cobertura": cobertura,
         "diversificacion_cultivo": diversificacionCultivo,
         "abonos_verdes": abonosVerdes,

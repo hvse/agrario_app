@@ -53,23 +53,28 @@ const SostentabilidadOrganicaCollectionSchema = CollectionSchema(
       name: r'idProductor',
       type: IsarType.string,
     ),
-    r'latitud': PropertySchema(
+    r'idSostentabilidadOrganica': PropertySchema(
       id: 7,
+      name: r'idSostentabilidadOrganica',
+      type: IsarType.string,
+    ),
+    r'latitud': PropertySchema(
+      id: 8,
       name: r'latitud',
       type: IsarType.string,
     ),
     r'longitud': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'longitud',
       type: IsarType.string,
     ),
     r'rotacionCultivo': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'rotacionCultivo',
       type: IsarType.string,
     ),
     r'visitaId': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'visitaId',
       type: IsarType.string,
     )
@@ -137,6 +142,12 @@ int _sostentabilidadOrganicaCollectionEstimateSize(
     }
   }
   {
+    final value = object.idSostentabilidadOrganica;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.latitud;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -176,10 +187,11 @@ void _sostentabilidadOrganicaCollectionSerialize(
   writer.writeString(offsets[4], object.cobertura);
   writer.writeString(offsets[5], object.diversificacionCultivo);
   writer.writeString(offsets[6], object.idProductor);
-  writer.writeString(offsets[7], object.latitud);
-  writer.writeString(offsets[8], object.longitud);
-  writer.writeString(offsets[9], object.rotacionCultivo);
-  writer.writeString(offsets[10], object.visitaId);
+  writer.writeString(offsets[7], object.idSostentabilidadOrganica);
+  writer.writeString(offsets[8], object.latitud);
+  writer.writeString(offsets[9], object.longitud);
+  writer.writeString(offsets[10], object.rotacionCultivo);
+  writer.writeString(offsets[11], object.visitaId);
 }
 
 SostentabilidadOrganicaCollection _sostentabilidadOrganicaCollectionDeserialize(
@@ -197,10 +209,11 @@ SostentabilidadOrganicaCollection _sostentabilidadOrganicaCollectionDeserialize(
   object.diversificacionCultivo = reader.readStringOrNull(offsets[5]);
   object.id = id;
   object.idProductor = reader.readStringOrNull(offsets[6]);
-  object.latitud = reader.readStringOrNull(offsets[7]);
-  object.longitud = reader.readStringOrNull(offsets[8]);
-  object.rotacionCultivo = reader.readStringOrNull(offsets[9]);
-  object.visitaId = reader.readStringOrNull(offsets[10]);
+  object.idSostentabilidadOrganica = reader.readStringOrNull(offsets[7]);
+  object.latitud = reader.readStringOrNull(offsets[8]);
+  object.longitud = reader.readStringOrNull(offsets[9]);
+  object.rotacionCultivo = reader.readStringOrNull(offsets[10]);
+  object.visitaId = reader.readStringOrNull(offsets[11]);
   return object;
 }
 
@@ -232,6 +245,8 @@ P _sostentabilidadOrganicaCollectionDeserializeProp<P>(
     case 9:
       return (reader.readStringOrNull(offset)) as P;
     case 10:
+      return (reader.readStringOrNull(offset)) as P;
+    case 11:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1645,6 +1660,184 @@ extension SostentabilidadOrganicaCollectionQueryFilter on QueryBuilder<
   QueryBuilder<
       SostentabilidadOrganicaCollection,
       SostentabilidadOrganicaCollection,
+      QAfterFilterCondition> idSostentabilidadOrganicaIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'idSostentabilidadOrganica',
+      ));
+    });
+  }
+
+  QueryBuilder<
+      SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection,
+      QAfterFilterCondition> idSostentabilidadOrganicaIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'idSostentabilidadOrganica',
+      ));
+    });
+  }
+
+  QueryBuilder<
+      SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection,
+      QAfterFilterCondition> idSostentabilidadOrganicaEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'idSostentabilidadOrganica',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<
+      SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection,
+      QAfterFilterCondition> idSostentabilidadOrganicaGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'idSostentabilidadOrganica',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<
+      SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection,
+      QAfterFilterCondition> idSostentabilidadOrganicaLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'idSostentabilidadOrganica',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<
+      SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection,
+      QAfterFilterCondition> idSostentabilidadOrganicaBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'idSostentabilidadOrganica',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<
+      SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection,
+      QAfterFilterCondition> idSostentabilidadOrganicaStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'idSostentabilidadOrganica',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<
+      SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection,
+      QAfterFilterCondition> idSostentabilidadOrganicaEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'idSostentabilidadOrganica',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SostentabilidadOrganicaCollection,
+          SostentabilidadOrganicaCollection, QAfterFilterCondition>
+      idSostentabilidadOrganicaContains(String value,
+          {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'idSostentabilidadOrganica',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SostentabilidadOrganicaCollection,
+          SostentabilidadOrganicaCollection, QAfterFilterCondition>
+      idSostentabilidadOrganicaMatches(String pattern,
+          {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'idSostentabilidadOrganica',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<
+      SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection,
+      QAfterFilterCondition> idSostentabilidadOrganicaIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'idSostentabilidadOrganica',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<
+      SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection,
+      QAfterFilterCondition> idSostentabilidadOrganicaIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'idSostentabilidadOrganica',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<
+      SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection,
       QAfterFilterCondition> latitudIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -2455,6 +2648,24 @@ extension SostentabilidadOrganicaCollectionQuerySortBy on QueryBuilder<
     });
   }
 
+  QueryBuilder<
+      SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection,
+      QAfterSortBy> sortByIdSostentabilidadOrganica() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idSostentabilidadOrganica', Sort.asc);
+    });
+  }
+
+  QueryBuilder<
+      SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection,
+      QAfterSortBy> sortByIdSostentabilidadOrganicaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idSostentabilidadOrganica', Sort.desc);
+    });
+  }
+
   QueryBuilder<SostentabilidadOrganicaCollection,
       SostentabilidadOrganicaCollection, QAfterSortBy> sortByLatitud() {
     return QueryBuilder.apply(this, (query) {
@@ -2642,6 +2853,24 @@ extension SostentabilidadOrganicaCollectionQuerySortThenBy on QueryBuilder<
     });
   }
 
+  QueryBuilder<
+      SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection,
+      QAfterSortBy> thenByIdSostentabilidadOrganica() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idSostentabilidadOrganica', Sort.asc);
+    });
+  }
+
+  QueryBuilder<
+      SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection,
+      QAfterSortBy> thenByIdSostentabilidadOrganicaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idSostentabilidadOrganica', Sort.desc);
+    });
+  }
+
   QueryBuilder<SostentabilidadOrganicaCollection,
       SostentabilidadOrganicaCollection, QAfterSortBy> thenByLatitud() {
     return QueryBuilder.apply(this, (query) {
@@ -2770,6 +2999,15 @@ extension SostentabilidadOrganicaCollectionQueryWhereDistinct on QueryBuilder<
     });
   }
 
+  QueryBuilder<SostentabilidadOrganicaCollection,
+          SostentabilidadOrganicaCollection, QDistinct>
+      distinctByIdSostentabilidadOrganica({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'idSostentabilidadOrganica',
+          caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<
       SostentabilidadOrganicaCollection,
       SostentabilidadOrganicaCollection,
@@ -2865,6 +3103,13 @@ extension SostentabilidadOrganicaCollectionQueryProperty on QueryBuilder<
       idProductorProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'idProductor');
+    });
+  }
+
+  QueryBuilder<SostentabilidadOrganicaCollection, String?, QQueryOperations>
+      idSostentabilidadOrganicaProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'idSostentabilidadOrganica');
     });
   }
 
