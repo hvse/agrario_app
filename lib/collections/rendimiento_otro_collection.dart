@@ -6,14 +6,15 @@ part 'rendimiento_otro_collection.g.dart';
 class RendimientoOtroCollection {
   Id id = Isar.autoIncrement;
 
+  late String? idRendimientoOtros;
   late String? nroParcelas;
-  late String? hectOrg;
-  late String? hectConver;
-  late String? hectConv;
+  late String? orgHas;
+  late String? converHas;
+  late String? convHas;
   late String? variedades;
-  late String? tonOrg;
-  late String? tonConver;
-  late String? tonConv;
+  late String? tonKiOrg;
+  late String? tonKiConver;
+  late String? tonKiConvenc;
   late String? anho;
   late String? fechaCorte;
   late String? latitud;

@@ -38,6 +38,7 @@ List<RendiminetoAzucarModel> rendimientoAzucarFromListCollection(
   final List<RendiminetoAzucarModel> packageList = [];
   for (final entry in practicas) {
     final RendiminetoAzucarModel status = RendiminetoAzucarModel(
+      id: entry.id,
       idRendimientoAzucar: entry.idRendimientoAzucar!,
       nroParcelas: entry.nroParcelas!,
       hectOrg: entry.hectOrg!,
@@ -103,7 +104,7 @@ class RendiminetoAzucarModel {
 
   factory RendiminetoAzucarModel.fromJson(Map<String, dynamic> json) =>
       RendiminetoAzucarModel(
-        idRendimientoAzucar: json["id_rendimiento_azucar"],
+        idRendimientoAzucar: json["id_rendimiento_azucar"].toString(),
         nroParcelas: json["nro_parcelas"],
         hectOrg: json["hect_org"],
         hectConver: json["hect_conver"],
@@ -116,8 +117,8 @@ class RendiminetoAzucarModel {
         fechaCorte: json["fecha_corte"],
         latitud: json["latitud"],
         longitud: json["longitud"],
-        visitaId: json["VisitaID"],
-        idProductor: json["id_productor"],
+        visitaId: json["VisitaID"].toString(),
+        idProductor: json["id_productor"].toString(),
       );
 
   Map<String, dynamic> toJson() => {

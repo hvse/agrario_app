@@ -3,6 +3,7 @@ import 'package:agrario_app/collections/mano_obra_collection.dart';
 import 'package:agrario_app/collections/practica_collection.dart';
 import 'package:agrario_app/collections/rendimiento_azucar_collection.dart';
 import 'package:agrario_app/collections/rendimiento_otro_collection.dart';
+import 'package:agrario_app/collections/sostentabilidad_organica_collection.dart';
 import 'package:agrario_app/collections/vista_collection.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -28,6 +29,7 @@ class IsarService {
           PracticaCollectionSchema,
           RendimientoAzucarCollectionSchema,
           RendimientoOtroCollectionSchema,
+          SostentabilidadOrganicaCollectionSchema
         ],
         directory: dir.path,
       );

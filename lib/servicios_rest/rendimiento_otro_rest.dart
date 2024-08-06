@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:isar/isar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<List<RendiminetoOtrosModel>> rendimientoOtroGet() async {
+Future<List<RendimientoOtroModel>> rendimientoOtroGet() async {
   final String apiUrl = '${BASE}index.php?action=id_rendimiento_otros';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
@@ -31,7 +31,7 @@ Future<List<RendiminetoOtrosModel>> rendimientoOtroGet() async {
 }
 
 FutureOr<String> rendimientoOtroAddlocal(
-    RendiminetoOtrosModel rendimiento) async {
+    RendimientoOtroModel rendimiento) async {
   final Isar isar = IsarService().isar;
   try {
     final RendimientoOtroCollection rendimientoAzucarCollection =
@@ -59,7 +59,7 @@ FutureOr<String> rendimientoOtroDeletelocal(int id) async {
   }
 }
 
-FutureOr<List<RendiminetoOtrosModel>> rendimientoOtroGetLocal() async {
+FutureOr<List<RendimientoOtroModel>> rendimientoOtroGetLocal() async {
   final Isar isar = IsarService().isar;
   try {
     final List<RendimientoOtroCollection> practicas =
@@ -72,7 +72,7 @@ FutureOr<List<RendiminetoOtrosModel>> rendimientoOtroGetLocal() async {
 }
 
 FutureOr<String> syncRendimientoOtro() async {
-  List<RendiminetoOtrosModel> manos = await rendimientoOtroGetLocal();
+  List<RendimientoOtroModel> manos = await rendimientoOtroGetLocal();
   for (var i = 0; i < manos.length; i++) {
     final response = await rendimientoOtroAdd(manos[i]);
     if (response == 'OK') {
@@ -82,7 +82,7 @@ FutureOr<String> syncRendimientoOtro() async {
   return 'OK';
 }
 
-FutureOr<String> rendimientoOtroAdd(RendiminetoOtrosModel rendi) async {
+FutureOr<String> rendimientoOtroAdd(RendimientoOtroModel rendi) async {
   final String apiUrl = '${BASE}index.php?action=CrearRendimientoOtros';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
@@ -105,9 +105,8 @@ FutureOr<String> rendimientoOtroAdd(RendiminetoOtrosModel rendi) async {
   }
 }
 
-FutureOr<String> practicaEdit(RendiminetoOtrosModel rendi) async {
-  final String apiUrl =
-      '${BASE}index.php?id_rendimiento_otros${rendi.id}';
+FutureOr<String> rendimientoOtroEdit(RendimientoOtroModel rendi) async {
+  final String apiUrl = '${BASE}index.php?id_rendimiento_otros=${rendi.id}';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
   final response = await http.put(

@@ -95,7 +95,7 @@ FutureOr<String> rendimientoAzucarAdd(RendiminetoAzucarModel rendi) async {
     body: jsonEncode(rendi.toJson()),
   );
 
-  print(response);
+  print(response.body);
 
   if (response.statusCode == 200) {
     return "OK";
@@ -104,7 +104,7 @@ FutureOr<String> rendimientoAzucarAdd(RendiminetoAzucarModel rendi) async {
   }
 }
 
-FutureOr<String> practicaEdit(RendiminetoAzucarModel rendi) async {
+FutureOr<String> rendimientoAzucarEdit(RendiminetoAzucarModel rendi) async {
   final String apiUrl =
       '${BASE}index.php?id_rendimiento_azucar=${rendi.idRendimientoAzucar}';
   SharedPreferences prefs = await SharedPreferences.getInstance();

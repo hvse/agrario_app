@@ -23,29 +23,29 @@ const RendimientoOtroCollectionSchema = CollectionSchema(
       name: r'anho',
       type: IsarType.string,
     ),
-    r'fechaCorte': PropertySchema(
+    r'convHas': PropertySchema(
       id: 1,
+      name: r'convHas',
+      type: IsarType.string,
+    ),
+    r'converHas': PropertySchema(
+      id: 2,
+      name: r'converHas',
+      type: IsarType.string,
+    ),
+    r'fechaCorte': PropertySchema(
+      id: 3,
       name: r'fechaCorte',
       type: IsarType.string,
     ),
-    r'hectConv': PropertySchema(
-      id: 2,
-      name: r'hectConv',
-      type: IsarType.string,
-    ),
-    r'hectConver': PropertySchema(
-      id: 3,
-      name: r'hectConver',
-      type: IsarType.string,
-    ),
-    r'hectOrg': PropertySchema(
-      id: 4,
-      name: r'hectOrg',
-      type: IsarType.string,
-    ),
     r'idProductor': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'idProductor',
+      type: IsarType.string,
+    ),
+    r'idRendimientoOtros': PropertySchema(
+      id: 5,
+      name: r'idRendimientoOtros',
       type: IsarType.string,
     ),
     r'latitud': PropertySchema(
@@ -63,28 +63,33 @@ const RendimientoOtroCollectionSchema = CollectionSchema(
       name: r'nroParcelas',
       type: IsarType.string,
     ),
-    r'tonConv': PropertySchema(
+    r'orgHas': PropertySchema(
       id: 9,
-      name: r'tonConv',
+      name: r'orgHas',
       type: IsarType.string,
     ),
-    r'tonConver': PropertySchema(
+    r'tonKiConvenc': PropertySchema(
       id: 10,
-      name: r'tonConver',
+      name: r'tonKiConvenc',
       type: IsarType.string,
     ),
-    r'tonOrg': PropertySchema(
+    r'tonKiConver': PropertySchema(
       id: 11,
-      name: r'tonOrg',
+      name: r'tonKiConver',
+      type: IsarType.string,
+    ),
+    r'tonKiOrg': PropertySchema(
+      id: 12,
+      name: r'tonKiOrg',
       type: IsarType.string,
     ),
     r'variedades': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'variedades',
       type: IsarType.string,
     ),
     r'visitaId': PropertySchema(
-      id: 13,
+      id: 14,
       name: r'visitaId',
       type: IsarType.string,
     )
@@ -116,31 +121,31 @@ int _rendimientoOtroCollectionEstimateSize(
     }
   }
   {
+    final value = object.convHas;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.converHas;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.fechaCorte;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
   }
   {
-    final value = object.hectConv;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.hectConver;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.hectOrg;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
     final value = object.idProductor;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.idRendimientoOtros;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -164,19 +169,25 @@ int _rendimientoOtroCollectionEstimateSize(
     }
   }
   {
-    final value = object.tonConv;
+    final value = object.orgHas;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
   }
   {
-    final value = object.tonConver;
+    final value = object.tonKiConvenc;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
   }
   {
-    final value = object.tonOrg;
+    final value = object.tonKiConver;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.tonKiOrg;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -203,19 +214,20 @@ void _rendimientoOtroCollectionSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.anho);
-  writer.writeString(offsets[1], object.fechaCorte);
-  writer.writeString(offsets[2], object.hectConv);
-  writer.writeString(offsets[3], object.hectConver);
-  writer.writeString(offsets[4], object.hectOrg);
-  writer.writeString(offsets[5], object.idProductor);
+  writer.writeString(offsets[1], object.convHas);
+  writer.writeString(offsets[2], object.converHas);
+  writer.writeString(offsets[3], object.fechaCorte);
+  writer.writeString(offsets[4], object.idProductor);
+  writer.writeString(offsets[5], object.idRendimientoOtros);
   writer.writeString(offsets[6], object.latitud);
   writer.writeString(offsets[7], object.longitud);
   writer.writeString(offsets[8], object.nroParcelas);
-  writer.writeString(offsets[9], object.tonConv);
-  writer.writeString(offsets[10], object.tonConver);
-  writer.writeString(offsets[11], object.tonOrg);
-  writer.writeString(offsets[12], object.variedades);
-  writer.writeString(offsets[13], object.visitaId);
+  writer.writeString(offsets[9], object.orgHas);
+  writer.writeString(offsets[10], object.tonKiConvenc);
+  writer.writeString(offsets[11], object.tonKiConver);
+  writer.writeString(offsets[12], object.tonKiOrg);
+  writer.writeString(offsets[13], object.variedades);
+  writer.writeString(offsets[14], object.visitaId);
 }
 
 RendimientoOtroCollection _rendimientoOtroCollectionDeserialize(
@@ -226,20 +238,21 @@ RendimientoOtroCollection _rendimientoOtroCollectionDeserialize(
 ) {
   final object = RendimientoOtroCollection();
   object.anho = reader.readStringOrNull(offsets[0]);
-  object.fechaCorte = reader.readStringOrNull(offsets[1]);
-  object.hectConv = reader.readStringOrNull(offsets[2]);
-  object.hectConver = reader.readStringOrNull(offsets[3]);
-  object.hectOrg = reader.readStringOrNull(offsets[4]);
+  object.convHas = reader.readStringOrNull(offsets[1]);
+  object.converHas = reader.readStringOrNull(offsets[2]);
+  object.fechaCorte = reader.readStringOrNull(offsets[3]);
   object.id = id;
-  object.idProductor = reader.readStringOrNull(offsets[5]);
+  object.idProductor = reader.readStringOrNull(offsets[4]);
+  object.idRendimientoOtros = reader.readStringOrNull(offsets[5]);
   object.latitud = reader.readStringOrNull(offsets[6]);
   object.longitud = reader.readStringOrNull(offsets[7]);
   object.nroParcelas = reader.readStringOrNull(offsets[8]);
-  object.tonConv = reader.readStringOrNull(offsets[9]);
-  object.tonConver = reader.readStringOrNull(offsets[10]);
-  object.tonOrg = reader.readStringOrNull(offsets[11]);
-  object.variedades = reader.readStringOrNull(offsets[12]);
-  object.visitaId = reader.readStringOrNull(offsets[13]);
+  object.orgHas = reader.readStringOrNull(offsets[9]);
+  object.tonKiConvenc = reader.readStringOrNull(offsets[10]);
+  object.tonKiConver = reader.readStringOrNull(offsets[11]);
+  object.tonKiOrg = reader.readStringOrNull(offsets[12]);
+  object.variedades = reader.readStringOrNull(offsets[13]);
+  object.visitaId = reader.readStringOrNull(offsets[14]);
   return object;
 }
 
@@ -277,6 +290,8 @@ P _rendimientoOtroCollectionDeserializeProp<P>(
     case 12:
       return (reader.readStringOrNull(offset)) as P;
     case 13:
+      return (reader.readStringOrNull(offset)) as P;
+    case 14:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -537,6 +552,318 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> convHasIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'convHas',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> convHasIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'convHas',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> convHasEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'convHas',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> convHasGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'convHas',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> convHasLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'convHas',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> convHasBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'convHas',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> convHasStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'convHas',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> convHasEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'convHas',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+          QAfterFilterCondition>
+      convHasContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'convHas',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+          QAfterFilterCondition>
+      convHasMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'convHas',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> convHasIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'convHas',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> convHasIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'convHas',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> converHasIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'converHas',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> converHasIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'converHas',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> converHasEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'converHas',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> converHasGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'converHas',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> converHasLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'converHas',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> converHasBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'converHas',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> converHasStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'converHas',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> converHasEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'converHas',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+          QAfterFilterCondition>
+      converHasContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'converHas',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+          QAfterFilterCondition>
+      converHasMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'converHas',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> converHasIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'converHas',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> converHasIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'converHas',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
       QAfterFilterCondition> fechaCorteIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -687,474 +1014,6 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'fechaCorte',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConvIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'hectConv',
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConvIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'hectConv',
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConvEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'hectConv',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConvGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'hectConv',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConvLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'hectConv',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConvBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'hectConv',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConvStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'hectConv',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConvEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'hectConv',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-          QAfterFilterCondition>
-      hectConvContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'hectConv',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-          QAfterFilterCondition>
-      hectConvMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'hectConv',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConvIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'hectConv',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConvIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'hectConv',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConverIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'hectConver',
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConverIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'hectConver',
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConverEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'hectConver',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConverGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'hectConver',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConverLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'hectConver',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConverBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'hectConver',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConverStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'hectConver',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConverEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'hectConver',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-          QAfterFilterCondition>
-      hectConverContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'hectConver',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-          QAfterFilterCondition>
-      hectConverMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'hectConver',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConverIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'hectConver',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectConverIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'hectConver',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectOrgIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'hectOrg',
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectOrgIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'hectOrg',
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectOrgEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'hectOrg',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectOrgGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'hectOrg',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectOrgLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'hectOrg',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectOrgBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'hectOrg',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectOrgStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'hectOrg',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectOrgEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'hectOrg',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-          QAfterFilterCondition>
-      hectOrgContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'hectOrg',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-          QAfterFilterCondition>
-      hectOrgMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'hectOrg',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectOrgIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'hectOrg',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> hectOrgIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'hectOrg',
         value: '',
       ));
     });
@@ -1367,6 +1226,162 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'idProductor',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> idRendimientoOtrosIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'idRendimientoOtros',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> idRendimientoOtrosIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'idRendimientoOtros',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> idRendimientoOtrosEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'idRendimientoOtros',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> idRendimientoOtrosGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'idRendimientoOtros',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> idRendimientoOtrosLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'idRendimientoOtros',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> idRendimientoOtrosBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'idRendimientoOtros',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> idRendimientoOtrosStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'idRendimientoOtros',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> idRendimientoOtrosEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'idRendimientoOtros',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+          QAfterFilterCondition>
+      idRendimientoOtrosContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'idRendimientoOtros',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+          QAfterFilterCondition>
+      idRendimientoOtrosMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'idRendimientoOtros',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> idRendimientoOtrosIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'idRendimientoOtros',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> idRendimientoOtrosIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'idRendimientoOtros',
         value: '',
       ));
     });
@@ -1841,31 +1856,31 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConvIsNull() {
+      QAfterFilterCondition> orgHasIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'tonConv',
+        property: r'orgHas',
       ));
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConvIsNotNull() {
+      QAfterFilterCondition> orgHasIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'tonConv',
+        property: r'orgHas',
       ));
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConvEqualTo(
+      QAfterFilterCondition> orgHasEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'tonConv',
+        property: r'orgHas',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1873,7 +1888,7 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConvGreaterThan(
+      QAfterFilterCondition> orgHasGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1881,7 +1896,7 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'tonConv',
+        property: r'orgHas',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1889,7 +1904,7 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConvLessThan(
+      QAfterFilterCondition> orgHasLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1897,7 +1912,7 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'tonConv',
+        property: r'orgHas',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1905,7 +1920,7 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConvBetween(
+      QAfterFilterCondition> orgHasBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1914,7 +1929,7 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'tonConv',
+        property: r'orgHas',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1925,13 +1940,13 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConvStartsWith(
+      QAfterFilterCondition> orgHasStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'tonConv',
+        property: r'orgHas',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1939,13 +1954,13 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConvEndsWith(
+      QAfterFilterCondition> orgHasEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'tonConv',
+        property: r'orgHas',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1954,10 +1969,10 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
           QAfterFilterCondition>
-      tonConvContains(String value, {bool caseSensitive = true}) {
+      orgHasContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'tonConv',
+        property: r'orgHas',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -1966,10 +1981,10 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
           QAfterFilterCondition>
-      tonConvMatches(String pattern, {bool caseSensitive = true}) {
+      orgHasMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'tonConv',
+        property: r'orgHas',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
@@ -1977,51 +1992,51 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConvIsEmpty() {
+      QAfterFilterCondition> orgHasIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'tonConv',
+        property: r'orgHas',
         value: '',
       ));
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConvIsNotEmpty() {
+      QAfterFilterCondition> orgHasIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'tonConv',
+        property: r'orgHas',
         value: '',
       ));
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConverIsNull() {
+      QAfterFilterCondition> tonKiConvencIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'tonConver',
+        property: r'tonKiConvenc',
       ));
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConverIsNotNull() {
+      QAfterFilterCondition> tonKiConvencIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'tonConver',
+        property: r'tonKiConvenc',
       ));
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConverEqualTo(
+      QAfterFilterCondition> tonKiConvencEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'tonConver',
+        property: r'tonKiConvenc',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -2029,7 +2044,7 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConverGreaterThan(
+      QAfterFilterCondition> tonKiConvencGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -2037,7 +2052,7 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'tonConver',
+        property: r'tonKiConvenc',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -2045,7 +2060,7 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConverLessThan(
+      QAfterFilterCondition> tonKiConvencLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -2053,7 +2068,7 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'tonConver',
+        property: r'tonKiConvenc',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -2061,7 +2076,7 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConverBetween(
+      QAfterFilterCondition> tonKiConvencBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -2070,7 +2085,7 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'tonConver',
+        property: r'tonKiConvenc',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -2081,13 +2096,13 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConverStartsWith(
+      QAfterFilterCondition> tonKiConvencStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'tonConver',
+        property: r'tonKiConvenc',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -2095,13 +2110,13 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConverEndsWith(
+      QAfterFilterCondition> tonKiConvencEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'tonConver',
+        property: r'tonKiConvenc',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -2110,10 +2125,10 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
           QAfterFilterCondition>
-      tonConverContains(String value, {bool caseSensitive = true}) {
+      tonKiConvencContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'tonConver',
+        property: r'tonKiConvenc',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -2122,10 +2137,10 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
           QAfterFilterCondition>
-      tonConverMatches(String pattern, {bool caseSensitive = true}) {
+      tonKiConvencMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'tonConver',
+        property: r'tonKiConvenc',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
@@ -2133,51 +2148,51 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConverIsEmpty() {
+      QAfterFilterCondition> tonKiConvencIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'tonConver',
+        property: r'tonKiConvenc',
         value: '',
       ));
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonConverIsNotEmpty() {
+      QAfterFilterCondition> tonKiConvencIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'tonConver',
+        property: r'tonKiConvenc',
         value: '',
       ));
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonOrgIsNull() {
+      QAfterFilterCondition> tonKiConverIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'tonOrg',
+        property: r'tonKiConver',
       ));
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonOrgIsNotNull() {
+      QAfterFilterCondition> tonKiConverIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'tonOrg',
+        property: r'tonKiConver',
       ));
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonOrgEqualTo(
+      QAfterFilterCondition> tonKiConverEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'tonOrg',
+        property: r'tonKiConver',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -2185,7 +2200,7 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonOrgGreaterThan(
+      QAfterFilterCondition> tonKiConverGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -2193,7 +2208,7 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'tonOrg',
+        property: r'tonKiConver',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -2201,7 +2216,7 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonOrgLessThan(
+      QAfterFilterCondition> tonKiConverLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -2209,7 +2224,7 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'tonOrg',
+        property: r'tonKiConver',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -2217,7 +2232,7 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonOrgBetween(
+      QAfterFilterCondition> tonKiConverBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -2226,7 +2241,7 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'tonOrg',
+        property: r'tonKiConver',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -2237,13 +2252,13 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonOrgStartsWith(
+      QAfterFilterCondition> tonKiConverStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'tonOrg',
+        property: r'tonKiConver',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -2251,13 +2266,13 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonOrgEndsWith(
+      QAfterFilterCondition> tonKiConverEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'tonOrg',
+        property: r'tonKiConver',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -2266,10 +2281,10 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
           QAfterFilterCondition>
-      tonOrgContains(String value, {bool caseSensitive = true}) {
+      tonKiConverContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'tonOrg',
+        property: r'tonKiConver',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -2278,10 +2293,10 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
           QAfterFilterCondition>
-      tonOrgMatches(String pattern, {bool caseSensitive = true}) {
+      tonKiConverMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'tonOrg',
+        property: r'tonKiConver',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
@@ -2289,20 +2304,176 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonOrgIsEmpty() {
+      QAfterFilterCondition> tonKiConverIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'tonOrg',
+        property: r'tonKiConver',
         value: '',
       ));
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterFilterCondition> tonOrgIsNotEmpty() {
+      QAfterFilterCondition> tonKiConverIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'tonOrg',
+        property: r'tonKiConver',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> tonKiOrgIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'tonKiOrg',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> tonKiOrgIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'tonKiOrg',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> tonKiOrgEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'tonKiOrg',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> tonKiOrgGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'tonKiOrg',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> tonKiOrgLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'tonKiOrg',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> tonKiOrgBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'tonKiOrg',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> tonKiOrgStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'tonKiOrg',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> tonKiOrgEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'tonKiOrg',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+          QAfterFilterCondition>
+      tonKiOrgContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'tonKiOrg',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+          QAfterFilterCondition>
+      tonKiOrgMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'tonKiOrg',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> tonKiOrgIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'tonKiOrg',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> tonKiOrgIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'tonKiOrg',
         value: '',
       ));
     });
@@ -2644,6 +2815,34 @@ extension RendimientoOtroCollectionQuerySortBy on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> sortByConvHas() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'convHas', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> sortByConvHasDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'convHas', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> sortByConverHas() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'converHas', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> sortByConverHasDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'converHas', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
       QAfterSortBy> sortByFechaCorte() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'fechaCorte', Sort.asc);
@@ -2658,48 +2857,6 @@ extension RendimientoOtroCollectionQuerySortBy on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> sortByHectConv() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hectConv', Sort.asc);
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> sortByHectConvDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hectConv', Sort.desc);
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> sortByHectConver() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hectConver', Sort.asc);
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> sortByHectConverDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hectConver', Sort.desc);
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> sortByHectOrg() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hectOrg', Sort.asc);
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> sortByHectOrgDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hectOrg', Sort.desc);
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
       QAfterSortBy> sortByIdProductor() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idProductor', Sort.asc);
@@ -2710,6 +2867,20 @@ extension RendimientoOtroCollectionQuerySortBy on QueryBuilder<
       QAfterSortBy> sortByIdProductorDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idProductor', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> sortByIdRendimientoOtros() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idRendimientoOtros', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> sortByIdRendimientoOtrosDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idRendimientoOtros', Sort.desc);
     });
   }
 
@@ -2756,44 +2927,58 @@ extension RendimientoOtroCollectionQuerySortBy on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> sortByTonConv() {
+      QAfterSortBy> sortByOrgHas() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'tonConv', Sort.asc);
+      return query.addSortBy(r'orgHas', Sort.asc);
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> sortByTonConvDesc() {
+      QAfterSortBy> sortByOrgHasDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'tonConv', Sort.desc);
+      return query.addSortBy(r'orgHas', Sort.desc);
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> sortByTonConver() {
+      QAfterSortBy> sortByTonKiConvenc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'tonConver', Sort.asc);
+      return query.addSortBy(r'tonKiConvenc', Sort.asc);
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> sortByTonConverDesc() {
+      QAfterSortBy> sortByTonKiConvencDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'tonConver', Sort.desc);
+      return query.addSortBy(r'tonKiConvenc', Sort.desc);
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> sortByTonOrg() {
+      QAfterSortBy> sortByTonKiConver() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'tonOrg', Sort.asc);
+      return query.addSortBy(r'tonKiConver', Sort.asc);
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> sortByTonOrgDesc() {
+      QAfterSortBy> sortByTonKiConverDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'tonOrg', Sort.desc);
+      return query.addSortBy(r'tonKiConver', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> sortByTonKiOrg() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tonKiOrg', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> sortByTonKiOrgDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tonKiOrg', Sort.desc);
     });
   }
 
@@ -2843,6 +3028,34 @@ extension RendimientoOtroCollectionQuerySortThenBy on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> thenByConvHas() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'convHas', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> thenByConvHasDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'convHas', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> thenByConverHas() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'converHas', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> thenByConverHasDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'converHas', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
       QAfterSortBy> thenByFechaCorte() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'fechaCorte', Sort.asc);
@@ -2853,48 +3066,6 @@ extension RendimientoOtroCollectionQuerySortThenBy on QueryBuilder<
       QAfterSortBy> thenByFechaCorteDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'fechaCorte', Sort.desc);
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> thenByHectConv() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hectConv', Sort.asc);
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> thenByHectConvDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hectConv', Sort.desc);
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> thenByHectConver() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hectConver', Sort.asc);
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> thenByHectConverDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hectConver', Sort.desc);
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> thenByHectOrg() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hectOrg', Sort.asc);
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> thenByHectOrgDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hectOrg', Sort.desc);
     });
   }
 
@@ -2923,6 +3094,20 @@ extension RendimientoOtroCollectionQuerySortThenBy on QueryBuilder<
       QAfterSortBy> thenByIdProductorDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'idProductor', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> thenByIdRendimientoOtros() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idRendimientoOtros', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> thenByIdRendimientoOtrosDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idRendimientoOtros', Sort.desc);
     });
   }
 
@@ -2969,44 +3154,58 @@ extension RendimientoOtroCollectionQuerySortThenBy on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> thenByTonConv() {
+      QAfterSortBy> thenByOrgHas() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'tonConv', Sort.asc);
+      return query.addSortBy(r'orgHas', Sort.asc);
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> thenByTonConvDesc() {
+      QAfterSortBy> thenByOrgHasDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'tonConv', Sort.desc);
+      return query.addSortBy(r'orgHas', Sort.desc);
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> thenByTonConver() {
+      QAfterSortBy> thenByTonKiConvenc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'tonConver', Sort.asc);
+      return query.addSortBy(r'tonKiConvenc', Sort.asc);
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> thenByTonConverDesc() {
+      QAfterSortBy> thenByTonKiConvencDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'tonConver', Sort.desc);
+      return query.addSortBy(r'tonKiConvenc', Sort.desc);
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> thenByTonOrg() {
+      QAfterSortBy> thenByTonKiConver() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'tonOrg', Sort.asc);
+      return query.addSortBy(r'tonKiConver', Sort.asc);
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
-      QAfterSortBy> thenByTonOrgDesc() {
+      QAfterSortBy> thenByTonKiConverDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'tonOrg', Sort.desc);
+      return query.addSortBy(r'tonKiConver', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> thenByTonKiOrg() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tonKiOrg', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> thenByTonKiOrgDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tonKiOrg', Sort.desc);
     });
   }
 
@@ -3049,6 +3248,20 @@ extension RendimientoOtroCollectionQueryWhereDistinct on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection, QDistinct>
+      distinctByConvHas({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'convHas', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection, QDistinct>
+      distinctByConverHas({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'converHas', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection, QDistinct>
       distinctByFechaCorte({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'fechaCorte', caseSensitive: caseSensitive);
@@ -3056,30 +3269,17 @@ extension RendimientoOtroCollectionQueryWhereDistinct on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection, QDistinct>
-      distinctByHectConv({bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'hectConv', caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection, QDistinct>
-      distinctByHectConver({bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'hectConver', caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection, QDistinct>
-      distinctByHectOrg({bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'hectOrg', caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection, QDistinct>
       distinctByIdProductor({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'idProductor', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection, QDistinct>
+      distinctByIdRendimientoOtros({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'idRendimientoOtros',
+          caseSensitive: caseSensitive);
     });
   }
 
@@ -3105,23 +3305,30 @@ extension RendimientoOtroCollectionQueryWhereDistinct on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection, QDistinct>
-      distinctByTonConv({bool caseSensitive = true}) {
+      distinctByOrgHas({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'tonConv', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'orgHas', caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection, QDistinct>
-      distinctByTonConver({bool caseSensitive = true}) {
+      distinctByTonKiConvenc({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'tonConver', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'tonKiConvenc', caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection, QDistinct>
-      distinctByTonOrg({bool caseSensitive = true}) {
+      distinctByTonKiConver({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'tonOrg', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'tonKiConver', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection, QDistinct>
+      distinctByTonKiOrg({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'tonKiOrg', caseSensitive: caseSensitive);
     });
   }
 
@@ -3156,6 +3363,20 @@ extension RendimientoOtroCollectionQueryProperty on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, String?, QQueryOperations>
+      convHasProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'convHas');
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, String?, QQueryOperations>
+      converHasProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'converHas');
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, String?, QQueryOperations>
       fechaCorteProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'fechaCorte');
@@ -3163,30 +3384,16 @@ extension RendimientoOtroCollectionQueryProperty on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, String?, QQueryOperations>
-      hectConvProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'hectConv');
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, String?, QQueryOperations>
-      hectConverProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'hectConver');
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, String?, QQueryOperations>
-      hectOrgProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'hectOrg');
-    });
-  }
-
-  QueryBuilder<RendimientoOtroCollection, String?, QQueryOperations>
       idProductorProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'idProductor');
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, String?, QQueryOperations>
+      idRendimientoOtrosProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'idRendimientoOtros');
     });
   }
 
@@ -3212,23 +3419,30 @@ extension RendimientoOtroCollectionQueryProperty on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, String?, QQueryOperations>
-      tonConvProperty() {
+      orgHasProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'tonConv');
+      return query.addPropertyName(r'orgHas');
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, String?, QQueryOperations>
-      tonConverProperty() {
+      tonKiConvencProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'tonConver');
+      return query.addPropertyName(r'tonKiConvenc');
     });
   }
 
   QueryBuilder<RendimientoOtroCollection, String?, QQueryOperations>
-      tonOrgProperty() {
+      tonKiConverProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'tonOrg');
+      return query.addPropertyName(r'tonKiConver');
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, String?, QQueryOperations>
+      tonKiOrgProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'tonKiOrg');
     });
   }
 

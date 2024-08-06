@@ -2,50 +2,52 @@ import 'dart:convert';
 
 import 'package:agrario_app/collections/rendimiento_otro_collection.dart';
 
-List<RendiminetoOtrosModel> rendimientoOtroFromJson(String str) {
+List<RendimientoOtroModel> rendimientoOtroFromJson(String str) {
   final Map<String, dynamic> data = json.decode(str);
-  final List<RendiminetoOtrosModel> packageList = [];
-  for (final entry in data['rendimiento_azucar']) {
+  final List<RendimientoOtroModel> packageList = [];
+  for (final entry in data['rendimiento_otros']) {
     final Map<String, dynamic> data = entry;
-    final RendiminetoOtrosModel status = RendiminetoOtrosModel.fromJson(data);
+    final RendimientoOtroModel status = RendimientoOtroModel.fromJson(data);
     packageList.add(status);
   }
   return packageList;
 }
 
 RendimientoOtroCollection rendimientoOtroCollectionFromListJson(
-    RendiminetoOtrosModel praxticas) {
+    RendimientoOtroModel praxticas) {
   return RendimientoOtroCollection()
+    ..idRendimientoOtros = praxticas.idRendimientoOtros
+    ..nroParcelas = praxticas.nroParcelas
+    ..orgHas = praxticas.orgHas
+    ..converHas = praxticas.converHas
+    ..convHas = praxticas.convHas
+    ..variedades = praxticas.variedades
+    ..tonKiOrg = praxticas.tonKiOrg
+    ..tonKiConver = praxticas.tonKiConver
+    ..tonKiConvenc = praxticas.tonKiConvenc
     ..anho = praxticas.anho
     ..fechaCorte = praxticas.fechaCorte
-    ..hectConv = praxticas.hectConv
-    ..hectConver = praxticas.hectConver
-    ..hectOrg = praxticas.hectOrg
-    ..idProductor = praxticas.idProductor
     ..latitud = praxticas.latitud
     ..longitud = praxticas.longitud
-    ..nroParcelas = praxticas.nroParcelas
-    ..tonConv = praxticas.tonConv
-    ..tonConver = praxticas.tonConver
-    ..tonOrg = praxticas.tonOrg
-    ..variedades = praxticas.variedades
-    ..visitaId = praxticas.visitaId;
+    ..visitaId = praxticas.visitaId
+    ..idProductor = praxticas.idProductor;
 }
 
-List<RendiminetoOtrosModel> rendimientoOtroFromListCollection(
+List<RendimientoOtroModel> rendimientoOtroFromListCollection(
     List<RendimientoOtroCollection> practicas) {
-  final List<RendiminetoOtrosModel> packageList = [];
+  final List<RendimientoOtroModel> packageList = [];
   for (final entry in practicas) {
-    final RendiminetoOtrosModel status = RendiminetoOtrosModel(
+    final RendimientoOtroModel status = RendimientoOtroModel(
       id: entry.id,
+      idRendimientoOtros: entry.idRendimientoOtros!,
       nroParcelas: entry.nroParcelas!,
-      hectOrg: entry.hectOrg!,
-      hectConver: entry.hectConver!,
-      hectConv: entry.hectConv!,
+      orgHas: entry.orgHas!,
+      converHas: entry.converHas!,
+      convHas: entry.convHas!,
       variedades: entry.variedades!,
-      tonOrg: entry.tonOrg!,
-      tonConver: entry.tonConver!,
-      tonConv: entry.tonConv!,
+      tonKiOrg: entry.tonKiOrg!,
+      tonKiConver: entry.tonKiConver!,
+      tonKiConvenc: entry.tonKiConvenc!,
       anho: entry.anho!,
       fechaCorte: entry.fechaCorte!,
       latitud: entry.latitud!,
@@ -58,16 +60,17 @@ List<RendiminetoOtrosModel> rendimientoOtroFromListCollection(
   return packageList;
 }
 
-class RendiminetoOtrosModel {
+class RendimientoOtroModel {
   final int? id;
+  final String idRendimientoOtros;
   final String nroParcelas;
-  final String hectOrg;
-  final String hectConver;
-  final String hectConv;
+  final String orgHas;
+  final String converHas;
+  final String convHas;
   final String variedades;
-  final String tonOrg;
-  final String tonConver;
-  final String tonConv;
+  final String tonKiOrg;
+  final String tonKiConver;
+  final String tonKiConvenc;
   final String anho;
   final String fechaCorte;
   final String latitud;
@@ -75,15 +78,16 @@ class RendiminetoOtrosModel {
   final String visitaId;
   final String idProductor;
 
-  RendiminetoOtrosModel({
+  RendimientoOtroModel({
+    required this.idRendimientoOtros,
     required this.nroParcelas,
-    required this.hectOrg,
-    required this.hectConver,
-    required this.hectConv,
+    required this.orgHas,
+    required this.converHas,
+    required this.convHas,
     required this.variedades,
-    required this.tonOrg,
-    required this.tonConver,
-    required this.tonConv,
+    required this.tonKiOrg,
+    required this.tonKiConver,
+    required this.tonKiConvenc,
     required this.anho,
     required this.fechaCorte,
     required this.latitud,
@@ -93,38 +97,40 @@ class RendiminetoOtrosModel {
     this.id,
   });
 
-  factory RendiminetoOtrosModel.fromRawJson(String str) =>
-      RendiminetoOtrosModel.fromJson(json.decode(str));
+  factory RendimientoOtroModel.fromRawJson(String str) =>
+      RendimientoOtroModel.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory RendiminetoOtrosModel.fromJson(Map<String, dynamic> json) =>
-      RendiminetoOtrosModel(
+  factory RendimientoOtroModel.fromJson(Map<String, dynamic> json) =>
+      RendimientoOtroModel(
+        idRendimientoOtros: json["id_rendimiento_otros"].toString(),
         nroParcelas: json["nro_parcelas"],
-        hectOrg: json["hect_org"],
-        hectConver: json["hect_conver"],
-        hectConv: json["hect_conv"],
+        orgHas: json["org_has"],
+        converHas: json["conver_has"],
+        convHas: json["conv_has"],
         variedades: json["variedades"],
-        tonOrg: json["ton_org"],
-        tonConver: json["ton_conver"],
-        tonConv: json["ton_conv"],
+        tonKiOrg: json["ton_ki_org"],
+        tonKiConver: json["ton_ki_conver"],
+        tonKiConvenc: json["ton_ki_convenc"],
         anho: json["anho"],
         fechaCorte: json["fecha_corte"],
         latitud: json["latitud"],
         longitud: json["longitud"],
-        visitaId: json["VisitaID"],
-        idProductor: json["id_productor"],
+        visitaId: json["VisitaID"].toString(),
+        idProductor: json["id_productor"].toString(),
       );
 
   Map<String, dynamic> toJson() => {
+        "id_rendimiento_otros": idRendimientoOtros,
         "nro_parcelas": nroParcelas,
-        "hect_org": hectOrg,
-        "hect_conver": hectConver,
-        "hect_conv": hectConv,
+        "org_has": orgHas,
+        "conver_has": converHas,
+        "conv_has": convHas,
         "variedades": variedades,
-        "ton_org": tonOrg,
-        "ton_conver": tonConver,
-        "ton_conv": tonConv,
+        "ton_ki_org": tonKiOrg,
+        "ton_ki_conver": tonKiConver,
+        "ton_ki_convenc": tonKiConvenc,
         "anho": anho,
         "fecha_corte": fechaCorte,
         "latitud": latitud,

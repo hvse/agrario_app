@@ -1,17 +1,17 @@
-import 'package:agrario_app/modelos/rendimiento_azucar_model.dart';
-import 'package:agrario_app/pantallas/rendimiento_azucar/rendimiento_azucar_add.dart';
+import 'package:agrario_app/modelos/rendimiento_otro_model.dart';
+import 'package:agrario_app/pantallas/rendimiento_otro/rendimiento_otro_add.dart';
 import 'package:agrario_app/pantallas/scaffold_custom.dart';
-import 'package:agrario_app/servicios_rest/rendimiento_azucar_rest.dart';
+import 'package:agrario_app/servicios_rest/rendimiento_otro_rest.dart';
 import 'package:agrario_app/servicios_rest/utils.dart';
 import 'package:flutter/material.dart';
 
-class RendimienntoAzucar extends StatefulWidget {
+class RendimientoOtro extends StatefulWidget {
   @override
-  _RendimienntoAzucarState createState() => _RendimienntoAzucarState();
+  _RendimientoOtroState createState() => _RendimientoOtroState();
 }
 
-class _RendimienntoAzucarState extends State<RendimienntoAzucar> {
-  List<RendiminetoAzucarModel> data = [];
+class _RendimientoOtroState extends State<RendimientoOtro> {
+  List<RendimientoOtroModel> data = [];
   bool isLoading = true;
 
   @override
@@ -22,7 +22,7 @@ class _RendimienntoAzucarState extends State<RendimienntoAzucar> {
 
   Future<void> cargarDatos() async {
     try {
-      var result = await rendimientoAzucarGet();
+      var result = await rendimientoOtroGet();
       setState(() {
         data.addAll(result);
         isLoading = false;
@@ -70,29 +70,32 @@ class _RendimienntoAzucarState extends State<RendimienntoAzucar> {
                                 "Numero Parcelas: " +
                                     data[index].nroParcelas.toString() +
                                     "\n" +
-                                    "Hectareas org: " +
-                                    data[index].hectOrg +
+                                    "Org has: " +
+                                    data[index].orgHas +
                                     "\n" +
-                                    "Hectareas conver: " +
-                                    data[index].hectConver.toString() +
+                                    "Conver has: " +
+                                    data[index].converHas.toString() +
                                     "\n" +
-                                    "Hectareas conv: " +
-                                    data[index].hectConv.toString() +
+                                    "Conv has: " +
+                                    data[index].convHas.toString() +
                                     "\n" +
                                     "Variedades: " +
                                     data[index].variedades +
                                     "\n" +
-                                    "Toneladas conver: " +
-                                    data[index].tonConver +
+                                    "Ton ki org: " +
+                                    data[index].tonKiOrg +
                                     "\n" +
-                                    "Toneladas conv: " +
-                                    data[index].tonConv +
+                                    "Ton ki conver: " +
+                                    data[index].tonKiConver.toString() +
                                     "\n" +
-                                    "Año: " +
-                                    data[index].anho +
+                                    "Ton ki convenc: " +
+                                    data[index].tonKiConvenc.toString() +
                                     "\n" +
                                     "Fecha de corte: " +
-                                    data[index].fechaCorte,
+                                    data[index].fechaCorte +
+                                    "\n" +
+                                    "Año: " +
+                                    data[index].anho.toString(),
                               ),
                               // Puedes agregar más widgets aquí según tus necesidades
                               trailing: SingleChildScrollView(
@@ -107,7 +110,7 @@ class _RendimienntoAzucarState extends State<RendimienntoAzucar> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: ((context) =>
-                                                      RendimientoAzucarAdd(
+                                                      RendimientoOtroAdd(
                                                         mano: data[index],
                                                       ))));
                                         });
@@ -122,16 +125,14 @@ class _RendimienntoAzucarState extends State<RendimienntoAzucar> {
           ),
         ],
       ),
-      title: 'Lista de Rendimiento Azucar',
+      title: 'Lista de Rendimiento Otro',
       floatingActionButton: FloatingActionButton(
         //backgroundColor: Colors.grey,
         elevation: 5,
         onPressed: () {
           print("agregar visita");
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: ((context) => RendimientoAzucarAdd())));
+          Navigator.push(context,
+              MaterialPageRoute(builder: ((context) => RendimientoOtroAdd())));
         },
         child: Icon(Icons.add),
       ),

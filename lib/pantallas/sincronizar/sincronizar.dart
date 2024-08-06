@@ -13,8 +13,9 @@ class Sincronizar extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () async {
-            EasyLoading.show();
-            sincronizarRest();
+            EasyLoading.show(status: 'Sincronizando...');
+            await sincronizarRest();
+            EasyLoading.showSuccess('Sincronizado con exito');
             EasyLoading.dismiss();
           },
           child: Text('Sincronizar'),

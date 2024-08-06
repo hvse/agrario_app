@@ -2,6 +2,8 @@ import 'package:agrario_app/pantallas/finca/finca.dart';
 import 'package:agrario_app/pantallas/login.dart';
 import 'package:agrario_app/pantallas/mano_obra/mano_obra.dart';
 import 'package:agrario_app/pantallas/practica_obs/practicas_obs.dart';
+import 'package:agrario_app/pantallas/rendimiento_azucar/rendimiento_azucar.dart';
+import 'package:agrario_app/pantallas/rendimiento_otro/rendimiento_otro.dart';
 import 'package:agrario_app/pantallas/sincronizar/sincronizar.dart';
 import 'package:agrario_app/pantallas/visitas/visitas.dart';
 import 'package:agrario_app/servicios_rest/salir_rest.dart';
@@ -62,6 +64,29 @@ class Menu extends StatelessWidget {
               print("menu 2");
               Navigator.push(context,
                   MaterialPageRoute(builder: ((context) => ManoObra())));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.trending_flat),
+            title: const Text('Rendimiento de Azucar'),
+            onTap: () {
+              print("menu 2");
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => RendimienntoAzucar())));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.trending_flat),
+            title: const Text('Rendimiento Otro'),
+            onTap: () {
+              print("menu 2");
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) => RendimientoOtro()),
+                  ));
             },
           ),
           ListTile(
