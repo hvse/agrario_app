@@ -22,54 +22,54 @@ const FincaCollectionSchema = CollectionSchema(
       name: r'actividad',
       type: IsarType.string,
     ),
-    r'educacion': PropertySchema(
+    r'areaTotal': PropertySchema(
       id: 1,
+      name: r'areaTotal',
+      type: IsarType.string,
+    ),
+    r'educacion': PropertySchema(
+      id: 2,
       name: r'educacion',
       type: IsarType.string,
     ),
     r'fincaID': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'fincaID',
       type: IsarType.string,
     ),
     r'fincasOrganicosDatosProducto': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'fincasOrganicosDatosProducto',
       type: IsarType.string,
     ),
     r'infraestructura': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'infraestructura',
       type: IsarType.string,
     ),
     r'latitud': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'latitud',
       type: IsarType.string,
     ),
     r'longitud': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'longitud',
       type: IsarType.string,
     ),
     r'nombreCampo': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'nombreCampo',
       type: IsarType.string,
     ),
     r'nombreFinca': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'nombreFinca',
       type: IsarType.string,
     ),
     r'otros': PropertySchema(
-      id: 9,
-      name: r'otros',
-      type: IsarType.string,
-    ),
-    r'productorID': PropertySchema(
       id: 10,
-      name: r'productorID',
+      name: r'otros',
       type: IsarType.string,
     ),
     r'salud': PropertySchema(
@@ -104,6 +104,7 @@ int _fincaCollectionEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.actividad.length * 3;
+  bytesCount += 3 + object.areaTotal.length * 3;
   bytesCount += 3 + object.educacion.length * 3;
   bytesCount += 3 + object.fincaID.length * 3;
   bytesCount += 3 + object.fincasOrganicosDatosProducto.length * 3;
@@ -113,7 +114,6 @@ int _fincaCollectionEstimateSize(
   bytesCount += 3 + object.nombreCampo.length * 3;
   bytesCount += 3 + object.nombreFinca.length * 3;
   bytesCount += 3 + object.otros.length * 3;
-  bytesCount += 3 + object.productorID.length * 3;
   bytesCount += 3 + object.salud.length * 3;
   bytesCount += 3 + object.ubicacionFinca.length * 3;
   return bytesCount;
@@ -126,16 +126,16 @@ void _fincaCollectionSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.actividad);
-  writer.writeString(offsets[1], object.educacion);
-  writer.writeString(offsets[2], object.fincaID);
-  writer.writeString(offsets[3], object.fincasOrganicosDatosProducto);
-  writer.writeString(offsets[4], object.infraestructura);
-  writer.writeString(offsets[5], object.latitud);
-  writer.writeString(offsets[6], object.longitud);
-  writer.writeString(offsets[7], object.nombreCampo);
-  writer.writeString(offsets[8], object.nombreFinca);
-  writer.writeString(offsets[9], object.otros);
-  writer.writeString(offsets[10], object.productorID);
+  writer.writeString(offsets[1], object.areaTotal);
+  writer.writeString(offsets[2], object.educacion);
+  writer.writeString(offsets[3], object.fincaID);
+  writer.writeString(offsets[4], object.fincasOrganicosDatosProducto);
+  writer.writeString(offsets[5], object.infraestructura);
+  writer.writeString(offsets[6], object.latitud);
+  writer.writeString(offsets[7], object.longitud);
+  writer.writeString(offsets[8], object.nombreCampo);
+  writer.writeString(offsets[9], object.nombreFinca);
+  writer.writeString(offsets[10], object.otros);
   writer.writeString(offsets[11], object.salud);
   writer.writeString(offsets[12], object.ubicacionFinca);
 }
@@ -148,17 +148,17 @@ FincaCollection _fincaCollectionDeserialize(
 ) {
   final object = FincaCollection();
   object.actividad = reader.readString(offsets[0]);
-  object.educacion = reader.readString(offsets[1]);
-  object.fincaID = reader.readString(offsets[2]);
-  object.fincasOrganicosDatosProducto = reader.readString(offsets[3]);
+  object.areaTotal = reader.readString(offsets[1]);
+  object.educacion = reader.readString(offsets[2]);
+  object.fincaID = reader.readString(offsets[3]);
+  object.fincasOrganicosDatosProducto = reader.readString(offsets[4]);
   object.id = id;
-  object.infraestructura = reader.readString(offsets[4]);
-  object.latitud = reader.readString(offsets[5]);
-  object.longitud = reader.readString(offsets[6]);
-  object.nombreCampo = reader.readString(offsets[7]);
-  object.nombreFinca = reader.readString(offsets[8]);
-  object.otros = reader.readString(offsets[9]);
-  object.productorID = reader.readString(offsets[10]);
+  object.infraestructura = reader.readString(offsets[5]);
+  object.latitud = reader.readString(offsets[6]);
+  object.longitud = reader.readString(offsets[7]);
+  object.nombreCampo = reader.readString(offsets[8]);
+  object.nombreFinca = reader.readString(offsets[9]);
+  object.otros = reader.readString(offsets[10]);
   object.salud = reader.readString(offsets[11]);
   object.ubicacionFinca = reader.readString(offsets[12]);
   return object;
@@ -428,6 +428,142 @@ extension FincaCollectionQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'actividad',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
+      areaTotalEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'areaTotal',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
+      areaTotalGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'areaTotal',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
+      areaTotalLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'areaTotal',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
+      areaTotalBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'areaTotal',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
+      areaTotalStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'areaTotal',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
+      areaTotalEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'areaTotal',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
+      areaTotalContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'areaTotal',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
+      areaTotalMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'areaTotal',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
+      areaTotalIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'areaTotal',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
+      areaTotalIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'areaTotal',
         value: '',
       ));
     });
@@ -1716,142 +1852,6 @@ extension FincaCollectionQueryFilter
   }
 
   QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
-      productorIDEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'productorID',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
-      productorIDGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'productorID',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
-      productorIDLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'productorID',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
-      productorIDBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'productorID',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
-      productorIDStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'productorID',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
-      productorIDEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'productorID',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
-      productorIDContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'productorID',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
-      productorIDMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'productorID',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
-      productorIDIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'productorID',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
-      productorIDIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'productorID',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<FincaCollection, FincaCollection, QAfterFilterCondition>
       saludEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -2147,6 +2147,20 @@ extension FincaCollectionQuerySortBy
   }
 
   QueryBuilder<FincaCollection, FincaCollection, QAfterSortBy>
+      sortByAreaTotal() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'areaTotal', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FincaCollection, FincaCollection, QAfterSortBy>
+      sortByAreaTotalDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'areaTotal', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FincaCollection, FincaCollection, QAfterSortBy>
       sortByEducacion() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'educacion', Sort.asc);
@@ -2269,20 +2283,6 @@ extension FincaCollectionQuerySortBy
     });
   }
 
-  QueryBuilder<FincaCollection, FincaCollection, QAfterSortBy>
-      sortByProductorID() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'productorID', Sort.asc);
-    });
-  }
-
-  QueryBuilder<FincaCollection, FincaCollection, QAfterSortBy>
-      sortByProductorIDDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'productorID', Sort.desc);
-    });
-  }
-
   QueryBuilder<FincaCollection, FincaCollection, QAfterSortBy> sortBySalud() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'salud', Sort.asc);
@@ -2324,6 +2324,20 @@ extension FincaCollectionQuerySortThenBy
       thenByActividadDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'actividad', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FincaCollection, FincaCollection, QAfterSortBy>
+      thenByAreaTotal() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'areaTotal', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FincaCollection, FincaCollection, QAfterSortBy>
+      thenByAreaTotalDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'areaTotal', Sort.desc);
     });
   }
 
@@ -2462,20 +2476,6 @@ extension FincaCollectionQuerySortThenBy
     });
   }
 
-  QueryBuilder<FincaCollection, FincaCollection, QAfterSortBy>
-      thenByProductorID() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'productorID', Sort.asc);
-    });
-  }
-
-  QueryBuilder<FincaCollection, FincaCollection, QAfterSortBy>
-      thenByProductorIDDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'productorID', Sort.desc);
-    });
-  }
-
   QueryBuilder<FincaCollection, FincaCollection, QAfterSortBy> thenBySalud() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'salud', Sort.asc);
@@ -2510,6 +2510,13 @@ extension FincaCollectionQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'actividad', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<FincaCollection, FincaCollection, QDistinct> distinctByAreaTotal(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'areaTotal', caseSensitive: caseSensitive);
     });
   }
 
@@ -2578,13 +2585,6 @@ extension FincaCollectionQueryWhereDistinct
     });
   }
 
-  QueryBuilder<FincaCollection, FincaCollection, QDistinct>
-      distinctByProductorID({bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'productorID', caseSensitive: caseSensitive);
-    });
-  }
-
   QueryBuilder<FincaCollection, FincaCollection, QDistinct> distinctBySalud(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2612,6 +2612,12 @@ extension FincaCollectionQueryProperty
   QueryBuilder<FincaCollection, String, QQueryOperations> actividadProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'actividad');
+    });
+  }
+
+  QueryBuilder<FincaCollection, String, QQueryOperations> areaTotalProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'areaTotal');
     });
   }
 
@@ -2670,13 +2676,6 @@ extension FincaCollectionQueryProperty
   QueryBuilder<FincaCollection, String, QQueryOperations> otrosProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'otros');
-    });
-  }
-
-  QueryBuilder<FincaCollection, String, QQueryOperations>
-      productorIDProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'productorID');
     });
   }
 

@@ -7,7 +7,6 @@ FincaModel fincaModelFromJson(String str) =>
 
 String fincaModelToJson(FincaModel data) => json.encode(data.toJson());
 
-
 FincaCollection fincaCollectionFromListJson(FincaModel finca) {
   return FincaCollection()
     ..actividad = finca.actividad
@@ -21,7 +20,7 @@ FincaCollection fincaCollectionFromListJson(FincaModel finca) {
     ..nombreFinca = finca.nombreFinca
     ..otros = finca.otros
     ..salud = finca.salud
-    ..productorID = finca.productorID
+    ..areaTotal = finca.areaTotal
     ..ubicacionFinca = finca.ubicacionFinca;
 }
 
@@ -29,6 +28,7 @@ List<FincaModel> fincasFromListCollection(List<FincaCollection> fincas) {
   final List<FincaModel> packageList = [];
   for (final entry in fincas) {
     final FincaModel fincaModel = FincaModel(
+        areaTotal: entry.areaTotal,
         Id: entry.id,
         fincaId: entry.fincaID,
         nombreFinca: entry.nombreFinca,
@@ -41,7 +41,6 @@ List<FincaModel> fincasFromListCollection(List<FincaCollection> fincas) {
         salud: entry.salud,
         otros: entry.otros,
         latitud: entry.latitud,
-        productorID: entry.productorID,
         longitud: entry.longitud);
     packageList.add(fincaModel);
   }
@@ -60,9 +59,9 @@ class FincaModel {
   final dynamic infraestructura;
   final dynamic salud;
   final dynamic otros;
+  final dynamic areaTotal;
   final dynamic latitud;
   final dynamic longitud;
-  final dynamic productorID;
 
   FincaModel({
     required this.Id,
@@ -76,30 +75,35 @@ class FincaModel {
     required this.infraestructura,
     required this.salud,
     required this.otros,
+    required this.areaTotal,
     required this.latitud,
     required this.longitud,
-    required this.productorID,
   });
 
   factory FincaModel.fromJson(Map<String, dynamic> json) => FincaModel(
         Id: null,
-        fincaId: json["FincaID"],
-        nombreFinca: json["NombreFinca"],
-        ubicacionFinca: json["UbicacionFinca"],
-        nombreCampo: json["nombre_campo"],
-        actividad: json["actividad"],
-        fincasOrganicosDatosProducto: json["fincas_organicos_datos_producto"],
-        educacion: json["educacion"],
-        infraestructura: json["infraestructura"],
-        salud: json["salud"],
-        otros: json["otros"],
-        latitud: json["latitud"],
-        longitud: json["longitud"],
-        productorID: json["ProductorID"],
+        fincaId: json["FincaID"] == null ? "" : json["FincaID"].toString(),
+        nombreFinca: json["NombreFinca"] == null ? "" : json["NombreFinca"],
+        ubicacionFinca:
+            json["UbicacionFinca"] == null ? "" : json["UbicacionFinca"],
+        nombreCampo: json["nombre_campo"] == null ? "" : json["nombre_campo"],
+        actividad: json["actividad"] == null ? null : json["actividad"],
+        fincasOrganicosDatosProducto:
+            json["fincas_organicos_datos_producto"] == null
+                ? ""
+                : json["fincas_organicos_datos_producto"],
+        educacion: json["educacion"] == null ? "" : json["educacion"],
+        infraestructura:
+            json["infraestructura"] == null ? "" : json["infraestructura"],
+        salud: json["salud"] == null ? "" : json["salud"],
+        otros: json["otros"] == null ? "" : json["otros"],
+        latitud: json["latitud"] == null ? "" : json["latitud"],
+        longitud: json["longitud"] == null ? "" : json["longitud"],
+        areaTotal: json["AreaTotal"] == null ? "" : json["AreaTotal"],
       );
 
   Map<String, dynamic> toJson() => {
-        "FincaID": int.parse(fincaId),
+        "FincaID": fincaId == "" ? null : int.parse(fincaId),
         "NombreFinca": nombreFinca,
         "UbicacionFinca": ubicacionFinca,
         "nombre_campo": nombreCampo,
@@ -111,6 +115,6 @@ class FincaModel {
         "otros": otros,
         "latitud": latitud,
         "longitud": longitud,
-        "ProductorID": int.parse(productorID),
+        "AreaTotal": areaTotal,
       };
 }

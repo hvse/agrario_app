@@ -107,16 +107,17 @@ FutureOr<String> manoAdd(ManoObraModel mano) async {
 }
 
 FutureOr<String> manosEdit(ManoObraModel mano) async {
-  final String apiUrl = '${BASE}index.php?TrabajoID=2${mano.trabajoId}';
+  final String apiUrl = '${BASE}index.php?TrabajoID=${mano.trabajoId}';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
+  final request = jsonEncode(mano.toJson());
   final response = await http.put(
     Uri.parse(apiUrl),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Cookie': '$cokie',
     },
-    body: jsonEncode(mano.toJson()),
+    body: request,
   );
 
   print(response.body);

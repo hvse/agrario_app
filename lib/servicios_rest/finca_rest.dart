@@ -84,7 +84,7 @@ FutureOr<void> syncFinca() async {
   List<FincaModel> finca = await fincaGetlocal();
   for (var i = 0; i < finca.length; i++) {
     final response = await fincaAdd(finca[i]);
-    if (response == 'OK') {
+    if (response.contains('Finca creada')) {
       await fincaDeletelocal(finca[i].Id!);
     }
   }
@@ -122,22 +122,12 @@ FutureOr<String> fincaAdd(FincaModel finca) async {
 //Function for delete data from datasource
 
 //Funcion para editar
-FutureOr<String> fincaEdit(String visitasID, String fincaId, String productoId,
-    String visita, String observacion, String latitud, String longitud) async {
-  Map<String, dynamic> data = {
-    'FincaID': int.parse(fincaId),
-    'ProductorID': int.parse(productoId),
-    'FechaVisita': visita,
-    'Observaciones': observacion,
-    'longitud': longitud,
-    'latitud': latitud
-  };
-
+FutureOr<String> fincaEdit(FincaModel finca) async {
   // Convierte los datos a formato JSON
-  String jsonData = jsonEncode(data);
+  String jsonData = jsonEncode(finca.toJson());
 
   // URL de la API
-  final String apiUrl = '${config.BASE}index.php?VisitaID=${visitasID}';
+  final String apiUrl = '${config.BASE}index.php?FincaID=${finca.fincaId}';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
 
@@ -157,7 +147,7 @@ FutureOr<String> fincaEdit(String visitasID, String fincaId, String productoId,
     body: jsonData,
   );
 
-  print(response);
+  print(response.body);
   // Verifica el código de estado de la respuesta
   if (response.statusCode == 200) {
     // Procesa la respuesta si es exitosa

@@ -1,9 +1,9 @@
 import 'package:agrario_app/modelos/mano_obra_model.dart';
 import 'package:agrario_app/pantallas/mano_obra/mano_obra.dart';
-import 'package:agrario_app/pantallas/visitas/visitas.dart';
 import 'package:agrario_app/servicios_rest/finca_rest.dart';
 import 'package:agrario_app/servicios_rest/mano_obra_rest.dart';
 import 'package:agrario_app/servicios_rest/utils.dart';
+import 'package:agrario_app/servicios_rest/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
@@ -89,7 +89,7 @@ class _ManoObraAddState extends State<ManoObraAdd> {
           fincaId = widget.mano!.fincaId.toString();
           _fincaId.text = fincaId;
         } else {
-          fincaId = widget.mano!.fincaId.toString();
+          fincaId = result.first.fincaId.toString();
           _fincaId.text = fincaId;
         }
         fincas = result.map((finca) {
@@ -115,6 +115,7 @@ class _ManoObraAddState extends State<ManoObraAdd> {
 
   @override
   Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
         title: widget.mano == null
@@ -128,73 +129,87 @@ class _ManoObraAddState extends State<ManoObraAdd> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (widget.mano != null)
-                    TextField(
-                      controller: trabajoId,
-                      decoration:
-                          const InputDecoration(labelText: 'Trabajo Id'),
-                    ),
-                  DropdownButtonFormField(
-                      value: fincaId,
-                      items: fincas,
-                      onChanged: (value) => setState(() {
-                            _fincaId.text = value.toString();
-                          })),
-                  const SizedBox(height: 16.0),
-                  const SizedBox(height: 16.0),
-                  TextField(
-                    controller: horasTrabajadas,
-                    keyboardType: TextInputType.number,
-                    decoration:
-                        const InputDecoration(labelText: 'Horas Trabajadas'),
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextField(
-                    controller: fechaUso,
-                    decoration: const InputDecoration(
-                        icon: Icon(Icons.date_range_rounded),
-                        labelText: "Fecha uso"),
-                    onTap: () async {
-                      DateTime? pickeddate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2100));
-                      if (pickeddate != null) {
-                        setState(() {
-                          fechaUso.text =
-                              DateFormat('yyy-MM-dd').format(pickeddate);
-                        });
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextField(
-                    controller: costoProduccion,
-                    decoration:
-                        const InputDecoration(labelText: 'Costo produccion'),
-                  ),
-                  TextField(
-                    controller: actividad,
-                    decoration: const InputDecoration(labelText: 'Actividad'),
-                  ),
-                  TextField(
-                    controller: tipoRecurso,
-                    decoration:
-                        const InputDecoration(labelText: 'Tipo recurso'),
-                  ),
-                  TextField(
-                    controller: cantidad,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'Cantidad'),
-                  ),
+                  Form(
+                      key: formKey,
+                      child: Column(children: [
+                        if (widget.mano != null)
+                          TextFormField(
+                            validator: (value) => Validator.isValidEmpty(value),
+                            controller: trabajoId,
+                            decoration:
+                                const InputDecoration(labelText: 'Trabajo Id'),
+                          ),
+                        DropdownButtonFormField(
+                            value: fincaId,
+                            items: fincas,
+                            onChanged: (value) => setState(() {
+                                  fincaId = value.toString();
+                                })),
+                        const SizedBox(height: 16.0),
+                        const SizedBox(height: 16.0),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: horasTrabajadas,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                              labelText: 'Horas Trabajadas'),
+                        ),
+                        const SizedBox(height: 16.0),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: fechaUso,
+                          decoration: const InputDecoration(
+                              icon: Icon(Icons.date_range_rounded),
+                              labelText: "Fecha uso"),
+                          onTap: () async {
+                            DateTime? pickeddate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100));
+                            if (pickeddate != null) {
+                              setState(() {
+                                fechaUso.text =
+                                    DateFormat('yyy-MM-dd').format(pickeddate);
+                              });
+                            }
+                          },
+                        ),
+                        const SizedBox(height: 16.0),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: costoProduccion,
+                          decoration: const InputDecoration(
+                              labelText: 'Costo produccion'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: actividad,
+                          decoration:
+                              const InputDecoration(labelText: 'Actividad'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: tipoRecurso,
+                          decoration:
+                              const InputDecoration(labelText: 'Tipo recurso'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: cantidad,
+                          keyboardType: TextInputType.number,
+                          decoration:
+                              const InputDecoration(labelText: 'Cantidad'),
+                        ),
+                      ])),
                   const SizedBox(height: 16.0),
                   ElevatedButton(
                     onPressed: () async {
+                      if (!formKey.currentState!.validate()) return;
                       EasyLoading.show(status: 'Cargando...');
                       ManoObraModel manoObraModel = ManoObraModel(
                         id: null,
-                        fincaId: int.parse(_fincaId.text),
+                        fincaId: int.parse(fincaId),
                         trabajoId: trabajoId.text == ""
                             ? 0
                             : int.parse(trabajoId.text),
@@ -218,7 +233,7 @@ class _ManoObraAddState extends State<ManoObraAdd> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: ((context) => Visitas())));
+                                  builder: ((context) => ManoObra())));
                         } else {
                           EasyLoading.dismiss();
                           showAlertDialog(context, 'Error al registrar');

@@ -2,6 +2,7 @@ import 'package:agrario_app/modelos/rendimiento_otro_model.dart';
 import 'package:agrario_app/pantallas/rendimiento_otro/rendimiento_otro.dart';
 import 'package:agrario_app/servicios_rest/rendimiento_otro_rest.dart';
 import 'package:agrario_app/servicios_rest/utils.dart';
+import 'package:agrario_app/servicios_rest/validator.dart';
 import 'package:agrario_app/servicios_rest/visitas_rest.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -132,6 +133,7 @@ class _RendimientoOtroAddState extends State<RendimientoOtroAdd> {
 
   @override
   Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
         title: widget.mano == null
@@ -145,88 +147,109 @@ class _RendimientoOtroAddState extends State<RendimientoOtroAdd> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (widget.mano != null)
-                    TextField(
-                      controller: idRendimientoOtros,
-                      decoration:
-                          const InputDecoration(labelText: 'Rendimiento Id'),
-                    ),
-                  TextField(
-                    controller: idProductor,
-                    keyboardType: TextInputType.number,
-                    decoration:
-                        const InputDecoration(labelText: 'Productor Id'),
-                  ),
-                  DropdownButtonFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Visita Id',
-                      ),
-                      value: idVista,
-                      items: visitas,
-                      onChanged: (value) => setState(() {
-                            visitaId.text = value.toString();
-                          })),
-                  TextField(
-                    controller: variedades,
-                    decoration: const InputDecoration(labelText: 'Variedades'),
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextField(
-                    controller: anho,
-                    decoration: const InputDecoration(labelText: 'Año'),
-                  ),
-                  TextField(
-                    controller: fechaCorte,
-                    decoration: const InputDecoration(
-                        icon: Icon(Icons.date_range_rounded),
-                        labelText: "Fecha de corte"),
-                    onTap: () async {
-                      DateTime? pickeddate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2100));
-                      if (pickeddate != null) {
-                        setState(() {
-                          fechaCorte.text =
-                              DateFormat('yyy-MM-dd').format(pickeddate);
-                        });
-                      }
-                    },
-                  ),
-                  TextField(
-                    controller: orgHas,
-                    decoration: const InputDecoration(labelText: 'Org has'),
-                  ),
-                  TextField(
-                    controller: converHas,
-                    decoration: const InputDecoration(labelText: 'Conver has'),
-                  ),
-                  TextField(
-                    controller: convHas,
-                    decoration: const InputDecoration(labelText: 'Conv has'),
-                  ),
-                  TextField(
-                    controller: nroParcelas,
-                    decoration: const InputDecoration(labelText: 'N° Parcelas'),
-                  ),
-                  TextField(
-                    controller: tonKiConver,
-                    decoration:
-                        const InputDecoration(labelText: 'Toneladas ki conver'),
-                  ),
-                  TextField(
-                    controller: tonKiConvenc,
-                    decoration: const InputDecoration(
-                        labelText: 'Toneladas ki convenc'),
-                  ),
+                  Form(
+                      key: formKey,
+                      child: Column(children: [
+                        if (widget.mano != null)
+                          TextFormField(
+                            validator: (value) => Validator.isValidEmpty(value),
+                            controller: idRendimientoOtros,
+                            decoration: const InputDecoration(
+                                labelText: 'Rendimiento Id'),
+                          ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: idProductor,
+                          keyboardType: TextInputType.number,
+                          decoration:
+                              const InputDecoration(labelText: 'Productor Id'),
+                        ),
+                        DropdownButtonFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Visita Id',
+                            ),
+                            value: idVista,
+                            items: visitas,
+                            onChanged: (value) => setState(() {
+                                  idVista = value.toString();
+                                })),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: variedades,
+                          decoration:
+                              const InputDecoration(labelText: 'Variedades'),
+                        ),
+                        const SizedBox(height: 16.0),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: anho,
+                          decoration: const InputDecoration(labelText: 'Año'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: fechaCorte,
+                          decoration: const InputDecoration(
+                              icon: Icon(Icons.date_range_rounded),
+                              labelText: "Fecha de corte"),
+                          onTap: () async {
+                            DateTime? pickeddate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100));
+                            if (pickeddate != null) {
+                              setState(() {
+                                fechaCorte.text =
+                                    DateFormat('yyy-MM-dd').format(pickeddate);
+                              });
+                            }
+                          },
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: orgHas,
+                          decoration:
+                              const InputDecoration(labelText: 'Org has'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: converHas,
+                          decoration:
+                              const InputDecoration(labelText: 'Conver has'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: convHas,
+                          decoration:
+                              const InputDecoration(labelText: 'Conv has'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: nroParcelas,
+                          decoration:
+                              const InputDecoration(labelText: 'N° Parcelas'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: tonKiConver,
+                          decoration: const InputDecoration(
+                              labelText: 'Toneladas ki conver'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: tonKiConvenc,
+                          decoration: const InputDecoration(
+                              labelText: 'Toneladas ki convenc'),
+                        ),
+                      ])),
                   const SizedBox(height: 16.0),
                   ElevatedButton(
                     onPressed: () async {
+                      if (!formKey.currentState!.validate()) return;
                       EasyLoading.show(status: 'Cargando...');
                       RendimientoOtroModel rendiminetoOtroModel =
                           RendimientoOtroModel(
-                        visitaId: visitaId.text,
+                        visitaId: idVista,
                         variedades: variedades.text,
                         anho: anho.text,
                         fechaCorte: fechaCorte.text,

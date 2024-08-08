@@ -18,5 +18,5 @@ class FincaCollection {
   late String otros;
   late String latitud;
   late String longitud;
-  late String productorID;
+  late String areaTotal;
 }

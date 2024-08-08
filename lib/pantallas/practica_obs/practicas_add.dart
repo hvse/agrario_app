@@ -3,6 +3,7 @@ import 'package:agrario_app/pantallas/practica_obs/practicas_obs.dart';
 import 'package:agrario_app/servicios_rest/finca_rest.dart';
 import 'package:agrario_app/servicios_rest/practicas_rest.dart';
 import 'package:agrario_app/servicios_rest/utils.dart';
+import 'package:agrario_app/servicios_rest/validator.dart';
 import 'package:agrario_app/servicios_rest/visitas_rest.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -148,6 +149,7 @@ class _PracticaAddState extends State<PracticaAdd> {
 
   @override
   Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
         title: widget.mano == null
@@ -161,90 +163,110 @@ class _PracticaAddState extends State<PracticaAdd> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (widget.mano != null)
-                    TextField(
-                      controller: idPracticasObservadas,
-                      decoration:
-                          const InputDecoration(labelText: 'Practicas Id'),
-                    ),
-                  DropdownButtonFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Visita Id',
-                      ),
-                      value: idVista,
-                      items: visitas,
-                      onChanged: (value) => setState(() {
-                            visitaId.text = value.toString();
-                          })),
-                  TextField(
-                    controller: practicasObservadas,
-                    decoration: const InputDecoration(
-                        labelText: 'Practicas Observadas'),
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextField(
-                    controller: fetilidadSuelo,
-                    decoration:
-                        const InputDecoration(labelText: 'Fetilidad del suelo'),
-                  ),
-                  TextField(
-                    controller: riesgoErosion,
-                    decoration:
-                        const InputDecoration(labelText: 'Riesgo de erosión'),
-                  ),
-                  TextField(
-                    controller: almacenamientoProducto,
-                    decoration: const InputDecoration(
-                        labelText: 'Almacenamiento de productos'),
-                  ),
-                  TextField(
-                    controller: controlPlagas,
-                    decoration:
-                        const InputDecoration(labelText: 'Control de plagas'),
-                  ),
-                  TextField(
-                    controller: residuosOrganicos,
-                    decoration:
-                        const InputDecoration(labelText: 'Control de plagas'),
-                  ),
-                  TextField(
-                    controller: riesgoContaminacion,
-                    decoration: const InputDecoration(
-                        labelText: 'Riesgo de contaminación'),
-                  ),
-                  TextField(
-                    controller: protegeCauseHidricos,
-                    decoration: const InputDecoration(
-                        labelText: 'Protección de causas hidricas'),
-                  ),
-                  TextField(
-                    controller: conservaBosquesHumedad,
-                    decoration: const InputDecoration(
-                        labelText: 'Conservación de bosques'),
-                  ),
-                  TextField(
-                    controller: realizaQuema,
-                    decoration:
-                        const InputDecoration(labelText: 'Realiza quema'),
-                  ),
-                  TextField(
-                    controller: crianzaAnimal,
-                    decoration:
-                        const InputDecoration(labelText: 'Crianza de animales'),
-                  ),
-                  TextField(
-                    controller: trabajoInfantil,
-                    decoration:
-                        const InputDecoration(labelText: 'Trabajo infantil'),
-                  ),
-                  TextField(
-                    controller: idProductor,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(labelText: 'Productor'),
-                  ),
+                  Form(
+                      key: formKey,
+                      child: Column(children: [
+                        if (widget.mano != null)
+                          TextFormField(
+                            validator: (value) => Validator.isValidEmpty(value),
+                            controller: idPracticasObservadas,
+                            decoration: const InputDecoration(
+                                labelText: 'Practicas Id'),
+                          ),
+                        DropdownButtonFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Visita Id',
+                            ),
+                            value: idVista,
+                            items: visitas,
+                            onChanged: (value) => setState(() {
+                                  idVista = value.toString();
+                                })),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: practicasObservadas,
+                          decoration: const InputDecoration(
+                              labelText: 'Practicas Observadas'),
+                        ),
+                        const SizedBox(height: 16.0),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: fetilidadSuelo,
+                          decoration: const InputDecoration(
+                              labelText: 'Fetilidad del suelo'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: riesgoErosion,
+                          decoration: const InputDecoration(
+                              labelText: 'Riesgo de erosión'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: almacenamientoProducto,
+                          decoration: const InputDecoration(
+                              labelText: 'Almacenamiento de productos'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: controlPlagas,
+                          decoration: const InputDecoration(
+                              labelText: 'Control de plagas'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: residuosOrganicos,
+                          decoration: const InputDecoration(
+                              labelText: 'Control de plagas'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: riesgoContaminacion,
+                          decoration: const InputDecoration(
+                              labelText: 'Riesgo de contaminación'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: protegeCauseHidricos,
+                          decoration: const InputDecoration(
+                              labelText: 'Protección de causas hidricas'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: conservaBosquesHumedad,
+                          decoration: const InputDecoration(
+                              labelText: 'Conservación de bosques'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: realizaQuema,
+                          decoration:
+                              const InputDecoration(labelText: 'Realiza quema'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: crianzaAnimal,
+                          decoration: const InputDecoration(
+                              labelText: 'Crianza de animales'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: trabajoInfantil,
+                          decoration: const InputDecoration(
+                              labelText: 'Trabajo infantil'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: idProductor,
+                          keyboardType: TextInputType.number,
+                          decoration:
+                              const InputDecoration(labelText: 'Productor'),
+                        ),
+                      ])),
                   const SizedBox(height: 16.0),
                   ElevatedButton(
                     onPressed: () async {
+                      if (!formKey.currentState!.validate()) return;
                       EasyLoading.show(status: 'Cargando...');
                       PracticaModel practicaModel = PracticaModel(
                         idPracticasObservadas: idPracticasObservadas.text,
@@ -263,7 +285,7 @@ class _PracticaAddState extends State<PracticaAdd> {
                         idProductor: idProductor.text,
                         latitud: latitud,
                         longitud: longitud,
-                        visitaId: visitaId.text,
+                        visitaId: idVista,
                       );
 
                       if (widget.mano == null) {

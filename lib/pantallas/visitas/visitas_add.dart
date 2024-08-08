@@ -2,6 +2,7 @@ import 'package:agrario_app/modelos/visitas_model.dart';
 import 'package:agrario_app/pantallas/visitas/visitas.dart';
 import 'package:agrario_app/servicios_rest/finca_rest.dart';
 import 'package:agrario_app/servicios_rest/utils.dart';
+import 'package:agrario_app/servicios_rest/validator.dart';
 import 'package:agrario_app/servicios_rest/visitas_rest.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -36,8 +37,8 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
   late TextEditingController _nombrefinca;
   late TextEditingController _nombreproducto;
   bool isLoading = true;
-  late List<DropdownMenuItem<Object>>? fincas;
-  late String fincaId;
+  List<DropdownMenuItem<Object>>? fincas;
+  String fincaId = '';
   String latitud = '';
   String longitud = '';
 
@@ -97,9 +98,9 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
       _nombreproducto = TextEditingController(
           text: widget.visita!.nombreProductor.toString());
     }
-    super.initState();
     getLocationAndUpdateState();
     cargarDatos();
+    super.initState();
   }
 
   Future<void> getLocationAndUpdateState() async {
@@ -120,13 +121,14 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
   Future<void> cargarDatos() async {
     try {
       var result = await FincaRest();
-      debugPrint('result $result');
+
+      debugPrint('result fincas $result');
       setState(() {
         if (widget.visita != null) {
           fincaId = widget.visita!.fincaId.toString();
           _fincaId.text = fincaId;
         } else {
-          fincaId = widget.visita!.fincaId.toString();
+          fincaId = result.first.fincaId.toString();
           _fincaId.text = fincaId;
         }
 
@@ -153,6 +155,7 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
 
   @override
   Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
         title: widget.visita == null
@@ -166,117 +169,143 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (widget.visita != null)
-                    TextField(
-                      controller: _visitasId,
-                      decoration: const InputDecoration(labelText: 'Visita Id'),
-                    ),
-                  DropdownButtonFormField(
-                      value: fincaId,
-                      items: fincas,
-                      onChanged: (value) => setState(() {
-                            _fincaId.text = value.toString();
-                          })),
-                  const SizedBox(height: 16.0),
-                  const SizedBox(height: 16.0),
-                  TextField(
-                    controller: _productoId,
-                    keyboardType: TextInputType.number,
-                    decoration:
-                        const InputDecoration(labelText: 'Producto(número)'),
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextField(
-                    controller: _fechaVisita,
-                    decoration: const InputDecoration(
-                        icon: Icon(Icons.date_range_rounded),
-                        labelText: "Fecha Visita"),
-                    onTap: () async {
-                      DateTime? pickeddate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2000),
-                          lastDate: DateTime(2100));
-                      if (pickeddate != null) {
-                        setState(() {
-                          _fechaVisita.text =
-                              DateFormat('yyy-MM-dd').format(pickeddate);
-                        });
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextField(
-                    controller: _observaciones,
-                    decoration:
-                        const InputDecoration(labelText: 'Observaciones'),
-                  ),
-                  TextField(
-                    controller: _cultivo_vecino,
-                    decoration:
-                        const InputDecoration(labelText: 'Cultivo vecino'),
-                  ),
-                  TextField(
-                    controller: _cosecha_mecanica,
-                    decoration:
-                        const InputDecoration(labelText: 'Cosecha Mecanica'),
-                  ),
-                  TextField(
-                    controller: _canha_organica,
-                    decoration:
-                        const InputDecoration(labelText: 'Caña Organica'),
-                  ),
-                  TextField(
-                    controller: _canha_conversion,
-                    decoration:
-                        const InputDecoration(labelText: 'Caña conversion'),
-                  ),
-                  TextField(
-                    controller: _tierra_descanso,
-                    decoration:
-                        const InputDecoration(labelText: 'Tierra Descanso'),
-                  ),
-                  TextField(
-                    controller: _maquinarias_utilizadas,
-                    decoration: const InputDecoration(
-                        labelText: 'Maquinarias Utilizadas'),
-                  ),
-                  TextField(
-                    controller: _anho,
-                    decoration: const InputDecoration(labelText: 'Año'),
-                  ),
-                  TextField(
-                    controller: _forma_cosecha,
-                    decoration:
-                        const InputDecoration(labelText: 'Forma cosecha'),
-                  ),
-                  TextField(
-                    controller: _apto_maquina,
-                    decoration:
-                        const InputDecoration(labelText: 'Apto maquina'),
-                  ),
-                  TextField(
-                    controller: _otros_cultivos,
-                    decoration:
-                        const InputDecoration(labelText: 'Otros cultivos'),
-                  ),
-                  TextField(
-                    controller: _fotos,
-                    decoration: const InputDecoration(labelText: 'Fotos'),
-                  ),
-                  TextField(
-                    controller: _nombrefinca,
-                    decoration:
-                        const InputDecoration(labelText: 'Nombre Finca'),
-                  ),
-                  TextField(
-                    controller: _nombreproducto,
-                    decoration:
-                        const InputDecoration(labelText: 'Nombre Producto'),
-                  ),
+                  Form(
+                      key: formKey,
+                      child: Column(children: [
+                        if (widget.visita != null)
+                          TextFormField(
+                            validator: (value) => Validator.isValidEmpty(value),
+                            controller: _visitasId,
+                            decoration:
+                                const InputDecoration(labelText: 'Visita Id'),
+                          ),
+                        DropdownButtonFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Finca',
+                            ),
+                            value: fincaId,
+                            items: fincas,
+                            onChanged: (value) => setState(() {
+                                  fincaId = value.toString();
+                                })),
+                        const SizedBox(height: 16.0),
+                        const SizedBox(height: 16.0),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: _productoId,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                              labelText: 'Producto(número)'),
+                        ),
+                        const SizedBox(height: 16.0),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: _fechaVisita,
+                          decoration: const InputDecoration(
+                              icon: Icon(Icons.date_range_rounded),
+                              labelText: "Fecha Visita"),
+                          onTap: () async {
+                            DateTime? pickeddate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime(2100));
+                            if (pickeddate != null) {
+                              setState(() {
+                                _fechaVisita.text =
+                                    DateFormat('yyy-MM-dd').format(pickeddate);
+                              });
+                            }
+                          },
+                        ),
+                        const SizedBox(height: 16.0),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: _observaciones,
+                          decoration:
+                              const InputDecoration(labelText: 'Observaciones'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: _cultivo_vecino,
+                          decoration: const InputDecoration(
+                              labelText: 'Cultivo vecino'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: _cosecha_mecanica,
+                          decoration: const InputDecoration(
+                              labelText: 'Cosecha Mecanica'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: _canha_organica,
+                          decoration:
+                              const InputDecoration(labelText: 'Caña Organica'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: _canha_conversion,
+                          decoration: const InputDecoration(
+                              labelText: 'Caña conversion'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: _tierra_descanso,
+                          decoration: const InputDecoration(
+                              labelText: 'Tierra Descanso'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: _maquinarias_utilizadas,
+                          decoration: const InputDecoration(
+                              labelText: 'Maquinarias Utilizadas'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: _anho,
+                          decoration: const InputDecoration(labelText: 'Año'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: _forma_cosecha,
+                          decoration:
+                              const InputDecoration(labelText: 'Forma cosecha'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: _apto_maquina,
+                          decoration:
+                              const InputDecoration(labelText: 'Apto maquina'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: _otros_cultivos,
+                          decoration: const InputDecoration(
+                              labelText: 'Otros cultivos'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: _fotos,
+                          decoration: const InputDecoration(labelText: 'Fotos'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: _nombrefinca,
+                          decoration:
+                              const InputDecoration(labelText: 'Nombre Finca'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: _nombreproducto,
+                          decoration: const InputDecoration(
+                              labelText: 'Nombre Productor'),
+                        ),
+                      ])),
                   const SizedBox(height: 16.0),
                   ElevatedButton(
                     onPressed: () async {
+                      if (!formKey.currentState!.validate()) return;
                       EasyLoading.show(status: 'Cargando...');
                       print('Usuario: ${_fincaId.text}');
                       print('Contraseña: ${_visitasId.text}');

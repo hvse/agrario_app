@@ -90,6 +90,8 @@ FutureOr<String> visitasAdd(VisitaModel visita) async {
   final String apiUrl = '${config.BASE}index.php?action=crear';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
+  final request = jsonEncode(visita.toJson());
+  debugPrint(request);
   // Realiza la solicitud POST
   final response = await http.post(
     Uri.parse(apiUrl),
@@ -97,7 +99,7 @@ FutureOr<String> visitasAdd(VisitaModel visita) async {
       'Content-Type': 'application/json; charset=UTF-8',
       'Cookie': '$cokie',
     },
-    body: jsonEncode(visita.toJson()),
+    body: request,
   );
 
   print(response);
@@ -141,13 +143,14 @@ FutureOr<String> visitasEdit(VisitaModel visita) async {
   final String apiUrl = '${config.BASE}index.php?VisitaID=${visita.visitaId}';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
+  final request = jsonEncode(visita.toJson());
   final response = await http.put(
     Uri.parse(apiUrl),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Cookie': '$cokie',
     },
-    body: jsonEncode(visita.toJson()),
+    body: request,
   );
 
   print(response.body);

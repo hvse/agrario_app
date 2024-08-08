@@ -5,12 +5,23 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
 FutureOr<LocationData?> getLocation() async {
+  print('Buscamos la ubicación');
   Location location = Location();
   try {
     var _location = await location.getLocation();
     return _location;
   } catch (e) {
-    throw Exception(e);
+    LocationData locationData = LocationData.fromMap({
+      "latitude": 0,
+      "longitude": 0,
+      "timestamp": DateTime.now(),
+      "altitude": 0.0,
+      "accuracy": 0.0,
+      "heading": 0.0,
+      "speed": 0.0,
+      "speedAccuracy": 0.0,
+    });
+    return locationData;
   }
 }
 

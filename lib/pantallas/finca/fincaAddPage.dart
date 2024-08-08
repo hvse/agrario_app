@@ -2,11 +2,13 @@ import 'package:agrario_app/modelos/finca_model.dart';
 import 'package:agrario_app/pantallas/Finca/Finca.dart';
 import 'package:agrario_app/servicios_rest/finca_rest.dart';
 import 'package:agrario_app/servicios_rest/utils.dart';
+import 'package:agrario_app/servicios_rest/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class FincaAddPage extends StatefulWidget {
-  const FincaAddPage({super.key});
+  final FincaModel? finca;
+  const FincaAddPage({super.key, this.finca});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -14,17 +16,17 @@ class FincaAddPage extends StatefulWidget {
 }
 
 class _FincaAddPageState extends State<FincaAddPage> {
-  final _fincaId = TextEditingController();
-  final _nombreFinca = TextEditingController();
-  final _ubicacionFinca = TextEditingController();
-  final _nombreCampo = TextEditingController();
-  final _actividad = TextEditingController();
-  final _fincasOrganicos = TextEditingController();
-  final _educacion = TextEditingController();
-  final _infraestructura = TextEditingController();
-  final _salud = TextEditingController();
-  final _otros = TextEditingController();
-  final _productorId = TextEditingController();
+  late TextEditingController _fincaId;
+  late TextEditingController _nombreFinca;
+  late TextEditingController _ubicacionFinca;
+  late TextEditingController _nombreCampo;
+  late TextEditingController _actividad;
+  late TextEditingController _fincasOrganicos;
+  late TextEditingController _educacion;
+  late TextEditingController _infraestructura;
+  late TextEditingController _salud;
+  late TextEditingController _otros;
+  late TextEditingController _areaTotal;
 
   String resultadologin = '';
   String latitud = '';
@@ -46,11 +48,53 @@ class _FincaAddPageState extends State<FincaAddPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     getLocationAndUpdateState();
+    if (widget.finca != null) {
+      _areaTotal =
+          TextEditingController(text: widget.finca!.areaTotal.toString());
+      _fincaId = TextEditingController(text: widget.finca!.fincaId.toString());
+      _nombreFinca =
+          TextEditingController(text: widget.finca!.nombreFinca.toString());
+      _ubicacionFinca =
+          TextEditingController(text: widget.finca!.ubicacionFinca.toString());
+      _nombreCampo =
+          TextEditingController(text: widget.finca!.nombreCampo.toString());
+      _actividad =
+          TextEditingController(text: widget.finca!.actividad.toString());
+      _fincasOrganicos = TextEditingController(
+          text: widget.finca!.fincasOrganicosDatosProducto.toString());
+      _educacion =
+          TextEditingController(text: widget.finca!.educacion.toString());
+      _infraestructura =
+          TextEditingController(text: widget.finca!.infraestructura.toString());
+      _salud = TextEditingController(text: widget.finca!.salud.toString());
+      _otros = TextEditingController(text: widget.finca!.otros.toString());
+    } else {
+      _fincaId = TextEditingController();
+      _nombreFinca = TextEditingController();
+      _ubicacionFinca = TextEditingController();
+      _nombreCampo = TextEditingController();
+      _actividad = TextEditingController();
+      _fincasOrganicos = TextEditingController();
+      _educacion = TextEditingController();
+      _infraestructura = TextEditingController();
+      _salud = TextEditingController();
+      _otros = TextEditingController();
+      _areaTotal = TextEditingController();
+    }
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Agregar Finca'),
+        title: widget.finca == null
+            ? const Text('Agregar Finca')
+            : const Text('Editar Finca'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -58,55 +102,79 @@ class _FincaAddPageState extends State<FincaAddPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 16.0),
-            TextField(
-              controller: _fincaId,
-              decoration: const InputDecoration(labelText: 'Finca'),
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _nombreFinca,
-              decoration: const InputDecoration(labelText: 'Nombre'),
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _ubicacionFinca,
-              decoration: const InputDecoration(labelText: 'Ubicación'),
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _nombreCampo,
-              decoration: const InputDecoration(labelText: 'Nombre del Campo'),
-            ),
-            TextField(
-              controller: _fincasOrganicos,
-              decoration: const InputDecoration(labelText: 'Finca Organica'),
-            ),
-            TextField(
-              controller: _educacion,
-              decoration: const InputDecoration(labelText: 'Educacion'),
-            ),
-            TextField(
-              controller: _actividad,
-              decoration: const InputDecoration(labelText: 'Actividad'),
-            ),
-            TextField(
-              controller: _infraestructura,
-              decoration: const InputDecoration(labelText: 'Infraestructura'),
-            ),
-            TextField(
-              controller: _salud,
-              decoration: const InputDecoration(labelText: 'Salud'),
-            ),
-            TextField(
-              controller: _otros,
-              decoration: const InputDecoration(labelText: 'Otros'),
-            ),
+            Form(
+                key: formKey,
+                child: Column(children: [
+                  if (widget.finca != null)
+                    TextFormField(
+                      validator: (value) => Validator.isValidEmpty(value),
+                      controller: _fincaId,
+                      decoration: const InputDecoration(labelText: 'Finca'),
+                    ),
+                  const SizedBox(height: 16.0),
+                  TextFormField(
+                    validator: (value) => Validator.isValidEmpty(value),
+                    controller: _nombreFinca,
+                    decoration: const InputDecoration(labelText: 'Nombre'),
+                  ),
+                  const SizedBox(height: 16.0),
+                  TextFormField(
+                    validator: (value) => Validator.isValidEmpty(value),
+                    controller: _ubicacionFinca,
+                    decoration: const InputDecoration(labelText: 'Ubicación'),
+                  ),
+                  const SizedBox(height: 16.0),
+                  TextFormField(
+                    validator: (value) => Validator.isValidEmpty(value),
+                    controller: _nombreCampo,
+                    decoration:
+                        const InputDecoration(labelText: 'Nombre del Campo'),
+                  ),
+                  TextFormField(
+                    validator: (value) => Validator.isValidEmpty(value),
+                    controller: _fincasOrganicos,
+                    decoration:
+                        const InputDecoration(labelText: 'Finca Organica'),
+                  ),
+                  TextFormField(
+                    validator: (value) => Validator.isValidEmpty(value),
+                    controller: _educacion,
+                    decoration: const InputDecoration(labelText: 'Educacion'),
+                  ),
+                  TextFormField(
+                    validator: (value) => Validator.isValidEmpty(value),
+                    controller: _actividad,
+                    decoration: const InputDecoration(labelText: 'Actividad'),
+                  ),
+                  TextFormField(
+                    validator: (value) => Validator.isValidEmpty(value),
+                    controller: _infraestructura,
+                    decoration:
+                        const InputDecoration(labelText: 'Infraestructura'),
+                  ),
+                  TextFormField(
+                    validator: (value) => Validator.isValidEmpty(value),
+                    controller: _salud,
+                    decoration: const InputDecoration(labelText: 'Salud'),
+                  ),
+                  TextFormField(
+                    validator: (value) => Validator.isValidEmpty(value),
+                    controller: _otros,
+                    decoration: const InputDecoration(labelText: 'Otros'),
+                  ),
+                  TextFormField(
+                    validator: (value) => Validator.isValidEmpty(value),
+                    controller: _areaTotal,
+                    decoration: const InputDecoration(labelText: 'Area total'),
+                  ),
+                ])),
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () async {
+                if (!formKey.currentState!.validate()) return;
                 EasyLoading.show(status: 'Cargando...');
-
                 final FincaModel fincaModel = FincaModel(
+                  areaTotal: _areaTotal.text,
                   fincaId: _fincaId.text,
                   nombreFinca: _nombreFinca.text,
                   ubicacionFinca: _ubicacionFinca.text,
@@ -120,17 +188,29 @@ class _FincaAddPageState extends State<FincaAddPage> {
                   latitud: this.latitud,
                   longitud: this.longitud,
                   Id: null,
-                  productorID: _productorId.text,
                 );
-                debugPrint('fincaModel: ${fincaModel.toJson()}');
-                var respuesta = await fincaAddLocal(fincaModel);
-                if (respuesta.toString().contains("OK")) {
-                  EasyLoading.dismiss();
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: ((context) => Finca())));
+
+                if (widget.finca == null) {
+                  var respuesta = await fincaAddLocal(fincaModel);
+                  if (respuesta.toString().contains("OK")) {
+                    EasyLoading.dismiss();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: ((context) => Finca())));
+                  } else {
+                    EasyLoading.dismiss();
+                    showAlertDialog(context, respuesta.toString());
+                  }
                 } else {
-                  EasyLoading.dismiss();
-                  showAlertDialog(context, respuesta.toString());
+                  var respuesta = await fincaEdit(fincaModel);
+                  if (respuesta.toString().contains("Finca actualizada")) {
+                    print("creo puretemente");
+                    EasyLoading.dismiss();
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: ((context) => Finca())));
+                  } else {
+                    EasyLoading.dismiss();
+                    showAlertDialog(context, respuesta.toString());
+                  }
                 }
               },
               child: const Text('Guardar'),

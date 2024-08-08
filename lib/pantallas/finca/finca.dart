@@ -1,5 +1,4 @@
 import 'package:agrario_app/pantallas/finca/fincaAddPage.dart';
-import 'package:agrario_app/pantallas/finca/fincaEditPage.dart';
 import 'package:agrario_app/pantallas/scaffold_custom.dart';
 import 'package:agrario_app/servicios_rest/finca_rest.dart';
 import 'package:flutter/cupertino.dart';
@@ -92,12 +91,7 @@ class _FincaState extends State<Finca> {
                                         this.visitaId =
                                             data[index].fincaId.toString();
                                         _showEditDeletOption(
-                                            context,
-                                            data[index].fincaId.toString(),
-                                            data[index].nombreCampo,
-                                            data[index].ubicacionFinca,
-                                            data[index].actividad,
-                                            data[index].actividad);
+                                            context, data[index]);
                                       },
                                     ),
                                   ],
@@ -124,8 +118,7 @@ class _FincaState extends State<Finca> {
   }
 
   // This shows a CupertinoModalPopup which hosts a CupertinoAlertDialog.
-  void _showEditDeletOption(BuildContext context, String visitaid,
-      String fincaid, String productoid, String fecha, String observaciones) {
+  void _showEditDeletOption(BuildContext context, FincaModel finca) {
     showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
@@ -135,18 +128,11 @@ class _FincaState extends State<Finca> {
           CupertinoActionSheetAction(
             child: Text('Editar Registro'),
             onPressed: () {
-              print(visitaid);
               Navigator.pop(context);
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: ((context) => FincaEditPage(
-                            visitadid: visitaid,
-                            fincaid: fincaid,
-                            productoid: productoid,
-                            fechavisita: fecha,
-                            observaciones: observaciones,
-                          ))));
+                      builder: ((context) => FincaAddPage(finca: finca))));
             },
           ),
         ],

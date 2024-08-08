@@ -2,6 +2,7 @@ import 'package:agrario_app/modelos/sostentabilidad_organica_model.dart';
 import 'package:agrario_app/pantallas/sostenibilidad_organica/sostenibilidad_organica.dart';
 import 'package:agrario_app/servicios_rest/sostentabilidad_organica_rest.dart';
 import 'package:agrario_app/servicios_rest/utils.dart';
+import 'package:agrario_app/servicios_rest/validator.dart';
 import 'package:agrario_app/servicios_rest/visitas_rest.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -123,11 +124,12 @@ class _SostenibilidadOrganicaaddState extends State<SostenibilidadOrganicaadd> {
 
   @override
   Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
         title: widget.mano == null
-            ? const Text('Agregar Rendimiento Azucar')
-            : const Text('Editar Rendimiento Azucar'),
+            ? const Text('Agregar Sostenibilidad Organica')
+            : const Text('Editar Sostenibilidad Organica'),
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
@@ -136,65 +138,80 @@ class _SostenibilidadOrganicaaddState extends State<SostenibilidadOrganicaadd> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (widget.mano != null)
-                    TextField(
-                      controller: idSostentabilidadOrganica,
-                      decoration: const InputDecoration(
-                          labelText: 'Sostentabilidad Id'),
-                    ),
-                  TextField(
-                    controller: idProductor,
-                    keyboardType: TextInputType.number,
-                    decoration:
-                        const InputDecoration(labelText: 'Productor Id'),
-                  ),
-                  DropdownButtonFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Visita Id',
-                      ),
-                      value: idVista,
-                      items: visitas,
-                      onChanged: (value) => setState(() {
-                            visitaId.text = value.toString();
-                          })),
-                  TextField(
-                    controller: cobertura,
-                    decoration: const InputDecoration(labelText: 'Cobertura'),
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextField(
-                    controller: diversificacionCultivo,
-                    decoration: const InputDecoration(
-                        labelText: 'Diversificación de cultivo'),
-                  ),
-                  TextField(
-                    controller: abonosVerdes,
-                    decoration:
-                        const InputDecoration(labelText: 'Abonos verdes'),
-                  ),
-                  TextField(
-                    controller: rotacionCultivo,
-                    decoration: const InputDecoration(
-                        labelText: 'Rotación de cultivo'),
-                  ),
-                  TextField(
-                    controller: calAgrico,
-                    decoration:
-                        const InputDecoration(labelText: 'Calidad agrícola'),
-                  ),
-                  TextField(
-                    controller: abonoOrganico,
-                    decoration:
-                        const InputDecoration(labelText: 'Abono orgánico'),
-                  ),
-                  TextField(
-                    controller: asistenciaCapacitaciones,
-                    decoration: const InputDecoration(
-                        labelText: 'Asistencia Capacitaciones'),
-                  ),
+                  Form(
+                      key: formKey,
+                      child: Column(children: [
+                        if (widget.mano != null)
+                          TextFormField(
+                            validator: (value) => Validator.isValidEmpty(value),
+                            controller: idSostentabilidadOrganica,
+                            decoration: const InputDecoration(
+                                labelText: 'Sostentabilidad Id'),
+                          ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: idProductor,
+                          keyboardType: TextInputType.number,
+                          decoration:
+                              const InputDecoration(labelText: 'Productor Id'),
+                        ),
+                        DropdownButtonFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Visita Id',
+                            ),
+                            value: idVista,
+                            items: visitas,
+                            onChanged: (value) => setState(() {
+                                  visitaId.text = value.toString();
+                                })),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: cobertura,
+                          decoration:
+                              const InputDecoration(labelText: 'Cobertura'),
+                        ),
+                        const SizedBox(height: 16.0),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: diversificacionCultivo,
+                          decoration: const InputDecoration(
+                              labelText: 'Diversificación de cultivo'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: abonosVerdes,
+                          decoration:
+                              const InputDecoration(labelText: 'Abonos verdes'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: rotacionCultivo,
+                          decoration: const InputDecoration(
+                              labelText: 'Rotación de cultivo'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: calAgrico,
+                          decoration: const InputDecoration(
+                              labelText: 'Calidad agrícola'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: abonoOrganico,
+                          decoration: const InputDecoration(
+                              labelText: 'Abono orgánico'),
+                        ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: asistenciaCapacitaciones,
+                          decoration: const InputDecoration(
+                              labelText: 'Asistencia Capacitaciones'),
+                        ),
+                      ])),
                   const SizedBox(height: 16.0),
                   ElevatedButton(
                     onPressed: () async {
+                      if (!formKey.currentState!.validate()) return;
                       EasyLoading.show(status: 'Cargando...');
                       SostentabilidadOrganicaModel
                           sostentabilidadOrganicaModel =
