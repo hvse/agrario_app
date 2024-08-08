@@ -295,12 +295,6 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
                           decoration:
                               const InputDecoration(labelText: 'Nombre Finca'),
                         ),
-                        TextFormField(
-                          validator: (value) => Validator.isValidEmpty(value),
-                          controller: _nombreproducto,
-                          decoration: const InputDecoration(
-                              labelText: 'Nombre Productor'),
-                        ),
                       ])),
                   const SizedBox(height: 16.0),
                   ElevatedButton(
