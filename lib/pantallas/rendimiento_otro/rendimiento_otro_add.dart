@@ -137,8 +137,8 @@ class _RendimientoOtroAddState extends State<RendimientoOtroAdd> {
     return Scaffold(
       appBar: AppBar(
         title: widget.mano == null
-            ? const Text('Agregar Rendimiento Azucar')
-            : const Text('Editar Rendimiento Azucar'),
+            ? const Text('Agregar Rendimiento Otro')
+            : const Text('Editar Rendimiento Otro'),
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
