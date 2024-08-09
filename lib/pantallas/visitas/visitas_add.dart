@@ -287,11 +287,6 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
                         ),
                         TextFormField(
                           validator: (value) => Validator.isValidEmpty(value),
-                          controller: _fotos,
-                          decoration: const InputDecoration(labelText: 'Fotos'),
-                        ),
-                        TextFormField(
-                          validator: (value) => Validator.isValidEmpty(value),
                           controller: _nombrefinca,
                           decoration:
                               const InputDecoration(labelText: 'Nombre Finca'),
