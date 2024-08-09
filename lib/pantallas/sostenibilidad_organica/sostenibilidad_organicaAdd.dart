@@ -162,7 +162,7 @@ class _SostenibilidadOrganicaaddState extends State<SostenibilidadOrganicaadd> {
                             value: idVista,
                             items: visitas,
                             onChanged: (value) => setState(() {
-                                  visitaId.text = value.toString();
+                                  idVista = value.toString();
                                 })),
                         TextFormField(
                           validator: (value) => Validator.isValidEmpty(value),
@@ -228,8 +228,11 @@ class _SostenibilidadOrganicaaddState extends State<SostenibilidadOrganicaadd> {
                         asistenciaCapacitaciones: asistenciaCapacitaciones.text,
                         latitud: latitud,
                         longitud: longitud,
-                        visitaId: visitaId.text,
+                        visitaId: idVista,
                       );
+
+                      debugPrint(
+                          sostentabilidadOrganicaModel.toJson().toString());
 
                       if (widget.mano == null) {
                         var respuesta = await sosOrganicaAddlocal(

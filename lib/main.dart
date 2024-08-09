@@ -2,6 +2,7 @@ import 'package:agrario_app/pantallas/login.dart';
 import 'package:agrario_app/servicios_rest/isar_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +17,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('es', ''),
+      ],
+      locale: const Locale('es', ''),
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light(useMaterial3: true),
       home: LoginPage(),

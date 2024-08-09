@@ -191,6 +191,7 @@ class _RendimientoAzucarAddState extends State<RendimientoAzucarAdd> {
                           onTap: () async {
                             DateTime? pickeddate = await showDatePicker(
                                 context: context,
+                                locale: Locale('es', ''),
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(2000),
                                 lastDate: DateTime(2100));

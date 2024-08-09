@@ -140,6 +140,9 @@ class _ManoObraAddState extends State<ManoObraAdd> {
                                 const InputDecoration(labelText: 'Trabajo Id'),
                           ),
                         DropdownButtonFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Finca',
+                            ),
                             value: fincaId,
                             items: fincas,
                             onChanged: (value) => setState(() {
@@ -164,6 +167,7 @@ class _ManoObraAddState extends State<ManoObraAdd> {
                           onTap: () async {
                             DateTime? pickeddate = await showDatePicker(
                                 context: context,
+                                locale: Locale('es', ''),
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(2000),
                                 lastDate: DateTime(2100));

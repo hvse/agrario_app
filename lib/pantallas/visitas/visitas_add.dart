@@ -206,6 +206,7 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
                               labelText: "Fecha Visita"),
                           onTap: () async {
                             DateTime? pickeddate = await showDatePicker(
+                                locale: Locale('es', ''),
                                 context: context,
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(2000),

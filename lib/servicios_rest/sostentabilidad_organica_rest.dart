@@ -112,6 +112,7 @@ FutureOr<String> sosOrganicaEdit(SostentabilidadOrganicaModel rendi) async {
       '${BASE}index.php?id_plan_sostenibilidad_organica=${rendi.id}';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
+  debugPrint('lo que mandamos a editar: ${rendi.toJson()}');
   final response = await http.put(
     Uri.parse(apiUrl),
     headers: <String, String>{
