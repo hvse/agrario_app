@@ -1,22 +1,21 @@
-import 'package:agrario_app/pantallas/menu.dart';
-import 'package:agrario_app/pantallas/visitas/visitas_add.dart';
+import 'package:agrario_app/modelos/mano_obra_model.dart';
+import 'package:agrario_app/pantallas/mano_obra/mano_obra_add.dart';
+import 'package:agrario_app/pantallas/scaffold_custom.dart';
+import 'package:agrario_app/servicios_rest/mano_obra_rest.dart';
 import 'package:agrario_app/servicios_rest/utils.dart';
-import 'package:agrario_app/servicios_rest/visitas_rest.dart';
-import 'package:flutter/material.dart';
-import 'package:agrario_app/modelos/visitas_model.dart';
 
-class Visitas extends StatefulWidget {
+import 'package:flutter/material.dart';
+
+class ManoObra extends StatefulWidget {
   @override
-  _VisitasState createState() => _VisitasState();
+  _ManoObraState createState() => _ManoObraState();
 }
 
-class _VisitasState extends State<Visitas> {
-  final List<VisitaModel> data = [];
+class _ManoObraState extends State<ManoObra> {
+  List<ManoObraModel> data = [];
   bool isLoading = true;
 
   String visitaId = "";
-
-  // Método para obtener datos de visita
 
   @override
   void initState() {
@@ -26,7 +25,7 @@ class _VisitasState extends State<Visitas> {
 
   Future<void> cargarDatos() async {
     try {
-      var result = await visitasRest();
+      var result = await manoObraGet();
       setState(() {
         data.addAll(result);
         isLoading = false;
@@ -54,9 +53,7 @@ class _VisitasState extends State<Visitas> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Lista de Visitas")),
-      drawer: Menu(),
+    return ScaffoldCustom(
       body: Column(
         children: [
           Expanded(
@@ -72,24 +69,22 @@ class _VisitasState extends State<Visitas> {
                         ),
                         itemBuilder: (context, index) {
                           return ListTile(
-                              title: Text("VisitaId: " +
-                                  data[index].visitaId.toString() +
-                                  "\n" +
-                                  "FincaId: " +
-                                  data[index].fincaId.toString() +
-                                  "\n" +
-                                  "ProductorId: " +
-                                  data[index].productorId.toString() +
-                                  "\n" +
-                                  "Observaciones: " +
-                                  data[index].observaciones +
-                                  "\n" +
-                                  "FechaVisita: " +
-                                  data[index].fechaVisita.toString() +
-                                  "\n" +
-                                  "Cultivo Vecino: " +
-                                  data[index].cultivoVecino),
-
+                              title: Text(
+                                "TrabajoID: " +
+                                    data[index].fincaId.toString() +
+                                    "\n" +
+                                    "FincaID: " +
+                                    data[index].fincaId.toString() +
+                                    "\n" +
+                                    "Horas trabajadas: " +
+                                    data[index].horasTrabajadas.toString() +
+                                    "\n" +
+                                    "Costo producción: " +
+                                    data[index].costoProduccion +
+                                    "\n" +
+                                    "Actividad: " +
+                                    data[index].actividad.toString(),
+                              ),
                               // Puedes agregar más widgets aquí según tus necesidades
                               trailing: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
@@ -97,16 +92,18 @@ class _VisitasState extends State<Visitas> {
                                   children: [
                                     ElevatedButton(
                                       child: Icon(Icons.more_vert),
-                                      onPressed: () =>
-                                          showEditDeletOption(context, () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: ((context) =>
-                                                    VisitasAddPage(
-                                                      visita: data[index],
-                                                    ))));
-                                      }),
+                                      onPressed: () => showEditDeletOption(
+                                        context,
+                                        () async {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: ((context) =>
+                                                      ManoObraAdd(
+                                                        mano: data[index],
+                                                      ))));
+                                        },
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -123,10 +120,11 @@ class _VisitasState extends State<Visitas> {
         onPressed: () {
           print("agregar visita");
           Navigator.push(context,
-              MaterialPageRoute(builder: ((context) => VisitasAddPage())));
+              MaterialPageRoute(builder: ((context) => ManoObraAdd())));
         },
         child: Icon(Icons.add),
       ),
+      title: 'Lista de Mano de Obra',
     );
   }
 }

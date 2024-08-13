@@ -1,5 +1,6 @@
-import 'package:agrario_app/pantallas/visitas/visitas.dart';
+import 'package:agrario_app/pantallas/finca/finca.dart';
 import 'package:agrario_app/servicios_rest/login_rest.dart';
+import 'package:agrario_app/servicios_rest/validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -36,6 +37,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Inicio de Sesión'),
@@ -50,31 +52,39 @@ class _LoginPageState extends State<LoginPage> {
               width: 250,
               height: 200,
             ),
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Usuario'),
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: _passwordController,
-              obscureText: _obscureText,
-              decoration: InputDecoration(
-                labelText: 'Contraseña',
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  },
-                  icon: Icon(
-                      _obscureText ? Icons.visibility : Icons.visibility_off),
-                  iconSize: 24,
-                ),
-              ),
-            ),
+            Form(
+                key: formKey,
+                child: Column(children: [
+                  TextFormField(
+                    validator: (value) => Validator.isValidEmpty(value),
+                    controller: _emailController,
+                    decoration: const InputDecoration(labelText: 'Usuario'),
+                  ),
+                  const SizedBox(height: 16.0),
+                  TextFormField(
+                    validator: (value) => Validator.isValidEmpty(value),
+                    controller: _passwordController,
+                    obscureText: _obscureText,
+                    decoration: InputDecoration(
+                      labelText: 'Contraseña',
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
+                        icon: Icon(_obscureText
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                        iconSize: 24,
+                      ),
+                    ),
+                  ),
+                ])),
             const SizedBox(height: 24.0),
             ElevatedButton(
               onPressed: () async {
+                if (!formKey.currentState!.validate()) return;
                 EasyLoading.show(status: 'Cargando...');
                 print('Usuario: ${_emailController.text}');
                 print('Contraseña: ${_passwordController.text}');
@@ -87,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                 if (resultado == 'ok') {
                   EasyLoading.dismiss();
                   Navigator.push(context,
-                      MaterialPageRoute(builder: ((context) => Visitas())));
+                      MaterialPageRoute(builder: ((context) => Finca())));
                 } else {
                   EasyLoading.dismiss();
                   _showAlertDialog(context);

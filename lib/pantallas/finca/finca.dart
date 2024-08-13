@@ -1,18 +1,9 @@
-// ignore_for_file: unnecessary_null_comparison
-
-import 'dart:convert';
-import 'package:agrario_app/pantallas/menu.dart';
 import 'package:agrario_app/pantallas/finca/fincaAddPage.dart';
-import 'package:agrario_app/pantallas/finca/fincaEditPage.dart';
+import 'package:agrario_app/pantallas/scaffold_custom.dart';
 import 'package:agrario_app/servicios_rest/finca_rest.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:agrario_app/modelos/finca_model.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:http/http.dart' as http;
-import 'package:agrario_app/configuracion/configuracion.dart' as config;
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:location/location.dart';
 
 class Finca extends StatefulWidget {
   @override
@@ -20,42 +11,10 @@ class Finca extends StatefulWidget {
 }
 
 class _FincaState extends State<Finca> {
-  List<finca_model> data = [];
+  List<FincaModel> data = [];
   bool isLoading = true;
 
   String visitaId = "";
-
-  // Método para obtener datos de Finca
-  Future<List<finca_model>> obtenerDatos() async {
-    final String apiUrl = '${config.BASE}index.php?action=FincaID';
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? cookie = prefs.getString('session');
-
-    try {
-      var response = await http.get(
-        Uri.parse(apiUrl),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Cookie': '$cookie',
-        },
-      ).timeout(Duration(seconds: 90));
-
-      if (response.statusCode == 200) {
-        print(response.body);
-        var datos = jsonDecode(response.body);
-        print("datos recibidos:...");
-        print(datos['finca']);
-        return List<finca_model>.from(
-          datos['finca'].map((dato) => finca_model.fromJson(dato)),
-        );
-      } else {
-        throw Exception('Error en la solicitud: ${response.statusCode}');
-      }
-    } catch (error) {
-      print('Error: $error');
-      throw Exception('Error general en la solicitud: $error');
-    }
-  }
 
   @override
   void initState() {
@@ -65,7 +24,7 @@ class _FincaState extends State<Finca> {
 
   Future<void> cargarDatos() async {
     try {
-      var result = await obtenerDatos();
+      var result = await FincaRest();
       setState(() {
         data.addAll(result);
         isLoading = false;
@@ -93,9 +52,7 @@ class _FincaState extends State<Finca> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Lista de Finca")),
-      drawer: Menu(),
+    return ScaffoldCustom(
       body: Column(
         children: [
           Expanded(
@@ -112,19 +69,16 @@ class _FincaState extends State<Finca> {
                         itemBuilder: (context, index) {
                           return ListTile(
                               title: Text("FincaID: " +
-                                  data[index].FincaID.toString() +
+                                  data[index].fincaId.toString() +
                                   "\n" +
                                   "Nombre Finca: " +
-                                  data[index].NombreFinca +
+                                  data[index].nombreFinca +
                                   "\n" +
                                   "Ubicacion Finca: " +
-                                  data[index].UbicacionFinca +
+                                  data[index].ubicacionFinca +
                                   "\n" +
                                   "Area Total: " +
-                                  data[index].AreaTotal +
-                                  "\n" +
-                                  "Mapa Fincas: " +
-                                  data[index].MapaFincas),
+                                  data[index].ubicacionFinca),
                               // Puedes agregar más widgets aquí según tus necesidades
                               trailing: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
@@ -135,14 +89,9 @@ class _FincaState extends State<Finca> {
                                       onPressed: () {
                                         print("Editing ");
                                         this.visitaId =
-                                            data[index].FincaID.toString();
+                                            data[index].fincaId.toString();
                                         _showEditDeletOption(
-                                            context,
-                                            data[index].FincaID.toString(),
-                                            data[index].NombreFinca,
-                                            data[index].UbicacionFinca,
-                                            data[index].AreaTotal,
-                                            data[index].MapaFincas);
+                                            context, data[index]);
                                       },
                                     ),
                                   ],
@@ -152,28 +101,24 @@ class _FincaState extends State<Finca> {
                       )
                     : Center(child: Text('No hay datos')),
           ),
-          Padding(
-            padding:
-                EdgeInsets.only(bottom: 15.0, left: screenWidth(context) - 80),
-            child: FloatingActionButton(
-              //backgroundColor: Colors.grey,
-              elevation: 5,
-              onPressed: () {
-                print("agregar visita");
-                Navigator.push(context,
-                    MaterialPageRoute(builder: ((context) => FincaAddPage())));
-              },
-              child: Icon(Icons.add),
-            ),
-          )
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        //backgroundColor: Colors.grey,
+        elevation: 5,
+        onPressed: () {
+          print("agregar visita");
+          Navigator.push(context,
+              MaterialPageRoute(builder: ((context) => FincaAddPage())));
+        },
+        child: Icon(Icons.add),
+      ),
+      title: 'Lista de Fincas',
     );
   }
 
   // This shows a CupertinoModalPopup which hosts a CupertinoAlertDialog.
-  void _showEditDeletOption(BuildContext context, String visitaid,
-      String fincaid, String productoid, String fecha, String observaciones) {
+  void _showEditDeletOption(BuildContext context, FincaModel finca) {
     showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
@@ -183,27 +128,11 @@ class _FincaState extends State<Finca> {
           CupertinoActionSheetAction(
             child: Text('Editar Registro'),
             onPressed: () {
-              print(visitaid);
               Navigator.pop(context);
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: ((context) => FincaEditPage(
-                            visitadid: visitaid,
-                            fincaid: fincaid,
-                            productoid: productoid,
-                            fechavisita: fecha,
-                            observaciones: observaciones,
-                          ))));
-            },
-          ),
-          CupertinoActionSheetAction(
-            isDestructiveAction: true,
-            child: Text('Eliminar Registro'),
-            onPressed: () {
-              print(visitaid);
-              Navigator.pop(context);
-              _confirmEditDeletOption(context, visitaid);
+                      builder: ((context) => FincaAddPage(finca: finca))));
             },
           ),
         ],
@@ -213,35 +142,6 @@ class _FincaState extends State<Finca> {
             Navigator.pop(context);
           },
         ),
-      ),
-    );
-  }
-
-  void _confirmEditDeletOption(BuildContext context, String visitaid) {
-    showCupertinoModalPopup<void>(
-      context: context,
-      builder: (BuildContext context) => CupertinoAlertDialog(
-        title: const Text('Selecciona opción'),
-        content: Text("Eliminar Registro? ${visitaid} "),
-        actions: <CupertinoDialogAction>[
-          CupertinoDialogAction(
-            isDestructiveAction: true,
-            onPressed: () async {
-              EasyLoading.show();
-
-              var resultado = await deleteFinca(visitaid);
-
-              if (resultado.toString().contains("Visita eliminada")) {
-                EasyLoading.dismiss();
-                Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => Finca()),
-                  (route) => false,
-                );
-              }
-            },
-            child: const Text("Eliminar"),
-          ),
-        ],
       ),
     );
   }
