@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:agrario_app/servicios_rest/finca_rest.dart';
+import 'package:agrario_app/servicios_rest/infra_rest.dart';
 import 'package:agrario_app/servicios_rest/login_rest.dart';
 import 'package:agrario_app/servicios_rest/mano_obra_rest.dart';
 import 'package:agrario_app/servicios_rest/practicas_rest.dart';
@@ -44,6 +45,7 @@ FutureOr<String> salirRest() async {
     await rendimientoOtroClean();
     await sosOrganicaClean();
     await visitasClean();
+    await infraClean();
 
     return visitas['mensaje'];
   } else {

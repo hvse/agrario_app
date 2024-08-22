@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:agrario_app/collections/practica_collection.dart';
-import 'package:flutter/material.dart';
 
 List<PracticaModel> practicaFromJson(String str) {
   final Map<String, dynamic> data = json.decode(str);

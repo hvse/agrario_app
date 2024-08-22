@@ -1,21 +1,43 @@
 import 'dart:convert';
 import 'package:agrario_app/collections/infra_collection.dart';
 
-InfraCollection fincaCollectionFromListJson(InfraModel infra) {
-  return InfraCollection()
-    ..idInstraestructura = infra.idInstraestructura
-    ..abonoParcelasCanhaAzucar = infra.abonoParcelasCanhaAzucar
-    ..plantacionesNuevas = infra.plantacionesNuevas
-    ..maquinarias = infra.maquinarias
-    ..estudiosLugar = infra.estudiosLugar
-    ..salud = infra.salud
-    ..otros = infra.otros
-    ..asistenciaCapacitaciones = infra.asistenciaCapacitaciones
-    ..latitud = infra.latitud
-    ..longitud = infra.longitud
-    ..visitaId = infra.visitaId
-    ..idProductor = infra.idProductor;
+List<InfraModel> infraFromJson(String str) {
+  final Map<String, dynamic> data = json.decode(str);
+  final List<InfraModel> packageList = [];
+  for (final entry in data['instraestructura']) {
+    final Map<String, dynamic> data = entry;
+    final InfraModel status = InfraModel.fromJson(data);
+    packageList.add(status);
+  }
+  return packageList;
 }
+
+List<InfraCollection> infraCollectionFromListJson(List<InfraModel> infra) {
+  final List<InfraCollection> packageList = [];
+
+  for (final entry in infra) {
+    final InfraCollection status = InfraCollection()
+      ..idInstraestructura = entry.idInstraestructura
+      ..abonoParcelasCanhaAzucar = entry.abonoParcelasCanhaAzucar
+      ..plantacionesNuevas = entry.plantacionesNuevas
+      ..maquinarias = entry.maquinarias
+      ..estudiosLugar = entry.estudiosLugar
+      ..salud = entry.salud
+      ..otros = entry.otros
+      ..asistenciaCapacitaciones = entry.asistenciaCapacitaciones
+      ..latitud = entry.latitud
+      ..longitud = entry.longitud
+      ..visitaId = entry.visitaId
+      ..idProductor = entry.idProductor;
+    ;
+
+    packageList.add(status);
+  }
+
+  return packageList;
+}
+
+
 
 List<InfraModel> fincasFromListCollection(List<InfraCollection> infra) {
   final List<InfraModel> packageList = [];

@@ -1,6 +1,7 @@
 import 'package:agrario_app/modelos/visitas_model.dart';
 import 'package:agrario_app/pantallas/visitas/visitas.dart';
 import 'package:agrario_app/servicios_rest/finca_rest.dart';
+import 'package:agrario_app/servicios_rest/login_rest.dart';
 import 'package:agrario_app/servicios_rest/utils.dart';
 import 'package:agrario_app/servicios_rest/validator.dart';
 import 'package:agrario_app/servicios_rest/visitas_rest.dart';
@@ -38,7 +39,9 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
   late TextEditingController _nombreproducto;
   bool isLoading = true;
   List<DropdownMenuItem<Object>>? fincas;
+  List<DropdownMenuItem<Object>>? productores;
   String fincaId = '';
+  String productorId = '';
   String latitud = '';
   String longitud = '';
 
@@ -120,25 +123,43 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
 
   Future<void> cargarDatos() async {
     try {
-      var result = await FincaRest();
+      var result = await fincaGetlocal();
+      var productor = await productoresGetlocal();
 
       debugPrint('result fincas $result');
       setState(() {
         if (widget.visita != null) {
-          fincaId = widget.visita!.fincaId.toString();
-          _fincaId.text = fincaId;
+          fincaId =
+              '${widget.visita!.fincaId.toString()}&${widget.visita!.nombreFinca.toString()}';
+          productorId =
+              '${widget.visita!.productorId.toString()}&${widget.visita!.nombreProductor.toString()}';
+          _fincaId.text = widget.visita!.fincaId.toString();
+          _productoId.text = widget.visita!.productorId.toString();
         } else {
-          fincaId = result.first.fincaId.toString();
-          _fincaId.text = fincaId;
+          fincaId =
+              '${result.first.fincaId.toString()}&${result.first.nombreFinca.toString()}';
+          productorId =
+              '${productor.first.productorId.toString()}&${productor.first.nombreProductor.toString()}';
+          _fincaId.text = result.first.fincaId.toString();
+          _productoId.text = productor.first.productorId.toString();
         }
 
         fincas = result.map((finca) {
           return DropdownMenuItem(
-            value: finca.fincaId.toString(),
+            value:
+                '${finca.fincaId.toString()}&${finca.nombreFinca.toString()}',
             child: Text(finca.nombreFinca.toString()),
           );
         }).toList();
       });
+
+      productores = result.map((finca) {
+        return DropdownMenuItem(
+          value: '${finca.fincaId.toString()}&${finca.nombreFinca.toString()}',
+          child: Text(finca.nombreFinca.toString()),
+        );
+      }).toList();
+
       isLoading = false;
     } catch (error) {
       // Manejar el error, por ejemplo, mostrar un SnackBar
@@ -179,6 +200,17 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
                             decoration:
                                 const InputDecoration(labelText: 'Visita Id'),
                           ),
+                        // DropdownButtonFormField(
+                        //     decoration: InputDecoration(
+                        //       labelText: 'Productor',
+                        //     ),
+                        //     value: productorId,
+                        //     items: productores,
+                        //     onChanged: (value) => setState(() {
+                        //           final List data = value.toString().split('&');
+                        //           productorId = data[0];
+                        //           _nombreproducto.text = data[1];
+                        //         })),
                         DropdownButtonFormField(
                             decoration: InputDecoration(
                               labelText: 'Finca',
@@ -186,7 +218,9 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
                             value: fincaId,
                             items: fincas,
                             onChanged: (value) => setState(() {
-                                  fincaId = value.toString();
+                                  List data = value.toString().split('&');
+                                  fincaId = data[0];
+                                  _nombrefinca.text = data[1];
                                 })),
                         const SizedBox(height: 16.0),
                         const SizedBox(height: 16.0),
@@ -284,12 +318,6 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
                           controller: _otros_cultivos,
                           decoration: const InputDecoration(
                               labelText: 'Otros cultivos'),
-                        ),
-                        TextFormField(
-                          validator: (value) => Validator.isValidEmpty(value),
-                          controller: _nombrefinca,
-                          decoration:
-                              const InputDecoration(labelText: 'Nombre Finca'),
                         ),
                       ])),
                   const SizedBox(height: 16.0),

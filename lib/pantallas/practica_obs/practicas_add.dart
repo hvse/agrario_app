@@ -115,9 +115,7 @@ class _PracticaAddState extends State<PracticaAdd> {
 
   Future<void> cargarDatos() async {
     try {
-      var result = await FincaRest();
-      var visiResult = await visitasRest();
-      debugPrint('result $result');
+      var visiResult = await visitaGetLocal();
       setState(() {
         if (widget.mano == null) {
           idVista = visiResult.firstOrNull?.visitaId.toString() ?? '';

@@ -82,7 +82,7 @@ class _ManoObraAddState extends State<ManoObraAdd> {
 
   Future<void> cargarDatos() async {
     try {
-      var result = await FincaRest();
+      var result = await fincaGetlocal();
       debugPrint('result $result');
       setState(() {
         if (widget.mano != null) {

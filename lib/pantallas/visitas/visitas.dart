@@ -75,11 +75,11 @@ class _VisitasState extends State<Visitas> {
                               title: Text("VisitaId: " +
                                   data[index].visitaId.toString() +
                                   "\n" +
-                                  "FincaId: " +
-                                  data[index].fincaId.toString() +
+                                  "Finca: " +
+                                  data[index].nombreFinca.toString() +
                                   "\n" +
-                                  "ProductorId: " +
-                                  data[index].productorId.toString() +
+                                  "Productor: " +
+                                  data[index].nombreProductor.toString() +
                                   "\n" +
                                   "Observaciones: " +
                                   data[index].observaciones +

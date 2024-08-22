@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:agrario_app/collections/productor_collection.dart';
 import 'package:agrario_app/modelos/productor_model.dart';
 import 'package:agrario_app/servicios_rest/finca_rest.dart';
+import 'package:agrario_app/servicios_rest/infra_rest.dart';
 import 'package:agrario_app/servicios_rest/isar_service.dart';
 import 'package:agrario_app/servicios_rest/mano_obra_rest.dart';
 import 'package:agrario_app/servicios_rest/practicas_rest.dart';
@@ -64,6 +65,7 @@ FutureOr<String> loginRest(String usuario, String pass) async {
         await getRendimientoOtroSession();
         await getSosOrganicaSession();
         await getVisitasSession();
+        await getInfraSession();
         return 'ok';
       } else {
         return 'error';

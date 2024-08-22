@@ -92,7 +92,7 @@ class _SostenibilidadOrganicaaddState extends State<SostenibilidadOrganicaadd> {
 
   Future<void> cargarDatos() async {
     try {
-      var visiResult = await visitasRest();
+      var visiResult = await visitaGetLocal();
       setState(() {
         if (widget.mano == null) {
           idVista = visiResult.firstOrNull?.visitaId.toString() ?? '';

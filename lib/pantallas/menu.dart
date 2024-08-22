@@ -1,4 +1,5 @@
 import 'package:agrario_app/pantallas/finca/finca.dart';
+import 'package:agrario_app/pantallas/infra/infra.dart';
 import 'package:agrario_app/pantallas/login.dart';
 import 'package:agrario_app/pantallas/mano_obra/mano_obra.dart';
 import 'package:agrario_app/pantallas/practica_obs/practicas_obs.dart';
@@ -99,6 +100,18 @@ class Menu extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: ((context) => SostenibilidadOrganica()),
+                  ));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.trending_flat),
+            title: const Text('Infraestructura'),
+            onTap: () {
+              print("menu 2");
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) => Infra()),
                   ));
             },
           ),
