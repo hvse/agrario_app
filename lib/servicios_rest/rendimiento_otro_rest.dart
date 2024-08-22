@@ -10,6 +10,22 @@ import 'package:http/http.dart' as http;
 import 'package:isar/isar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+Future<void> getRendimientoOtroSession() async {
+  try {
+    List<RendimientoOtroModel> rendimiento = await rendimientoOtroGet();
+    await rendimientoOtroAddlocal(rendimiento);
+  } catch (e) {
+    print(e);
+  }
+}
+
+Future<void> rendimientoOtroClean() async {
+  final Isar isar = IsarService().isar;
+  await isar.writeTxn(() async {
+    await isar.rendimientoOtroCollections.clear();
+  });
+}
+
 Future<List<RendimientoOtroModel>> rendimientoOtroGet() async {
   final String apiUrl = '${BASE}index.php?action=id_rendimiento_otros';
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -31,13 +47,13 @@ Future<List<RendimientoOtroModel>> rendimientoOtroGet() async {
 }
 
 FutureOr<String> rendimientoOtroAddlocal(
-    RendimientoOtroModel rendimiento) async {
+    List<RendimientoOtroModel> rendimiento) async {
   final Isar isar = IsarService().isar;
   try {
-    final RendimientoOtroCollection rendimientoAzucarCollection =
+    final List<RendimientoOtroCollection> rendimientoAzucarCollection =
         rendimientoOtroCollectionFromListJson(rendimiento);
     await isar.writeTxn(() async {
-      await isar.rendimientoOtroCollections.put(rendimientoAzucarCollection);
+      await isar.rendimientoOtroCollections.putAll(rendimientoAzucarCollection);
     });
     return 'OK';
   } catch (e) {

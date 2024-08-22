@@ -22,7 +22,7 @@ class _RendimienntoAzucarState extends State<RendimienntoAzucar> {
 
   Future<void> cargarDatos() async {
     try {
-      var result = await rendimientoAzucarGet();
+      var result = await rendimientoAzucarGetLocal();
       setState(() {
         data.addAll(result);
         isLoading = false;

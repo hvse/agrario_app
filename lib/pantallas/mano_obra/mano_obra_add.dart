@@ -227,10 +227,11 @@ class _ManoObraAddState extends State<ManoObraAdd> {
                         cantidad: cantidad.text,
                         latitud: latitud,
                         longitud: longitud,
+                        synch: false,
                       );
 
                       if (widget.mano == null) {
-                        var respuesta = await manoAddlocal(manoObraModel);
+                        var respuesta = await manoAddlocal([manoObraModel]);
 
                         if (respuesta.toString().contains("OK")) {
                           EasyLoading.dismiss();

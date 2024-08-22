@@ -1,4 +1,4 @@
-import 'package:agrario_app/pantallas/login.dart';
+import 'package:agrario_app/pantallas/inicio/inicio_page.dart';
 import 'package:agrario_app/servicios_rest/isar_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       locale: const Locale('es', ''),
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light(useMaterial3: true),
-      home: LoginPage(),
+      home: InicioPage(),
       builder: EasyLoading.init(),
     ); /*MaterialApp(
       title: 'Flutter Demo',

@@ -23,6 +23,7 @@ List<VisitaModel> visitasFromListCollection(List<VisitaCollection> visitas) {
   final List<VisitaModel> packageList = [];
   for (final entry in visitas) {
     final VisitaModel status = VisitaModel(
+        synch: entry.synch,
         id: entry.id,
         visitaId: entry.visitaId,
         fincaId: entry.fincaId,
@@ -49,28 +50,36 @@ List<VisitaModel> visitasFromListCollection(List<VisitaCollection> visitas) {
   return packageList;
 }
 
-VisitaCollection visitasCollectionFromListJson(VisitaModel visita) {
-  return VisitaCollection()
-    ..anho = visita.anho
-    ..aptoMaquina = visita.aptoMaquina
-    ..canhaConversion = visita.canhaConversion
-    ..canhaOrganica = visita.canhaOrganica
-    ..cosechaMecanica = visita.cosechaMecanica
-    ..cultivoVecino = visita.cultivoVecino
-    ..formaCosecha = visita.formaCosecha
-    ..fincaId = visita.fincaId
-    ..fotos = visita.fotos
-    ..fechaVisita = visita.fechaVisita
-    ..latitud = visita.latitud
-    ..longitud = visita.longitud
-    ..maquinariasUtilizadas = visita.maquinariasUtilizadas
-    ..observaciones = visita.observaciones
-    ..otrosCultivos = visita.otrosCultivos
-    ..productorId = visita.productorId
-    ..tierraDescanso = visita.tierraDescanso
-    ..visitaId = visita.visitaId
-    ..nombreFinca = visita.nombreFinca
-    ..nombreProductor = visita.nombreProductor;
+List<VisitaCollection> visitasCollectionFromListJson(List<VisitaModel> visita) {
+  final List<VisitaCollection> packageList = [];
+
+  for (final entry in visita) {
+    final VisitaCollection status = VisitaCollection()
+      ..anho = entry.anho
+      ..aptoMaquina = entry.aptoMaquina
+      ..canhaConversion = entry.canhaConversion
+      ..canhaOrganica = entry.canhaOrganica
+      ..cosechaMecanica = entry.cosechaMecanica
+      ..cultivoVecino = entry.cultivoVecino
+      ..formaCosecha = entry.formaCosecha
+      ..fincaId = entry.fincaId
+      ..fotos = entry.fotos
+      ..fechaVisita = entry.fechaVisita
+      ..latitud = entry.latitud
+      ..longitud = entry.longitud
+      ..maquinariasUtilizadas = entry.maquinariasUtilizadas
+      ..observaciones = entry.observaciones
+      ..otrosCultivos = entry.otrosCultivos
+      ..productorId = entry.productorId
+      ..tierraDescanso = entry.tierraDescanso
+      ..visitaId = entry.visitaId
+      ..nombreFinca = entry.nombreFinca
+      ..synch = entry.synch
+      ..nombreProductor = entry.nombreProductor;
+
+    packageList.add(status);
+  }
+  return packageList;
 }
 
 class VisitaModel {
@@ -95,6 +104,7 @@ class VisitaModel {
   final dynamic latitud;
   final dynamic nombreFinca;
   final dynamic nombreProductor;
+  final bool synch;
 
   VisitaModel({
     required this.id,
@@ -118,30 +128,55 @@ class VisitaModel {
     required this.latitud,
     required this.nombreFinca,
     required this.nombreProductor,
+    required this.synch,
   });
 
   factory VisitaModel.fromJson(Map<String, dynamic> json) => VisitaModel(
         id: null,
-        visitaId: json["VisitaID"],
-        fincaId: json["FincaID"],
-        productorId: json["ProductorID"],
-        fechaVisita: DateTime.parse(json["FechaVisita"]),
-        observaciones: json["Observaciones"] ?? "",
-        cultivoVecino: json["cultivo_vecino"] ?? "",
-        cosechaMecanica: json["cosecha_mecanica"] ?? "",
-        canhaOrganica: json["canha_organica"] ?? "",
-        canhaConversion: json["canha_conversion"] ?? "",
-        tierraDescanso: json["tierra_descanso"] ?? "",
-        maquinariasUtilizadas: json["maquinarias_utilizadas"] ?? "",
-        anho: json["anho"] ?? "",
-        formaCosecha: json["forma_cosecha"] ?? "",
-        aptoMaquina: json["apto_maquina"] ?? "",
-        otrosCultivos: json["otros_cultivos"] ?? "",
-        fotos: json["fotos"] ?? "",
-        longitud: json["longitud"] ?? "",
-        latitud: json["latitud"] ?? "",
-        nombreFinca: json["NombreFinca"] ?? "",
-        nombreProductor: json["NombreProductor"] ?? "",
+        visitaId: json["VisitaID"] == null ? "" : json["VisitaID"].toString(),
+        fincaId: json["FincaID"] == null ? "" : json["FincaID"].toString(),
+        productorId:
+            json["ProductorID"] == null ? "" : json["ProductorID"].toString(),
+        fechaVisita: DateTime.parse(json["FechaVisita"] ?? ""),
+        observaciones: json["Observaciones"] == null
+            ? ""
+            : json["Observaciones"].toString(),
+        cultivoVecino: json["cultivo_vecino"] == null
+            ? ""
+            : json["cultivo_vecino"].toString(),
+        cosechaMecanica: json["cosecha_mecanica"] == null
+            ? ""
+            : json["cosecha_mecanica"].toString(),
+        canhaOrganica: json["canha_organica"] == null
+            ? ""
+            : json["canha_organica"].toString(),
+        canhaConversion: json["canha_conversion"] == null
+            ? ""
+            : json["canha_conversion"].toString(),
+        tierraDescanso: json["tierra_descanso"] == null
+            ? ""
+            : json["tierra_descanso"].toString(),
+        maquinariasUtilizadas: json["maquinarias_utilizadas"] == null
+            ? ""
+            : json["maquinarias_utilizadas"].toString(),
+        anho: json["anho"] == null ? "" : json["anho"].toString(),
+        formaCosecha: json["forma_cosecha"] == null
+            ? ""
+            : json["forma_cosecha"].toString(),
+        aptoMaquina:
+            json["apto_maquina"] == null ? "" : json["apto_maquina"].toString(),
+        otrosCultivos: json["otros_cultivos"] == null
+            ? ""
+            : json["otros_cultivos"].toString(),
+        fotos: json["fotos"] == null ? "" : json["fotos"].toString(),
+        longitud: json["longitud"] == null ? "" : json["longitud"].toString(),
+        latitud: json["latitud"] == null ? "" : json["latitud"].toString(),
+        nombreFinca:
+            json["NombreFinca"] == null ? "" : json["NombreFinca"].toString(),
+        nombreProductor: json["NombreProductor"] == null
+            ? ""
+            : json["NombreProductor"].toString(),
+        synch: true,
       );
 
   Map<String, dynamic> toJson() => {
@@ -189,5 +224,6 @@ class VisitaModel {
         latitud: '',
         nombreFinca: '',
         nombreProductor: '',
+        synch: true,
       );
 }

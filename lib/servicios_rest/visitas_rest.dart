@@ -9,6 +9,23 @@ import 'package:isar/isar.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
+Future<void> getVisitasSession() async {
+  try {
+    List<VisitaModel> visitas = await visitasRest();
+    await visitaAddlocal(visitas);
+  } catch (e) {
+    print(e);
+  }
+}
+
+Future<void> visitasClean() async {
+  final Isar isar = IsarService().isar;
+
+  await isar.writeTxn(() async {
+    await isar.visitaCollections.clear();
+  });
+}
+
 Future<List<VisitaModel>> visitasRest() async {
   final String apiUrl = '${config.BASE}index.php?action=VisitaID';
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -35,13 +52,13 @@ Future<List<VisitaModel>> visitasRest() async {
   }
 }
 
-FutureOr<String> visitaAddlocal(VisitaModel visita) async {
+FutureOr<String> visitaAddlocal(List<VisitaModel> visita) async {
   final Isar isar = IsarService().isar;
   try {
-    final VisitaCollection visitaCollection =
+    final List<VisitaCollection> visitaCollection =
         visitasCollectionFromListJson(visita);
     await isar.writeTxn(() async {
-      await isar.visitaCollections.put(visitaCollection);
+      await isar.visitaCollections.putAll(visitaCollection);
     });
     return 'OK';
   } catch (e) {

@@ -326,10 +326,11 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
                         latitud: longitud,
                         nombreFinca: _nombrefinca.text,
                         nombreProductor: _nombreproducto.text,
+                        synch: false,
                       );
 
                       if (widget.visita == null) {
-                        var respuesta = await visitaAddlocal(visitaModel);
+                        var respuesta = await visitaAddlocal([visitaModel]);
 
                         if (respuesta.toString().contains("OK")) {
                           EasyLoading.dismiss();

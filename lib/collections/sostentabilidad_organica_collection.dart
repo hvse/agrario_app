@@ -18,4 +18,5 @@ class SostentabilidadOrganicaCollection {
   late String? longitud;
   late String? visitaId;
   late String? idProductor;
+  late bool? synch;
 }

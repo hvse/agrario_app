@@ -73,8 +73,13 @@ const SostentabilidadOrganicaCollectionSchema = CollectionSchema(
       name: r'rotacionCultivo',
       type: IsarType.string,
     ),
-    r'visitaId': PropertySchema(
+    r'synch': PropertySchema(
       id: 11,
+      name: r'synch',
+      type: IsarType.bool,
+    ),
+    r'visitaId': PropertySchema(
+      id: 12,
       name: r'visitaId',
       type: IsarType.string,
     )
@@ -191,7 +196,8 @@ void _sostentabilidadOrganicaCollectionSerialize(
   writer.writeString(offsets[8], object.latitud);
   writer.writeString(offsets[9], object.longitud);
   writer.writeString(offsets[10], object.rotacionCultivo);
-  writer.writeString(offsets[11], object.visitaId);
+  writer.writeBool(offsets[11], object.synch);
+  writer.writeString(offsets[12], object.visitaId);
 }
 
 SostentabilidadOrganicaCollection _sostentabilidadOrganicaCollectionDeserialize(
@@ -213,7 +219,8 @@ SostentabilidadOrganicaCollection _sostentabilidadOrganicaCollectionDeserialize(
   object.latitud = reader.readStringOrNull(offsets[8]);
   object.longitud = reader.readStringOrNull(offsets[9]);
   object.rotacionCultivo = reader.readStringOrNull(offsets[10]);
-  object.visitaId = reader.readStringOrNull(offsets[11]);
+  object.synch = reader.readBoolOrNull(offsets[11]);
+  object.visitaId = reader.readStringOrNull(offsets[12]);
   return object;
 }
 
@@ -247,6 +254,8 @@ P _sostentabilidadOrganicaCollectionDeserializeProp<P>(
     case 10:
       return (reader.readStringOrNull(offset)) as P;
     case 11:
+      return (reader.readBoolOrNull(offset)) as P;
+    case 12:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -2351,6 +2360,38 @@ extension SostentabilidadOrganicaCollectionQueryFilter on QueryBuilder<
     });
   }
 
+  QueryBuilder<SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection, QAfterFilterCondition> synchIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'synch',
+      ));
+    });
+  }
+
+  QueryBuilder<
+      SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection,
+      QAfterFilterCondition> synchIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'synch',
+      ));
+    });
+  }
+
+  QueryBuilder<
+      SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection,
+      QAfterFilterCondition> synchEqualTo(bool? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'synch',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<
       SostentabilidadOrganicaCollection,
       SostentabilidadOrganicaCollection,
@@ -2711,6 +2752,20 @@ extension SostentabilidadOrganicaCollectionQuerySortBy on QueryBuilder<
   }
 
   QueryBuilder<SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection, QAfterSortBy> sortBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection, QAfterSortBy> sortBySynchDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.desc);
+    });
+  }
+
+  QueryBuilder<SostentabilidadOrganicaCollection,
       SostentabilidadOrganicaCollection, QAfterSortBy> sortByVisitaId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'visitaId', Sort.asc);
@@ -2916,6 +2971,20 @@ extension SostentabilidadOrganicaCollectionQuerySortThenBy on QueryBuilder<
   }
 
   QueryBuilder<SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection, QAfterSortBy> thenBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection, QAfterSortBy> thenBySynchDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.desc);
+    });
+  }
+
+  QueryBuilder<SostentabilidadOrganicaCollection,
       SostentabilidadOrganicaCollection, QAfterSortBy> thenByVisitaId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'visitaId', Sort.asc);
@@ -3036,6 +3105,13 @@ extension SostentabilidadOrganicaCollectionQueryWhereDistinct on QueryBuilder<
     });
   }
 
+  QueryBuilder<SostentabilidadOrganicaCollection,
+      SostentabilidadOrganicaCollection, QDistinct> distinctBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'synch');
+    });
+  }
+
   QueryBuilder<
       SostentabilidadOrganicaCollection,
       SostentabilidadOrganicaCollection,
@@ -3131,6 +3207,13 @@ extension SostentabilidadOrganicaCollectionQueryProperty on QueryBuilder<
       rotacionCultivoProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'rotacionCultivo');
+    });
+  }
+
+  QueryBuilder<SostentabilidadOrganicaCollection, bool?, QQueryOperations>
+      synchProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'synch');
     });
   }
 

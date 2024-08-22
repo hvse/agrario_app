@@ -11,6 +11,15 @@ import 'package:http/http.dart' as http;
 
 import '../configuracion/configuracion.dart';
 
+Future<void> getManoObraSession() async {
+  try {
+    List<ManoObraModel> manos = await manoObraGet();
+    await manoAddlocal(manos);
+  } catch (e) {
+    print(e);
+  }
+}
+
 Future<List<ManoObraModel>> manoObraGet() async {
   // URL de la API
   final String apiUrl = '${BASE}index.php?action=TrabajoID';
@@ -32,13 +41,13 @@ Future<List<ManoObraModel>> manoObraGet() async {
   }
 }
 
-FutureOr<String> manoAddlocal(ManoObraModel mano) async {
+FutureOr<String> manoAddlocal(List<ManoObraModel> mano) async {
   final Isar isar = IsarService().isar;
   try {
-    final ManoObraCollection manoObraCollection =
+    final List<ManoObraCollection> manoObraCollection =
         manoCollectionFromListJson(mano);
     await isar.writeTxn(() async {
-      await isar.manoObraCollections.put(manoObraCollection);
+      await isar.manoObraCollections.putAll(manoObraCollection);
     });
     return 'OK';
   } catch (e) {
@@ -131,5 +140,17 @@ FutureOr<String> manosEdit(ManoObraModel mano) async {
   } else {
     // Maneja errores de la respuesta
     return visitas['error'];
+  }
+}
+
+Future<void> manosClean() async {
+  final Isar isar = IsarService().isar;
+  try {
+    await isar.writeTxn(() async {
+      await isar.manoObraCollections.clear();
+    });
+  } catch (e) {
+    debugPrint('Error: $e');
+ 
   }
 }

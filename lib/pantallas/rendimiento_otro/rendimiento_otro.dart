@@ -22,7 +22,7 @@ class _RendimientoOtroState extends State<RendimientoOtro> {
 
   Future<void> cargarDatos() async {
     try {
-      var result = await rendimientoOtroGet();
+      var result = await rendimientoOtroGetLocal();
       setState(() {
         data.addAll(result);
         isLoading = false;

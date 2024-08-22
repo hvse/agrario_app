@@ -58,13 +58,18 @@ const ManoObraCollectionSchema = CollectionSchema(
       name: r'longitud',
       type: IsarType.string,
     ),
-    r'tipoRecurso': PropertySchema(
+    r'synch': PropertySchema(
       id: 8,
+      name: r'synch',
+      type: IsarType.bool,
+    ),
+    r'tipoRecurso': PropertySchema(
+      id: 9,
       name: r'tipoRecurso',
       type: IsarType.string,
     ),
     r'trabajoId': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'trabajoId',
       type: IsarType.long,
     )
@@ -148,8 +153,9 @@ void _manoObraCollectionSerialize(
   writer.writeLong(offsets[5], object.horasTrabajadas);
   writer.writeString(offsets[6], object.latitud);
   writer.writeString(offsets[7], object.longitud);
-  writer.writeString(offsets[8], object.tipoRecurso);
-  writer.writeLong(offsets[9], object.trabajoId);
+  writer.writeBool(offsets[8], object.synch);
+  writer.writeString(offsets[9], object.tipoRecurso);
+  writer.writeLong(offsets[10], object.trabajoId);
 }
 
 ManoObraCollection _manoObraCollectionDeserialize(
@@ -168,8 +174,9 @@ ManoObraCollection _manoObraCollectionDeserialize(
   object.id = id;
   object.latitud = reader.readStringOrNull(offsets[6]);
   object.longitud = reader.readStringOrNull(offsets[7]);
-  object.tipoRecurso = reader.readStringOrNull(offsets[8]);
-  object.trabajoId = reader.readLongOrNull(offsets[9]);
+  object.synch = reader.readBoolOrNull(offsets[8]);
+  object.tipoRecurso = reader.readStringOrNull(offsets[9]);
+  object.trabajoId = reader.readLongOrNull(offsets[10]);
   return object;
 }
 
@@ -197,8 +204,10 @@ P _manoObraCollectionDeserializeProp<P>(
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     case 8:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 9:
+      return (reader.readStringOrNull(offset)) as P;
+    case 10:
       return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1430,6 +1439,34 @@ extension ManoObraCollectionQueryFilter
   }
 
   QueryBuilder<ManoObraCollection, ManoObraCollection, QAfterFilterCondition>
+      synchIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'synch',
+      ));
+    });
+  }
+
+  QueryBuilder<ManoObraCollection, ManoObraCollection, QAfterFilterCondition>
+      synchIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'synch',
+      ));
+    });
+  }
+
+  QueryBuilder<ManoObraCollection, ManoObraCollection, QAfterFilterCondition>
+      synchEqualTo(bool? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'synch',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ManoObraCollection, ManoObraCollection, QAfterFilterCondition>
       tipoRecursoIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1779,6 +1816,20 @@ extension ManoObraCollectionQuerySortBy
   }
 
   QueryBuilder<ManoObraCollection, ManoObraCollection, QAfterSortBy>
+      sortBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ManoObraCollection, ManoObraCollection, QAfterSortBy>
+      sortBySynchDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ManoObraCollection, ManoObraCollection, QAfterSortBy>
       sortByTipoRecurso() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'tipoRecurso', Sort.asc);
@@ -1936,6 +1987,20 @@ extension ManoObraCollectionQuerySortThenBy
   }
 
   QueryBuilder<ManoObraCollection, ManoObraCollection, QAfterSortBy>
+      thenBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ManoObraCollection, ManoObraCollection, QAfterSortBy>
+      thenBySynchDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ManoObraCollection, ManoObraCollection, QAfterSortBy>
       thenByTipoRecurso() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'tipoRecurso', Sort.asc);
@@ -2024,6 +2089,13 @@ extension ManoObraCollectionQueryWhereDistinct
   }
 
   QueryBuilder<ManoObraCollection, ManoObraCollection, QDistinct>
+      distinctBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'synch');
+    });
+  }
+
+  QueryBuilder<ManoObraCollection, ManoObraCollection, QDistinct>
       distinctByTipoRecurso({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'tipoRecurso', caseSensitive: caseSensitive);
@@ -2098,6 +2170,12 @@ extension ManoObraCollectionQueryProperty
       longitudProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'longitud');
+    });
+  }
+
+  QueryBuilder<ManoObraCollection, bool?, QQueryOperations> synchProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'synch');
     });
   }
 

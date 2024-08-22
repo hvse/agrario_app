@@ -250,6 +250,7 @@ class _RendimientoOtroAddState extends State<RendimientoOtroAdd> {
                       EasyLoading.show(status: 'Cargando...');
                       RendimientoOtroModel rendiminetoOtroModel =
                           RendimientoOtroModel(
+                        synch: false,
                         visitaId: idVista,
                         variedades: variedades.text,
                         anho: anho.text,
@@ -268,8 +269,8 @@ class _RendimientoOtroAddState extends State<RendimientoOtroAdd> {
                       );
 
                       if (widget.mano == null) {
-                        var respuesta =
-                            await rendimientoOtroAddlocal(rendiminetoOtroModel);
+                        var respuesta = await rendimientoOtroAddlocal(
+                            [rendiminetoOtroModel]);
 
                         if (respuesta.toString().contains("OK")) {
                           EasyLoading.dismiss();

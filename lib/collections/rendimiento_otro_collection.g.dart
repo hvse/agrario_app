@@ -68,28 +68,33 @@ const RendimientoOtroCollectionSchema = CollectionSchema(
       name: r'orgHas',
       type: IsarType.string,
     ),
-    r'tonKiConvenc': PropertySchema(
+    r'synch': PropertySchema(
       id: 10,
+      name: r'synch',
+      type: IsarType.bool,
+    ),
+    r'tonKiConvenc': PropertySchema(
+      id: 11,
       name: r'tonKiConvenc',
       type: IsarType.string,
     ),
     r'tonKiConver': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'tonKiConver',
       type: IsarType.string,
     ),
     r'tonKiOrg': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'tonKiOrg',
       type: IsarType.string,
     ),
     r'variedades': PropertySchema(
-      id: 13,
+      id: 14,
       name: r'variedades',
       type: IsarType.string,
     ),
     r'visitaId': PropertySchema(
-      id: 14,
+      id: 15,
       name: r'visitaId',
       type: IsarType.string,
     )
@@ -223,11 +228,12 @@ void _rendimientoOtroCollectionSerialize(
   writer.writeString(offsets[7], object.longitud);
   writer.writeString(offsets[8], object.nroParcelas);
   writer.writeString(offsets[9], object.orgHas);
-  writer.writeString(offsets[10], object.tonKiConvenc);
-  writer.writeString(offsets[11], object.tonKiConver);
-  writer.writeString(offsets[12], object.tonKiOrg);
-  writer.writeString(offsets[13], object.variedades);
-  writer.writeString(offsets[14], object.visitaId);
+  writer.writeBool(offsets[10], object.synch);
+  writer.writeString(offsets[11], object.tonKiConvenc);
+  writer.writeString(offsets[12], object.tonKiConver);
+  writer.writeString(offsets[13], object.tonKiOrg);
+  writer.writeString(offsets[14], object.variedades);
+  writer.writeString(offsets[15], object.visitaId);
 }
 
 RendimientoOtroCollection _rendimientoOtroCollectionDeserialize(
@@ -248,11 +254,12 @@ RendimientoOtroCollection _rendimientoOtroCollectionDeserialize(
   object.longitud = reader.readStringOrNull(offsets[7]);
   object.nroParcelas = reader.readStringOrNull(offsets[8]);
   object.orgHas = reader.readStringOrNull(offsets[9]);
-  object.tonKiConvenc = reader.readStringOrNull(offsets[10]);
-  object.tonKiConver = reader.readStringOrNull(offsets[11]);
-  object.tonKiOrg = reader.readStringOrNull(offsets[12]);
-  object.variedades = reader.readStringOrNull(offsets[13]);
-  object.visitaId = reader.readStringOrNull(offsets[14]);
+  object.synch = reader.readBoolOrNull(offsets[10]);
+  object.tonKiConvenc = reader.readStringOrNull(offsets[11]);
+  object.tonKiConver = reader.readStringOrNull(offsets[12]);
+  object.tonKiOrg = reader.readStringOrNull(offsets[13]);
+  object.variedades = reader.readStringOrNull(offsets[14]);
+  object.visitaId = reader.readStringOrNull(offsets[15]);
   return object;
 }
 
@@ -284,7 +291,7 @@ P _rendimientoOtroCollectionDeserializeProp<P>(
     case 9:
       return (reader.readStringOrNull(offset)) as P;
     case 10:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 11:
       return (reader.readStringOrNull(offset)) as P;
     case 12:
@@ -292,6 +299,8 @@ P _rendimientoOtroCollectionDeserializeProp<P>(
     case 13:
       return (reader.readStringOrNull(offset)) as P;
     case 14:
+      return (reader.readStringOrNull(offset)) as P;
+    case 15:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -2012,6 +2021,34 @@ extension RendimientoOtroCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> synchIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'synch',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> synchIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'synch',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterFilterCondition> synchEqualTo(bool? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'synch',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
       QAfterFilterCondition> tonKiConvencIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -2941,6 +2978,20 @@ extension RendimientoOtroCollectionQuerySortBy on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> sortBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> sortBySynchDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
       QAfterSortBy> sortByTonKiConvenc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'tonKiConvenc', Sort.asc);
@@ -3168,6 +3219,20 @@ extension RendimientoOtroCollectionQuerySortThenBy on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> thenBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
+      QAfterSortBy> thenBySynchDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection,
       QAfterSortBy> thenByTonKiConvenc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'tonKiConvenc', Sort.asc);
@@ -3312,6 +3377,13 @@ extension RendimientoOtroCollectionQueryWhereDistinct on QueryBuilder<
   }
 
   QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection, QDistinct>
+      distinctBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'synch');
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, RendimientoOtroCollection, QDistinct>
       distinctByTonKiConvenc({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'tonKiConvenc', caseSensitive: caseSensitive);
@@ -3422,6 +3494,13 @@ extension RendimientoOtroCollectionQueryProperty on QueryBuilder<
       orgHasProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'orgHas');
+    });
+  }
+
+  QueryBuilder<RendimientoOtroCollection, bool?, QQueryOperations>
+      synchProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'synch');
     });
   }
 

@@ -14,21 +14,30 @@ List<SostentabilidadOrganicaModel> sosOrganicaFromJson(String str) {
   return packageList;
 }
 
-SostentabilidadOrganicaCollection sosOrganicaCollectionFromListJson(
-    SostentabilidadOrganicaModel praxticas) {
-  return SostentabilidadOrganicaCollection()
-    ..idSostentabilidadOrganica = praxticas.idSostentabilidadOrganica
-    ..abonoOrganico = praxticas.abonoOrganico
-    ..abonosVerdes = praxticas.abonosVerdes
-    ..calAgrico = praxticas.calAgrico
-    ..cobertura = praxticas.cobertura
-    ..diversificacionCultivo = praxticas.diversificacionCultivo
-    ..idProductor = praxticas.idProductor
-    ..latitud = praxticas.latitud
-    ..longitud = praxticas.longitud
-    ..rotacionCultivo = praxticas.rotacionCultivo
-    ..visitaId = praxticas.visitaId
-    ..asistenciaCapacitaciones = praxticas.asistenciaCapacitaciones;
+List<SostentabilidadOrganicaCollection> sosOrganicaCollectionFromListJson(
+    List<SostentabilidadOrganicaModel> praxticas) {
+  final List<SostentabilidadOrganicaCollection> packageList = [];
+  for (final entry in praxticas) {
+    final SostentabilidadOrganicaCollection status =
+        SostentabilidadOrganicaCollection()
+          ..idSostentabilidadOrganica = entry.idSostentabilidadOrganica
+          ..abonoOrganico = entry.abonoOrganico
+          ..abonosVerdes = entry.abonosVerdes
+          ..calAgrico = entry.calAgrico
+          ..cobertura = entry.cobertura
+          ..diversificacionCultivo = entry.diversificacionCultivo
+          ..idProductor = entry.idProductor
+          ..latitud = entry.latitud
+          ..longitud = entry.longitud
+          ..rotacionCultivo = entry.rotacionCultivo
+          ..visitaId = entry.visitaId
+          ..synch = entry.synch
+          ..asistenciaCapacitaciones = entry.asistenciaCapacitaciones;
+
+    packageList.add(status);
+  }
+
+  return packageList;
 }
 
 List<SostentabilidadOrganicaModel> sosOrganicaFromListCollection(
@@ -49,6 +58,7 @@ List<SostentabilidadOrganicaModel> sosOrganicaFromListCollection(
       latitud: entry.latitud!,
       longitud: entry.longitud!,
       visitaId: entry.visitaId!,
+      synch: entry.synch!,
     );
     packageList.add(status);
   }
@@ -69,6 +79,7 @@ class SostentabilidadOrganicaModel {
   final String longitud;
   final String visitaId;
   final String idProductor;
+  final bool synch;
 
   SostentabilidadOrganicaModel({
     required this.idSostentabilidadOrganica,
@@ -83,6 +94,7 @@ class SostentabilidadOrganicaModel {
     required this.longitud,
     required this.visitaId,
     required this.idProductor,
+    required this.synch,
     this.id,
   });
 
@@ -94,18 +106,34 @@ class SostentabilidadOrganicaModel {
   factory SostentabilidadOrganicaModel.fromJson(Map<String, dynamic> json) =>
       SostentabilidadOrganicaModel(
         idSostentabilidadOrganica:
-            json["id_plan_sostenibilidad_organica"].toString(),
-        cobertura: json["cobertura"],
-        diversificacionCultivo: json["diversificacion_cultivo"],
-        abonosVerdes: json["abonos_verdes"],
-        rotacionCultivo: json["rotacion_cultivo"],
-        calAgrico: json["cal_agrico"],
-        abonoOrganico: json["abono_organico"],
-        asistenciaCapacitaciones: json["asistencia_capacitaciones"],
-        latitud: json["latitud"],
-        longitud: json["longitud"],
-        visitaId: json["VisitaID"].toString(),
-        idProductor: json["id_productor"].toString(),
+            json["id_plan_sostenibilidad_organica"] == null
+                ? ""
+                : json["id_plan_sostenibilidad_organica"].toString(),
+        cobertura:
+            json["cobertura"] == null ? "" : json["cobertura"].toString(),
+        diversificacionCultivo: json["diversificacion_cultivo"] == null
+            ? ""
+            : json["diversificacion_cultivo"].toString(),
+        abonosVerdes: json["abonos_verdes"] == null
+            ? ""
+            : json["abonos_verdes"].toString(),
+        rotacionCultivo: json["rotacion_cultivo"] == null
+            ? ""
+            : json["rotacion_cultivo"].toString(),
+        calAgrico:
+            json["cal_agrico"] == null ? "" : json["cal_agrico"].toString(),
+        abonoOrganico: json["abono_organico"] == null
+            ? ""
+            : json["abono_organico"].toString(),
+        asistenciaCapacitaciones: json["asistencia_capacitaciones"] == null
+            ? ""
+            : json["asistencia_capacitaciones"].toString(),
+        latitud: json["latitud"] == null ? "" : json["latitud"].toString(),
+        longitud: json["longitud"] == null ? "" : json["longitud"].toString(),
+        visitaId: json["VisitaID"] == null ? "" : json["VisitaID"].toString(),
+        idProductor:
+            json["id_productor"] == null ? "" : json["id_productor"].toString(),
+        synch: true,
       );
 
   Map<String, dynamic> toJson() => {

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:agrario_app/collections/practica_collection.dart';
+import 'package:flutter/material.dart';
 
 List<PracticaModel> practicaFromJson(String str) {
   final Map<String, dynamic> data = json.decode(str);
@@ -13,25 +14,34 @@ List<PracticaModel> practicaFromJson(String str) {
   return packageList;
 }
 
-PracticaCollection practicallectionFromListJson(PracticaModel praxticas) {
-  return PracticaCollection()
-    ..almacenamientoProducto = praxticas.almacenamientoProducto
-    ..controlPlagas = praxticas.controlPlagas
-    ..conservaBosquesHumedad = praxticas.conservaBosquesHumedad
-    ..crianzaAnimal = praxticas.crianzaAnimal
-    ..fetilidadSuelo = praxticas.fetilidadSuelo
-    ..idPracticasObservadas = praxticas.idPracticasObservadas
-    ..idProductor = praxticas.idProductor
-    ..latitud = praxticas.latitud
-    ..longitud = praxticas.longitud
-    ..practicasObservadas = praxticas.practicasObservadas
-    ..protegeCauseHidricos = praxticas.protegeCauseHidricos
-    ..realizaQuema = praxticas.realizaQuema
-    ..riesgoContaminacion = praxticas.riesgoContaminacion
-    ..riesgoErosion = praxticas.riesgoErosion
-    ..trabajoInfantil = praxticas.trabajoInfantil
-    ..residuosOrganicos = praxticas.residuosOrganicos
-    ..visitaId = praxticas.visitaId;
+List<PracticaCollection> practicallectionFromListJson(
+    List<PracticaModel> praxticas) {
+  final List<PracticaCollection> packageList = [];
+
+  for (final entry in praxticas) {
+    final practicaCollection = PracticaCollection()
+      ..synch = entry.synch
+      ..almacenamientoProducto = entry.almacenamientoProducto
+      ..controlPlagas = entry.controlPlagas
+      ..conservaBosquesHumedad = entry.conservaBosquesHumedad
+      ..crianzaAnimal = entry.crianzaAnimal
+      ..fetilidadSuelo = entry.fetilidadSuelo
+      ..idPracticasObservadas = entry.idPracticasObservadas
+      ..idProductor = entry.idProductor
+      ..latitud = entry.latitud
+      ..longitud = entry.longitud
+      ..practicasObservadas = entry.practicasObservadas
+      ..protegeCauseHidricos = entry.protegeCauseHidricos
+      ..realizaQuema = entry.realizaQuema
+      ..riesgoContaminacion = entry.riesgoContaminacion
+      ..riesgoErosion = entry.riesgoErosion
+      ..trabajoInfantil = entry.trabajoInfantil
+      ..residuosOrganicos = entry.residuosOrganicos
+      ..visitaId = entry.visitaId;
+    packageList.add(practicaCollection);
+  }
+
+  return packageList;
 }
 
 List<PracticaModel> practicaFromListCollection(
@@ -57,6 +67,7 @@ List<PracticaModel> practicaFromListCollection(
       longitud: entry.longitud,
       idProductor: entry.idProductor,
       visitaId: entry.visitaId,
+      synch: entry.synch,
     );
     packageList.add(status);
   }
@@ -82,6 +93,7 @@ class PracticaModel {
   final dynamic longitud;
   final dynamic idProductor;
   final dynamic visitaId;
+  final bool? synch;
 
   PracticaModel({
     required this.idPracticasObservadas,
@@ -102,6 +114,7 @@ class PracticaModel {
     required this.idProductor,
     this.id,
     this.visitaId,
+    required this.synch,
   });
 
   factory PracticaModel.fromRawJson(String str) =>
@@ -110,23 +123,51 @@ class PracticaModel {
   String toRawJson() => json.encode(toJson());
 
   factory PracticaModel.fromJson(Map<String, dynamic> json) => PracticaModel(
-        idPracticasObservadas: json["id_practicas_observadas"],
-        practicasObservadas: json["practicas_observadas"],
-        fetilidadSuelo: json["fetilidad_suelo"],
-        riesgoErosion: json["riesgo_erosion"],
-        almacenamientoProducto: json["almacenamiento_producto"],
-        controlPlagas: json["control_plagas"],
-        residuosOrganicos: json["residuos_organicos"],
-        riesgoContaminacion: json["riesgo_contaminacion"],
-        protegeCauseHidricos: json["protege_cause_hidricos"],
-        conservaBosquesHumedad: json["conserva_bosques_humedad"],
-        realizaQuema: json["realiza_quema"],
-        crianzaAnimal: json["crianza_animal"],
-        trabajoInfantil: json["trabajo_infantil"],
-        latitud: json["latitud"],
-        longitud: json["longitud"],
-        idProductor: json["id_productor"],
-        visitaId: json["VisitaID"],
+        idPracticasObservadas: json["id_practicas_observadas"] == null
+            ? ""
+            : json["id_practicas_observadas"].toString(),
+        practicasObservadas: json["practicas_observadas"] == null
+            ? ""
+            : json["practicas_observadas"].toString(),
+        fetilidadSuelo: json["fetilidad_suelo"] == null
+            ? ""
+            : json["fetilidad_suelo"].toString(),
+        riesgoErosion: json["riesgo_erosion"] == null
+            ? ""
+            : json["riesgo_erosion"].toString(),
+        almacenamientoProducto: json["almacenamiento_producto"] == null
+            ? ""
+            : json["almacenamiento_producto"].toString(),
+        controlPlagas: json["control_plagas"] == null
+            ? ""
+            : json["control_plagas"].toString(),
+        residuosOrganicos: json["residuos_organicos"] == null
+            ? ""
+            : json["residuos_organicos"].toString(),
+        riesgoContaminacion: json["riesgo_contaminacion"] == null
+            ? ""
+            : json["riesgo_contaminacion"].toString(),
+        protegeCauseHidricos: json["protege_cause_hidricos"] == null
+            ? ""
+            : json["protege_cause_hidricos"].toString(),
+        conservaBosquesHumedad: json["conserva_bosques_humedad"] == null
+            ? ""
+            : json["conserva_bosques_humedad"].toString(),
+        realizaQuema: json["realiza_quema"] == null
+            ? ""
+            : json["realiza_quema"].toString(),
+        crianzaAnimal: json["crianza_animal"] == null
+            ? ""
+            : json["crianza_animal"].toString(),
+        trabajoInfantil: json["trabajo_infantil"] == null
+            ? ""
+            : json["trabajo_infantil"].toString(),
+        latitud: json["latitud"] == null ? "" : json["latitud"].toString(),
+        longitud: json["longitud"] == null ? "" : json["longitud"].toString(),
+        idProductor:
+            json["id_productor"] == null ? "" : json["id_productor"].toString(),
+        visitaId: json["VisitaID"] == null ? "" : json["VisitaID"].toString(),
+        synch: true,
       );
 
   Map<String, dynamic> toJson() => {

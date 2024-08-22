@@ -9,6 +9,15 @@ import 'package:isar/isar.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
+Future<void> fincaGetSesion() async {
+  try {
+    final fincaRest = await FincaRest();
+    await fincaAddLocal(fincaRest);
+  } catch (error) {
+    print('Error: $error');
+  }
+}
+
 Future<List<FincaModel>> FincaRest() async {
   final String apiUrl = '${config.BASE}index.php?action=FincaID';
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -40,18 +49,29 @@ Future<List<FincaModel>> FincaRest() async {
   }
 }
 
-FutureOr<String> fincaAddLocal(FincaModel finca) async {
+FutureOr<String> fincaAddLocal(List<FincaModel> finca) async {
   final Isar isar = IsarService().isar;
-
   try {
-    final FincaCollection fincaCollection = fincaCollectionFromListJson(finca);
+    final List<FincaCollection> fincaCollection =
+        fincaCollectionFromListJson(finca);
     await isar.writeTxn(() async {
-      await isar.fincaCollections.put(fincaCollection);
+      await isar.fincaCollections.putAll(fincaCollection);
     });
     return 'OK';
   } catch (e) {
     debugPrint('Error: $e');
     return 'Error a tratar de registrar la Finca';
+  }
+}
+
+Future<void> fincaClean() async {
+  final Isar isar = IsarService().isar;
+  try {
+    await isar.writeTxn(() async {
+      await isar.fincaCollections.clear();
+    });
+  } catch (e) {
+    debugPrint('Error: $e');
   }
 }
 
@@ -85,7 +105,7 @@ FutureOr<void> syncFinca() async {
   for (var i = 0; i < finca.length; i++) {
     final response = await fincaAdd(finca[i]);
     if (response.contains('Finca creada')) {
-      await fincaDeletelocal(finca[i].Id!);
+      await fincaDeletelocal(finca[i].id!);
     }
   }
 }

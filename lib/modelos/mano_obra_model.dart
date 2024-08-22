@@ -13,24 +13,32 @@ List<ManoObraModel> manoObraFromJson(String str) {
   return packageList;
 }
 
-ManoObraCollection manoCollectionFromListJson(ManoObraModel mano) {
-  return ManoObraCollection()
-    ..actividad = mano.actividad
-    ..costoProduccion = mano.costoProduccion
-    ..fincaId = mano.fincaId
-    ..fechaUso = mano.fechaUso
-    ..horasTrabajadas = mano.horasTrabajadas
-    ..latitud = mano.latitud
-    ..longitud = mano.longitud
-    ..trabajoId = mano.trabajoId!
-    ..tipoRecurso = mano.tipoRecurso
-    ..cantidad = mano.cantidad;
+List<ManoObraCollection> manoCollectionFromListJson(List<ManoObraModel> mano) {
+  final List<ManoObraCollection> packageList = [];
+  for (final entry in mano) {
+    final ManoObraCollection status = ManoObraCollection()
+      ..actividad = entry.actividad
+      ..costoProduccion = entry.costoProduccion
+      ..fincaId = entry.fincaId
+      ..fechaUso = entry.fechaUso
+      ..horasTrabajadas = entry.horasTrabajadas
+      ..latitud = entry.latitud
+      ..longitud = entry.longitud
+      ..trabajoId = entry.trabajoId
+      ..tipoRecurso = entry.tipoRecurso
+      ..cantidad = entry.cantidad
+      ..synch = entry.synch;
+
+    packageList.add(status);
+  }
+  return packageList;
 }
 
 List<ManoObraModel> manoFromListCollection(List<ManoObraCollection> mano) {
   final List<ManoObraModel> packageList = [];
   for (final entry in mano) {
     final ManoObraModel status = ManoObraModel(
+      synch: entry.synch!,
       id: entry.id,
       trabajoId: entry.trabajoId,
       fincaId: entry.fincaId!,
@@ -60,6 +68,7 @@ class ManoObraModel {
   final dynamic fechaUso;
   final dynamic latitud;
   final dynamic longitud;
+  final bool synch;
 
   ManoObraModel({
     required this.id,
@@ -73,6 +82,7 @@ class ManoObraModel {
     required this.fechaUso,
     required this.latitud,
     required this.longitud,
+    required this.synch,
   });
 
   factory ManoObraModel.fromRawJson(String str) =>
@@ -92,6 +102,7 @@ class ManoObraModel {
         fechaUso: json["FechaUso"] ?? "",
         latitud: json["latitud"] ?? "",
         longitud: json["longitud"] ?? "",
+        synch: true,
       );
 
   Map<String, dynamic> toJson() => {

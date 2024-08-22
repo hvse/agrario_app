@@ -16,4 +16,5 @@ class ManoObraCollection {
   late String? fechaUso;
   late String? latitud;
   late String? longitud;
+  late bool? synch;
 }

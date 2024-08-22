@@ -19,14 +19,15 @@ class _FincaAddPageState extends State<FincaAddPage> {
   late TextEditingController _fincaId;
   late TextEditingController _nombreFinca;
   late TextEditingController _ubicacionFinca;
-  late TextEditingController _nombreCampo;
-  late TextEditingController _actividad;
-  late TextEditingController _fincasOrganicos;
-  late TextEditingController _educacion;
-  late TextEditingController _infraestructura;
-  late TextEditingController _salud;
-  late TextEditingController _otros;
   late TextEditingController _areaTotal;
+  late TextEditingController _fincasOrganica;
+  late TextEditingController _areaCanhaDulce;
+  late TextEditingController _areaOtrosCultivos;
+  late TextEditingController _areaPastura;
+  late TextEditingController _bosques;
+  late TextEditingController _descansos;
+  late TextEditingController _actividad;
+  late TextEditingController _otros;
 
   String resultadologin = '';
   String latitud = '';
@@ -58,30 +59,33 @@ class _FincaAddPageState extends State<FincaAddPage> {
           TextEditingController(text: widget.finca!.nombreFinca.toString());
       _ubicacionFinca =
           TextEditingController(text: widget.finca!.ubicacionFinca.toString());
-      _nombreCampo =
-          TextEditingController(text: widget.finca!.nombreCampo.toString());
       _actividad =
           TextEditingController(text: widget.finca!.actividad.toString());
-      _fincasOrganicos = TextEditingController(
-          text: widget.finca!.fincasOrganicosDatosProducto.toString());
-      _educacion =
-          TextEditingController(text: widget.finca!.educacion.toString());
-      _infraestructura =
-          TextEditingController(text: widget.finca!.infraestructura.toString());
-      _salud = TextEditingController(text: widget.finca!.salud.toString());
       _otros = TextEditingController(text: widget.finca!.otros.toString());
+      _areaCanhaDulce =
+          TextEditingController(text: widget.finca!.areaCanhaDulce.toString());
+      _fincasOrganica =
+          TextEditingController(text: widget.finca!.fincaOrganica.toString());
+      _areaOtrosCultivos = TextEditingController(
+          text: widget.finca!.areasOtroCultivos.toString());
+      _areaPastura =
+          TextEditingController(text: widget.finca!.areaPastura.toString());
+      _bosques = TextEditingController(text: widget.finca!.bosques.toString());
+      _descansos =
+          TextEditingController(text: widget.finca!.descansos.toString());
     } else {
       _fincaId = TextEditingController();
       _nombreFinca = TextEditingController();
       _ubicacionFinca = TextEditingController();
-      _nombreCampo = TextEditingController();
       _actividad = TextEditingController();
-      _fincasOrganicos = TextEditingController();
-      _educacion = TextEditingController();
-      _infraestructura = TextEditingController();
-      _salud = TextEditingController();
       _otros = TextEditingController();
       _areaTotal = TextEditingController();
+      _fincasOrganica = TextEditingController();
+      _areaCanhaDulce = TextEditingController();
+      _areaOtrosCultivos = TextEditingController();
+      _areaPastura = TextEditingController();
+      _bosques = TextEditingController();
+      _descansos = TextEditingController();
     }
 
     super.initState();
@@ -126,36 +130,37 @@ class _FincaAddPageState extends State<FincaAddPage> {
                   const SizedBox(height: 16.0),
                   TextFormField(
                     validator: (value) => Validator.isValidEmpty(value),
-                    controller: _nombreCampo,
+                    controller: _fincasOrganica,
                     decoration:
-                        const InputDecoration(labelText: 'Nombre del Campo'),
+                        const InputDecoration(labelText: 'Finca organica'),
                   ),
                   TextFormField(
                     validator: (value) => Validator.isValidEmpty(value),
-                    controller: _fincasOrganicos,
+                    controller: _areaCanhaDulce,
                     decoration:
-                        const InputDecoration(labelText: 'Finca Organica'),
+                        const InputDecoration(labelText: 'Area caña dulce'),
                   ),
                   TextFormField(
                     validator: (value) => Validator.isValidEmpty(value),
-                    controller: _educacion,
-                    decoration: const InputDecoration(labelText: 'Educacion'),
+                    controller: _areaOtrosCultivos,
+                    decoration: const InputDecoration(
+                        labelText: 'Area de otros cultivos'),
                   ),
                   TextFormField(
                     validator: (value) => Validator.isValidEmpty(value),
-                    controller: _actividad,
-                    decoration: const InputDecoration(labelText: 'Actividad'),
-                  ),
-                  TextFormField(
-                    validator: (value) => Validator.isValidEmpty(value),
-                    controller: _infraestructura,
+                    controller: _areaPastura,
                     decoration:
-                        const InputDecoration(labelText: 'Infraestructura'),
+                        const InputDecoration(labelText: 'Area Pastura'),
                   ),
                   TextFormField(
                     validator: (value) => Validator.isValidEmpty(value),
-                    controller: _salud,
-                    decoration: const InputDecoration(labelText: 'Salud'),
+                    controller: _bosques,
+                    decoration: const InputDecoration(labelText: 'Bosques'),
+                  ),
+                  TextFormField(
+                    validator: (value) => Validator.isValidEmpty(value),
+                    controller: _descansos,
+                    decoration: const InputDecoration(labelText: 'Descansos'),
                   ),
                   TextFormField(
                     validator: (value) => Validator.isValidEmpty(value),
@@ -166,6 +171,11 @@ class _FincaAddPageState extends State<FincaAddPage> {
                     validator: (value) => Validator.isValidEmpty(value),
                     controller: _areaTotal,
                     decoration: const InputDecoration(labelText: 'Area total'),
+                  ),
+                  TextFormField(
+                    validator: (value) => Validator.isValidEmpty(value),
+                    controller: _actividad,
+                    decoration: const InputDecoration(labelText: 'Actividad'),
                   ),
                 ])),
             const SizedBox(height: 16.0),
@@ -178,20 +188,22 @@ class _FincaAddPageState extends State<FincaAddPage> {
                   fincaId: _fincaId.text,
                   nombreFinca: _nombreFinca.text,
                   ubicacionFinca: _ubicacionFinca.text,
-                  nombreCampo: _nombreCampo.text,
                   actividad: _actividad.text,
-                  fincasOrganicosDatosProducto: _fincasOrganicos.text,
-                  educacion: _educacion.text,
-                  infraestructura: _infraestructura.text,
-                  salud: _salud.text,
                   otros: _otros.text,
                   latitud: this.latitud,
                   longitud: this.longitud,
-                  Id: null,
+                  id: null,
+                  areaCanhaDulce: _areaCanhaDulce.text,
+                  areasOtroCultivos: _areaOtrosCultivos.text,
+                  areaPastura: _areaPastura.text,
+                  bosques: _bosques.text,
+                  descansos: _descansos.text,
+                  fincaOrganica: _fincasOrganica.text,
+                  synch: false,
                 );
 
                 if (widget.finca == null) {
-                  var respuesta = await fincaAddLocal(fincaModel);
+                  var respuesta = await fincaAddLocal([fincaModel]);
                   if (respuesta.toString().contains("OK")) {
                     EasyLoading.dismiss();
                     Navigator.push(context,

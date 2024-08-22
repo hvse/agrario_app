@@ -6,17 +6,19 @@ part 'finca_collection.g.dart';
 class FincaCollection {
   Id id = Isar.autoIncrement;
 
-  late String fincaID;
+  late String fincaId;
   late String nombreFinca;
   late String ubicacionFinca;
-  late String nombreCampo;
-  late String actividad;
-  late String fincasOrganicosDatosProducto;
-  late String educacion;
-  late String infraestructura;
-  late String salud;
-  late String otros;
-  late String latitud;
-  late String longitud;
   late String areaTotal;
+  late String fincaOrganica;
+  late String areaCanhaDulce;
+  late String areasOtroCultivos;
+  late String areaPastura;
+  late String bosques;
+  late String descansos;
+  late String actividad;
+  late String otros;
+  late String longitud;
+  late String latitud;
+  late bool synch;
 }

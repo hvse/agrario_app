@@ -286,10 +286,11 @@ class _PracticaAddState extends State<PracticaAdd> {
                         latitud: latitud,
                         longitud: longitud,
                         visitaId: idVista,
+                        synch: false,
                       );
 
                       if (widget.mano == null) {
-                        var respuesta = await practicaAddlocal(practicaModel);
+                        var respuesta = await practicaAddlocal([practicaModel]);
 
                         if (respuesta.toString().contains("OK")) {
                           EasyLoading.dismiss();

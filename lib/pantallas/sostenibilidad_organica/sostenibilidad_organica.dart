@@ -22,7 +22,7 @@ class _SostenibilidadOrganicaState extends State<SostenibilidadOrganica> {
 
   Future<void> cargarDatos() async {
     try {
-      var result = await sosOrganicaGet();
+      var result = await sosOrganicaGetLocal();
       setState(() {
         data.addAll(result);
         isLoading = false;

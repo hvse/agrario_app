@@ -26,7 +26,7 @@ class _VisitasState extends State<Visitas> {
 
   Future<void> cargarDatos() async {
     try {
-      var result = await visitasRest();
+      var result = await visitaGetLocal();
       setState(() {
         data.addAll(result);
         isLoading = false;

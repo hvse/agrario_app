@@ -216,6 +216,7 @@ class _SostenibilidadOrganicaaddState extends State<SostenibilidadOrganicaadd> {
                       SostentabilidadOrganicaModel
                           sostentabilidadOrganicaModel =
                           SostentabilidadOrganicaModel(
+                        synch: false,
                         idSostentabilidadOrganica:
                             idSostentabilidadOrganica.text,
                         idProductor: idProductor.text,
@@ -236,7 +237,7 @@ class _SostenibilidadOrganicaaddState extends State<SostenibilidadOrganicaadd> {
 
                       if (widget.mano == null) {
                         var respuesta = await sosOrganicaAddlocal(
-                            sostentabilidadOrganicaModel);
+                            [sostentabilidadOrganicaModel]);
 
                         if (respuesta.toString().contains("OK")) {
                           EasyLoading.dismiss();

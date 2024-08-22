@@ -13,24 +13,33 @@ List<RendiminetoAzucarModel> rendimientoAzucarFromJson(String str) {
   return packageList;
 }
 
-RendimientoAzucarCollection rendimientoAzucarCollectionFromListJson(
-    RendiminetoAzucarModel praxticas) {
-  return RendimientoAzucarCollection()
-    ..anho = praxticas.anho
-    ..fechaCorte = praxticas.fechaCorte
-    ..hectConv = praxticas.hectConv
-    ..hectConver = praxticas.hectConver
-    ..hectOrg = praxticas.hectOrg
-    ..idProductor = praxticas.idProductor
-    ..idRendimientoAzucar = praxticas.idRendimientoAzucar
-    ..latitud = praxticas.latitud
-    ..longitud = praxticas.longitud
-    ..nroParcelas = praxticas.nroParcelas
-    ..tonConv = praxticas.tonConv
-    ..tonConver = praxticas.tonConver
-    ..tonOrg = praxticas.tonOrg
-    ..variedades = praxticas.variedades
-    ..visitaId = praxticas.visitaId;
+List<RendimientoAzucarCollection> rendimientoAzucarCollectionFromListJson(
+    List<RendiminetoAzucarModel> praxticas) {
+  final List<RendimientoAzucarCollection> packageList = [];
+  for (final entry in praxticas) {
+    final RendimientoAzucarCollection rendimientoAzucarCollection =
+        RendimientoAzucarCollection()
+          ..idRendimientoAzucar = entry.idRendimientoAzucar
+          ..anho = entry.anho
+          ..fechaCorte = entry.fechaCorte
+          ..hectConv = entry.hectConv
+          ..hectConver = entry.hectConver
+          ..hectOrg = entry.hectOrg
+          ..nroParcelas = entry.nroParcelas
+          ..tonConv = entry.tonConv
+          ..tonConver = entry.tonConver
+          ..tonOrg = entry.tonOrg
+          ..variedades = entry.variedades
+          ..idProductor = entry.idProductor
+          ..visitaId = entry.visitaId
+          ..latitud = entry.latitud
+          ..longitud = entry.longitud
+          ..synch = entry.synch;
+
+    packageList.add(rendimientoAzucarCollection);
+  }
+
+  return packageList;
 }
 
 List<RendiminetoAzucarModel> rendimientoAzucarFromListCollection(
@@ -54,6 +63,7 @@ List<RendiminetoAzucarModel> rendimientoAzucarFromListCollection(
       longitud: entry.longitud!,
       visitaId: entry.visitaId!,
       idProductor: entry.idProductor!,
+      synch: entry.synch!,
     );
     packageList.add(status);
   }
@@ -77,6 +87,7 @@ class RendiminetoAzucarModel {
   final String longitud;
   final String visitaId;
   final String idProductor;
+  final bool synch;
 
   RendiminetoAzucarModel({
     required this.idRendimientoAzucar,
@@ -94,6 +105,7 @@ class RendiminetoAzucarModel {
     required this.longitud,
     required this.visitaId,
     required this.idProductor,
+    required this.synch,
     this.id,
   });
 
@@ -104,21 +116,30 @@ class RendiminetoAzucarModel {
 
   factory RendiminetoAzucarModel.fromJson(Map<String, dynamic> json) =>
       RendiminetoAzucarModel(
-        idRendimientoAzucar: json["id_rendimiento_azucar"].toString(),
-        nroParcelas: json["nro_parcelas"],
-        hectOrg: json["hect_org"],
-        hectConver: json["hect_conver"],
-        hectConv: json["hect_conv"],
-        variedades: json["variedades"],
-        tonOrg: json["ton_org"],
-        tonConver: json["ton_conver"],
-        tonConv: json["ton_conv"],
-        anho: json["anho"],
-        fechaCorte: json["fecha_corte"],
-        latitud: json["latitud"],
-        longitud: json["longitud"],
-        visitaId: json["VisitaID"].toString(),
-        idProductor: json["id_productor"].toString(),
+        idRendimientoAzucar: json["id_rendimiento_azucar"] == null
+            ? ""
+            : json["id_rendimiento_azucar"].toString(),
+        nroParcelas:
+            json["nro_parcelas"] == null ? "" : json["nro_parcelas"].toString(),
+        hectOrg: json["hect_org"] == null ? "" : json["hect_org"].toString(),
+        hectConver:
+            json["hect_conver"] == null ? "" : json["hect_conver"].toString(),
+        hectConv: json["hect_conv"] == null ? "" : json["hect_conv"].toString(),
+        variedades:
+            json["variedades"] == null ? "" : json["variedades"].toString(),
+        tonOrg: json["ton_org"] == null ? "" : json["ton_org"].toString(),
+        tonConver:
+            json["ton_conver"] == null ? "" : json["ton_conver"].toString(),
+        tonConv: json["ton_conv"] == null ? "" : json["ton_conv"].toString(),
+        anho: json["anho"] == null ? "" : json["anho"].toString(),
+        fechaCorte:
+            json["fecha_corte"] == null ? "" : json["fecha_corte"].toString(),
+        latitud: json["latitud"] == null ? "" : json["latitud"].toString(),
+        longitud: json["longitud"] == null ? "" : json["longitud"].toString(),
+        visitaId: json["VisitaID"] == null ? "" : json["VisitaID"].toString(),
+        idProductor:
+            json["id_productor"] == null ? "" : json["id_productor"].toString(),
+        synch: true,
       );
 
   Map<String, dynamic> toJson() => {

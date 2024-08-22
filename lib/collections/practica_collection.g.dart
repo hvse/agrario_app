@@ -93,13 +93,18 @@ const PracticaCollectionSchema = CollectionSchema(
       name: r'riesgoErosion',
       type: IsarType.string,
     ),
-    r'trabajoInfantil': PropertySchema(
+    r'synch': PropertySchema(
       id: 15,
+      name: r'synch',
+      type: IsarType.bool,
+    ),
+    r'trabajoInfantil': PropertySchema(
+      id: 16,
       name: r'trabajoInfantil',
       type: IsarType.string,
     ),
     r'visitaId': PropertySchema(
-      id: 16,
+      id: 17,
       name: r'visitaId',
       type: IsarType.string,
     )
@@ -250,8 +255,9 @@ void _practicaCollectionSerialize(
   writer.writeString(offsets[12], object.residuosOrganicos);
   writer.writeString(offsets[13], object.riesgoContaminacion);
   writer.writeString(offsets[14], object.riesgoErosion);
-  writer.writeString(offsets[15], object.trabajoInfantil);
-  writer.writeString(offsets[16], object.visitaId);
+  writer.writeBool(offsets[15], object.synch);
+  writer.writeString(offsets[16], object.trabajoInfantil);
+  writer.writeString(offsets[17], object.visitaId);
 }
 
 PracticaCollection _practicaCollectionDeserialize(
@@ -277,8 +283,9 @@ PracticaCollection _practicaCollectionDeserialize(
   object.residuosOrganicos = reader.readStringOrNull(offsets[12]);
   object.riesgoContaminacion = reader.readStringOrNull(offsets[13]);
   object.riesgoErosion = reader.readStringOrNull(offsets[14]);
-  object.trabajoInfantil = reader.readStringOrNull(offsets[15]);
-  object.visitaId = reader.readStringOrNull(offsets[16]);
+  object.synch = reader.readBoolOrNull(offsets[15]);
+  object.trabajoInfantil = reader.readStringOrNull(offsets[16]);
+  object.visitaId = reader.readStringOrNull(offsets[17]);
   return object;
 }
 
@@ -320,8 +327,10 @@ P _practicaCollectionDeserializeProp<P>(
     case 14:
       return (reader.readStringOrNull(offset)) as P;
     case 15:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 16:
+      return (reader.readStringOrNull(offset)) as P;
+    case 17:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -2796,6 +2805,34 @@ extension PracticaCollectionQueryFilter
   }
 
   QueryBuilder<PracticaCollection, PracticaCollection, QAfterFilterCondition>
+      synchIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'synch',
+      ));
+    });
+  }
+
+  QueryBuilder<PracticaCollection, PracticaCollection, QAfterFilterCondition>
+      synchIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'synch',
+      ));
+    });
+  }
+
+  QueryBuilder<PracticaCollection, PracticaCollection, QAfterFilterCondition>
+      synchEqualTo(bool? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'synch',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<PracticaCollection, PracticaCollection, QAfterFilterCondition>
       trabajoInfantilIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -3323,6 +3360,20 @@ extension PracticaCollectionQuerySortBy
   }
 
   QueryBuilder<PracticaCollection, PracticaCollection, QAfterSortBy>
+      sortBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PracticaCollection, PracticaCollection, QAfterSortBy>
+      sortBySynchDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.desc);
+    });
+  }
+
+  QueryBuilder<PracticaCollection, PracticaCollection, QAfterSortBy>
       sortByTrabajoInfantil() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'trabajoInfantil', Sort.asc);
@@ -3578,6 +3629,20 @@ extension PracticaCollectionQuerySortThenBy
   }
 
   QueryBuilder<PracticaCollection, PracticaCollection, QAfterSortBy>
+      thenBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PracticaCollection, PracticaCollection, QAfterSortBy>
+      thenBySynchDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.desc);
+    });
+  }
+
+  QueryBuilder<PracticaCollection, PracticaCollection, QAfterSortBy>
       thenByTrabajoInfantil() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'trabajoInfantil', Sort.asc);
@@ -3725,6 +3790,13 @@ extension PracticaCollectionQueryWhereDistinct
   }
 
   QueryBuilder<PracticaCollection, PracticaCollection, QDistinct>
+      distinctBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'synch');
+    });
+  }
+
+  QueryBuilder<PracticaCollection, PracticaCollection, QDistinct>
       distinctByTrabajoInfantil({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'trabajoInfantil',
@@ -3850,6 +3922,12 @@ extension PracticaCollectionQueryProperty
       riesgoErosionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'riesgoErosion');
+    });
+  }
+
+  QueryBuilder<PracticaCollection, bool?, QQueryOperations> synchProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'synch');
     });
   }
 

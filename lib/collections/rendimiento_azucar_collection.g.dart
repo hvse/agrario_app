@@ -68,28 +68,33 @@ const RendimientoAzucarCollectionSchema = CollectionSchema(
       name: r'nroParcelas',
       type: IsarType.string,
     ),
-    r'tonConv': PropertySchema(
+    r'synch': PropertySchema(
       id: 10,
+      name: r'synch',
+      type: IsarType.bool,
+    ),
+    r'tonConv': PropertySchema(
+      id: 11,
       name: r'tonConv',
       type: IsarType.string,
     ),
     r'tonConver': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'tonConver',
       type: IsarType.string,
     ),
     r'tonOrg': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'tonOrg',
       type: IsarType.string,
     ),
     r'variedades': PropertySchema(
-      id: 13,
+      id: 14,
       name: r'variedades',
       type: IsarType.string,
     ),
     r'visitaId': PropertySchema(
-      id: 14,
+      id: 15,
       name: r'visitaId',
       type: IsarType.string,
     )
@@ -223,11 +228,12 @@ void _rendimientoAzucarCollectionSerialize(
   writer.writeString(offsets[7], object.latitud);
   writer.writeString(offsets[8], object.longitud);
   writer.writeString(offsets[9], object.nroParcelas);
-  writer.writeString(offsets[10], object.tonConv);
-  writer.writeString(offsets[11], object.tonConver);
-  writer.writeString(offsets[12], object.tonOrg);
-  writer.writeString(offsets[13], object.variedades);
-  writer.writeString(offsets[14], object.visitaId);
+  writer.writeBool(offsets[10], object.synch);
+  writer.writeString(offsets[11], object.tonConv);
+  writer.writeString(offsets[12], object.tonConver);
+  writer.writeString(offsets[13], object.tonOrg);
+  writer.writeString(offsets[14], object.variedades);
+  writer.writeString(offsets[15], object.visitaId);
 }
 
 RendimientoAzucarCollection _rendimientoAzucarCollectionDeserialize(
@@ -248,11 +254,12 @@ RendimientoAzucarCollection _rendimientoAzucarCollectionDeserialize(
   object.latitud = reader.readStringOrNull(offsets[7]);
   object.longitud = reader.readStringOrNull(offsets[8]);
   object.nroParcelas = reader.readStringOrNull(offsets[9]);
-  object.tonConv = reader.readStringOrNull(offsets[10]);
-  object.tonConver = reader.readStringOrNull(offsets[11]);
-  object.tonOrg = reader.readStringOrNull(offsets[12]);
-  object.variedades = reader.readStringOrNull(offsets[13]);
-  object.visitaId = reader.readStringOrNull(offsets[14]);
+  object.synch = reader.readBoolOrNull(offsets[10]);
+  object.tonConv = reader.readStringOrNull(offsets[11]);
+  object.tonConver = reader.readStringOrNull(offsets[12]);
+  object.tonOrg = reader.readStringOrNull(offsets[13]);
+  object.variedades = reader.readStringOrNull(offsets[14]);
+  object.visitaId = reader.readStringOrNull(offsets[15]);
   return object;
 }
 
@@ -284,7 +291,7 @@ P _rendimientoAzucarCollectionDeserializeProp<P>(
     case 9:
       return (reader.readStringOrNull(offset)) as P;
     case 10:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 11:
       return (reader.readStringOrNull(offset)) as P;
     case 12:
@@ -292,6 +299,8 @@ P _rendimientoAzucarCollectionDeserializeProp<P>(
     case 13:
       return (reader.readStringOrNull(offset)) as P;
     case 14:
+      return (reader.readStringOrNull(offset)) as P;
+    case 15:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -2014,6 +2023,34 @@ extension RendimientoAzucarCollectionQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterFilterCondition> synchIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'synch',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterFilterCondition> synchIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'synch',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterFilterCondition> synchEqualTo(bool? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'synch',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
       QAfterFilterCondition> tonConvIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -2947,6 +2984,20 @@ extension RendimientoAzucarCollectionQuerySortBy on QueryBuilder<
   }
 
   QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterSortBy> sortBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterSortBy> sortBySynchDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
       QAfterSortBy> sortByTonConv() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'tonConv', Sort.asc);
@@ -3174,6 +3225,20 @@ extension RendimientoAzucarCollectionQuerySortThenBy on QueryBuilder<
   }
 
   QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterSortBy> thenBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterSortBy> thenBySynchDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
       QAfterSortBy> thenByTonConv() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'tonConv', Sort.asc);
@@ -3318,6 +3383,13 @@ extension RendimientoAzucarCollectionQueryWhereDistinct on QueryBuilder<
   }
 
   QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QDistinct> distinctBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'synch');
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
       QDistinct> distinctByTonConv({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'tonConv', caseSensitive: caseSensitive);
@@ -3429,6 +3501,13 @@ extension RendimientoAzucarCollectionQueryProperty on QueryBuilder<
       nroParcelasProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'nroParcelas');
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, bool?, QQueryOperations>
+      synchProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'synch');
     });
   }
 

@@ -24,7 +24,7 @@ class _FincaState extends State<Finca> {
 
   Future<void> cargarDatos() async {
     try {
-      var result = await FincaRest();
+      var result = await fincaGetlocal();
       setState(() {
         data.addAll(result);
         isLoading = false;

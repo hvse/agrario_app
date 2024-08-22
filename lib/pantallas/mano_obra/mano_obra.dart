@@ -25,7 +25,7 @@ class _ManoObraState extends State<ManoObra> {
 
   Future<void> cargarDatos() async {
     try {
-      var result = await manoObraGet();
+      var result = await manoGetLocal();
       setState(() {
         data.addAll(result);
         isLoading = false;

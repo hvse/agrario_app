@@ -7,114 +7,136 @@ FincaModel fincaModelFromJson(String str) =>
 
 String fincaModelToJson(FincaModel data) => json.encode(data.toJson());
 
-FincaCollection fincaCollectionFromListJson(FincaModel finca) {
-  return FincaCollection()
-    ..actividad = finca.actividad
-    ..educacion = finca.educacion
-    ..fincaID = finca.fincaId
-    ..fincasOrganicosDatosProducto = finca.fincasOrganicosDatosProducto
-    ..infraestructura = finca.infraestructura
-    ..latitud = finca.latitud
-    ..longitud = finca.longitud
-    ..nombreCampo = finca.nombreCampo
-    ..nombreFinca = finca.nombreFinca
-    ..otros = finca.otros
-    ..salud = finca.salud
-    ..areaTotal = finca.areaTotal
-    ..ubicacionFinca = finca.ubicacionFinca;
+List<FincaCollection> fincaCollectionFromListJson(List<FincaModel> finca) {
+  final List<FincaCollection> packageList = [];
+  for (final entry in finca) {
+    final fincaCollection = FincaCollection()
+      ..synch = entry.synch
+      ..actividad = entry.actividad
+      ..fincaId = entry.fincaId
+      ..latitud = entry.latitud
+      ..longitud = entry.longitud
+      ..nombreFinca = entry.nombreFinca
+      ..otros = entry.otros
+      ..areaTotal = entry.areaTotal
+      ..ubicacionFinca = entry.ubicacionFinca
+      ..areaCanhaDulce = entry.areaCanhaDulce
+      ..areasOtroCultivos = entry.areasOtroCultivos
+      ..areaPastura = entry.areaPastura
+      ..bosques = entry.bosques
+      ..descansos = entry.descansos
+      ..fincaOrganica = entry.fincaOrganica;
+
+    packageList.add(fincaCollection);
+  }
+  return packageList;
 }
 
 List<FincaModel> fincasFromListCollection(List<FincaCollection> fincas) {
   final List<FincaModel> packageList = [];
   for (final entry in fincas) {
     final FincaModel fincaModel = FincaModel(
-        areaTotal: entry.areaTotal,
-        Id: entry.id,
-        fincaId: entry.fincaID,
-        nombreFinca: entry.nombreFinca,
-        ubicacionFinca: entry.ubicacionFinca,
-        nombreCampo: entry.nombreCampo,
-        actividad: entry.actividad,
-        fincasOrganicosDatosProducto: entry.fincasOrganicosDatosProducto,
-        educacion: entry.educacion,
-        infraestructura: entry.infraestructura,
-        salud: entry.salud,
-        otros: entry.otros,
-        latitud: entry.latitud,
-        longitud: entry.longitud);
+      synch: entry.synch,
+      areaTotal: entry.areaTotal,
+      id: entry.id,
+      fincaId: entry.fincaId,
+      nombreFinca: entry.nombreFinca,
+      ubicacionFinca: entry.ubicacionFinca,
+      actividad: entry.actividad,
+      otros: entry.otros,
+      latitud: entry.latitud,
+      longitud: entry.longitud,
+      areaCanhaDulce: entry.areaCanhaDulce,
+      areasOtroCultivos: entry.areasOtroCultivos,
+      areaPastura: entry.areaPastura,
+      bosques: entry.bosques,
+      descansos: entry.descansos,
+      fincaOrganica: entry.fincaOrganica,
+    );
     packageList.add(fincaModel);
   }
   return packageList;
 }
 
 class FincaModel {
-  final dynamic Id;
-  final dynamic fincaId;
-  final dynamic nombreFinca;
-  final dynamic ubicacionFinca;
-  final dynamic nombreCampo;
-  final dynamic actividad;
-  final dynamic fincasOrganicosDatosProducto;
-  final dynamic educacion;
-  final dynamic infraestructura;
-  final dynamic salud;
-  final dynamic otros;
-  final dynamic areaTotal;
-  final dynamic latitud;
-  final dynamic longitud;
+  final int? id;
+  final bool synch;
+  final String fincaId;
+  final String nombreFinca;
+  final String ubicacionFinca;
+  final String areaTotal;
+  final String fincaOrganica;
+  final String areaCanhaDulce;
+  final String areasOtroCultivos;
+  final String areaPastura;
+  final String bosques;
+  final String descansos;
+  final String actividad;
+  final String otros;
+  final String longitud;
+  final String latitud;
 
   FincaModel({
-    required this.Id,
     required this.fincaId,
     required this.nombreFinca,
     required this.ubicacionFinca,
-    required this.nombreCampo,
-    required this.actividad,
-    required this.fincasOrganicosDatosProducto,
-    required this.educacion,
-    required this.infraestructura,
-    required this.salud,
-    required this.otros,
     required this.areaTotal,
-    required this.latitud,
+    required this.fincaOrganica,
+    required this.areaCanhaDulce,
+    required this.areasOtroCultivos,
+    required this.areaPastura,
+    required this.bosques,
+    required this.descansos,
+    required this.actividad,
+    required this.otros,
     required this.longitud,
+    required this.latitud,
+    this.id,
+    required this.synch,
   });
 
+  factory FincaModel.fromRawJson(String str) =>
+      FincaModel.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
   factory FincaModel.fromJson(Map<String, dynamic> json) => FincaModel(
-        Id: null,
         fincaId: json["FincaID"] == null ? "" : json["FincaID"].toString(),
         nombreFinca: json["NombreFinca"] == null ? "" : json["NombreFinca"],
         ubicacionFinca:
             json["UbicacionFinca"] == null ? "" : json["UbicacionFinca"],
-        nombreCampo: json["nombre_campo"] == null ? "" : json["nombre_campo"],
-        actividad: json["actividad"] == null ? null : json["actividad"],
-        fincasOrganicosDatosProducto:
-            json["fincas_organicos_datos_producto"] == null
-                ? ""
-                : json["fincas_organicos_datos_producto"],
-        educacion: json["educacion"] == null ? "" : json["educacion"],
-        infraestructura:
-            json["infraestructura"] == null ? "" : json["infraestructura"],
-        salud: json["salud"] == null ? "" : json["salud"],
-        otros: json["otros"] == null ? "" : json["otros"],
-        latitud: json["latitud"] == null ? "" : json["latitud"],
-        longitud: json["longitud"] == null ? "" : json["longitud"],
         areaTotal: json["AreaTotal"] == null ? "" : json["AreaTotal"],
+        fincaOrganica:
+            json["finca_organica"] == null ? "" : json["finca_organica"],
+        areaCanhaDulce:
+            json["area_canha_dulce"] == null ? "" : json["area_canha_dulce"],
+        areasOtroCultivos: json["areas_otro_cultivos"] == null
+            ? ""
+            : json["areas_otro_cultivos"],
+        areaPastura: json["area_pastura"] == null ? "" : json["area_pastura"],
+        bosques: json["bosques"] == null ? "" : json["bosques"],
+        descansos: json["descansos"] == null ? "" : json["descansos"],
+        actividad: json["actividad"] == null ? "" : json["actividad"],
+        otros: json["otros"] == null ? "" : json["otros"],
+        longitud: json["longitud"] == null ? "" : json["longitud"],
+        latitud: json["latitud"] == null ? "" : json["latitud"],
+        synch: true,
       );
 
   Map<String, dynamic> toJson() => {
-        "FincaID": fincaId == "" ? null : int.parse(fincaId),
+        "FincaID": fincaId,
         "NombreFinca": nombreFinca,
         "UbicacionFinca": ubicacionFinca,
-        "nombre_campo": nombreCampo,
-        "actividad": actividad,
-        "fincas_organicos_datos_producto": fincasOrganicosDatosProducto,
-        "educacion": educacion,
-        "infraestructura": infraestructura,
-        "salud": salud,
-        "otros": otros,
-        "latitud": latitud,
-        "longitud": longitud,
         "AreaTotal": areaTotal,
+        "finca_organica": fincaOrganica,
+        "area_canha_dulce": areaCanhaDulce,
+        "areas_otro_cultivos": areasOtroCultivos,
+        "area_pastura": areaPastura,
+        "bosques": bosques,
+        "descansos": descansos,
+        "actividad": actividad,
+        "otros": otros,
+        "longitud": longitud,
+        "latitud": latitud,
       };
 }

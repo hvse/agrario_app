@@ -10,6 +10,15 @@ import 'package:isar/isar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+Future<void> getPracticasSession() async {
+  try {
+    List<PracticaModel> practicas = await practicasGet();
+    await practicaAddlocal(practicas);
+  } catch (e) {
+    print(e);
+  }
+}
+
 Future<List<PracticaModel>> practicasGet() async {
   // URL de la API
   final String apiUrl = '${BASE}index.php?action=id_practicas_observadas';
@@ -31,13 +40,13 @@ Future<List<PracticaModel>> practicasGet() async {
   }
 }
 
-FutureOr<String> practicaAddlocal(PracticaModel practica) async {
+FutureOr<String> practicaAddlocal(List<PracticaModel> practica) async {
   final Isar isar = IsarService().isar;
   try {
-    final PracticaCollection manoObraCollection =
+    final List<PracticaCollection> manoObraCollection =
         practicallectionFromListJson(practica);
     await isar.writeTxn(() async {
-      await isar.practicaCollections.put(manoObraCollection);
+      await isar.practicaCollections.putAll(manoObraCollection);
     });
     return 'OK';
   } catch (e) {
@@ -59,7 +68,7 @@ FutureOr<String> manoDeletelocal(int id) async {
   }
 }
 
-FutureOr<List<PracticaModel>> manoGetLocal() async {
+FutureOr<List<PracticaModel>> practicaGetLocal() async {
   final Isar isar = IsarService().isar;
   try {
     final List<PracticaCollection> practicas =
@@ -72,7 +81,7 @@ FutureOr<List<PracticaModel>> manoGetLocal() async {
 }
 
 FutureOr<String> syncPractica() async {
-  List<PracticaModel> manos = await manoGetLocal();
+  List<PracticaModel> manos = await practicaGetLocal();
   for (var i = 0; i < manos.length; i++) {
     final response = await practicaAdd(manos[i]);
     if (response == 'OK') {
@@ -131,5 +140,16 @@ FutureOr<String> practicaEdit(PracticaModel practica) async {
   } else {
     // Maneja errores de la respuesta
     return visitas['error'];
+  }
+}
+
+Future<void> practicasClean() async {
+  final Isar isar = IsarService().isar;
+  try {
+    await isar.writeTxn(() async {
+      await isar.practicaCollections.clear();
+    });
+  } catch (e) {
+    debugPrint('Error: $e');
   }
 }

@@ -23,4 +23,5 @@ class PracticaCollection {
   late String? longitud;
   late String? idProductor;
   late String? visitaId;
+  late bool? synch;
 }

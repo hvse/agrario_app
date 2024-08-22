@@ -22,7 +22,7 @@ class _PracticasObsState extends State<PracticasObs> {
 
   Future<void> cargarDatos() async {
     try {
-      var result = await practicasGet();
+      var result = await practicaGetLocal();
       setState(() {
         data.addAll(result);
         isLoading = false;

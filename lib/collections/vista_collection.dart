@@ -24,4 +24,5 @@ class VisitaCollection {
   late String latitud;
   late String nombreFinca;
   late String nombreProductor;
+  late bool synch;
 }

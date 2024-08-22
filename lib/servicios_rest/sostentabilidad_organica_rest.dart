@@ -10,6 +10,26 @@ import 'package:http/http.dart' as http;
 import 'package:isar/isar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+Future<void> getSosOrganicaSession() async {
+  try {
+    List<SostentabilidadOrganicaModel> sosOrganica = await sosOrganicaGet();
+    await sosOrganicaAddlocal(sosOrganica);
+  } catch (e) {
+    print(e);
+  }
+}
+
+Future<void> sosOrganicaClean() async {
+  final Isar isar = IsarService().isar;
+  try {
+    await isar.writeTxn(() async {
+      await isar.sostentabilidadOrganicaCollections.clear();
+    });
+  } catch (e) {
+    print(e);
+  }
+}
+
 Future<List<SostentabilidadOrganicaModel>> sosOrganicaGet() async {
   final String apiUrl =
       '${BASE}index.php?action=id_plan_sostenibilidad_organica';
@@ -32,14 +52,14 @@ Future<List<SostentabilidadOrganicaModel>> sosOrganicaGet() async {
 }
 
 FutureOr<String> sosOrganicaAddlocal(
-    SostentabilidadOrganicaModel sosOrganica) async {
+    List<SostentabilidadOrganicaModel> sosOrganica) async {
   final Isar isar = IsarService().isar;
   try {
-    final SostentabilidadOrganicaCollection rendimientoAzucarCollection =
+    final List<SostentabilidadOrganicaCollection> rendimientoAzucarCollection =
         sosOrganicaCollectionFromListJson(sosOrganica);
     await isar.writeTxn(() async {
       await isar.sostentabilidadOrganicaCollections
-          .put(rendimientoAzucarCollection);
+          .putAll(rendimientoAzucarCollection);
     });
     return 'OK';
   } catch (e) {

@@ -13,24 +13,34 @@ List<RendimientoOtroModel> rendimientoOtroFromJson(String str) {
   return packageList;
 }
 
-RendimientoOtroCollection rendimientoOtroCollectionFromListJson(
-    RendimientoOtroModel praxticas) {
-  return RendimientoOtroCollection()
-    ..idRendimientoOtros = praxticas.idRendimientoOtros
-    ..nroParcelas = praxticas.nroParcelas
-    ..orgHas = praxticas.orgHas
-    ..converHas = praxticas.converHas
-    ..convHas = praxticas.convHas
-    ..variedades = praxticas.variedades
-    ..tonKiOrg = praxticas.tonKiOrg
-    ..tonKiConver = praxticas.tonKiConver
-    ..tonKiConvenc = praxticas.tonKiConvenc
-    ..anho = praxticas.anho
-    ..fechaCorte = praxticas.fechaCorte
-    ..latitud = praxticas.latitud
-    ..longitud = praxticas.longitud
-    ..visitaId = praxticas.visitaId
-    ..idProductor = praxticas.idProductor;
+List<RendimientoOtroCollection> rendimientoOtroCollectionFromListJson(
+    List<RendimientoOtroModel> praxticas) {
+  final List<RendimientoOtroCollection> packageList = [];
+
+  for (final entry in praxticas) {
+    final RendimientoOtroCollection rendimientoOtroCollection =
+        RendimientoOtroCollection()
+          ..idRendimientoOtros = entry.idRendimientoOtros
+          ..nroParcelas = entry.nroParcelas
+          ..orgHas = entry.orgHas
+          ..converHas = entry.converHas
+          ..convHas = entry.convHas
+          ..variedades = entry.variedades
+          ..tonKiOrg = entry.tonKiOrg
+          ..tonKiConver = entry.tonKiConver
+          ..tonKiConvenc = entry.tonKiConvenc
+          ..anho = entry.anho
+          ..fechaCorte = entry.fechaCorte
+          ..latitud = entry.latitud
+          ..longitud = entry.longitud
+          ..visitaId = entry.visitaId
+          ..synch = entry.synch
+          ..idProductor = entry.idProductor;
+
+    packageList.add(rendimientoOtroCollection);
+  }
+
+  return packageList;
 }
 
 List<RendimientoOtroModel> rendimientoOtroFromListCollection(
@@ -54,6 +64,7 @@ List<RendimientoOtroModel> rendimientoOtroFromListCollection(
       longitud: entry.longitud!,
       visitaId: entry.visitaId!,
       idProductor: entry.idProductor!,
+      synch: entry.synch!,
     );
     packageList.add(status);
   }
@@ -77,6 +88,7 @@ class RendimientoOtroModel {
   final String longitud;
   final String visitaId;
   final String idProductor;
+  final bool synch;
 
   RendimientoOtroModel({
     required this.idRendimientoOtros,
@@ -94,6 +106,7 @@ class RendimientoOtroModel {
     required this.longitud,
     required this.visitaId,
     required this.idProductor,
+    required this.synch,
     this.id,
   });
 
@@ -104,21 +117,34 @@ class RendimientoOtroModel {
 
   factory RendimientoOtroModel.fromJson(Map<String, dynamic> json) =>
       RendimientoOtroModel(
-        idRendimientoOtros: json["id_rendimiento_otros"].toString(),
-        nroParcelas: json["nro_parcelas"],
-        orgHas: json["org_has"],
-        converHas: json["conver_has"],
-        convHas: json["conv_has"],
-        variedades: json["variedades"],
-        tonKiOrg: json["ton_ki_org"],
-        tonKiConver: json["ton_ki_conver"],
-        tonKiConvenc: json["ton_ki_convenc"],
-        anho: json["anho"],
-        fechaCorte: json["fecha_corte"],
-        latitud: json["latitud"],
-        longitud: json["longitud"],
-        visitaId: json["VisitaID"].toString(),
-        idProductor: json["id_productor"].toString(),
+        idRendimientoOtros: json["id_rendimiento_otros"] == null
+            ? ""
+            : json["id_rendimiento_otros"].toString(),
+        nroParcelas:
+            json["nro_parcelas"] == null ? "" : json["nro_parcelas"].toString(),
+        orgHas: json["org_has"] == null ? "" : json["org_has"].toString(),
+        converHas:
+            json["conver_has"] == null ? "" : json["conver_has"].toString(),
+        convHas: json["conv_has"] == null ? "" : json["conv_has"].toString(),
+        variedades:
+            json["variedades"] == null ? "" : json["variedades"].toString(),
+        tonKiOrg:
+            json["ton_ki_org"] == null ? "" : json["ton_ki_org"].toString(),
+        tonKiConver: json["ton_ki_conver"] == null
+            ? ""
+            : json["ton_ki_conver"].toString(),
+        tonKiConvenc: json["ton_ki_convenc"] == null
+            ? ""
+            : json["ton_ki_convenc"].toString(),
+        anho: json["anho"] == null ? "" : json["anho"].toString(),
+        fechaCorte:
+            json["fecha_corte"] == null ? "" : json["fecha_corte"].toString(),
+        latitud: json["latitud"] == null ? "" : json["latitud"].toString(),
+        longitud: json["longitud"] == null ? "" : json["longitud"].toString(),
+        visitaId: json["VisitaID"] == null ? "" : json["VisitaID"].toString(),
+        idProductor:
+            json["id_productor"] == null ? "" : json["id_productor"].toString(),
+        synch: true,
       );
 
   Map<String, dynamic> toJson() => {

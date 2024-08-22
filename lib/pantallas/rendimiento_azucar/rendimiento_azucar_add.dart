@@ -253,6 +253,7 @@ class _RendimientoAzucarAddState extends State<RendimientoAzucarAdd> {
                       EasyLoading.show(status: 'Cargando...');
                       RendiminetoAzucarModel rendiminetoAzucarModel =
                           RendiminetoAzucarModel(
+                        synch: false,
                         idRendimientoAzucar: idRendimientoAzucar.text,
                         visitaId: idVista,
                         variedades: variedades.text,
@@ -272,7 +273,7 @@ class _RendimientoAzucarAddState extends State<RendimientoAzucarAdd> {
 
                       if (widget.mano == null) {
                         var respuesta = await rendimientoAzucarAddlocal(
-                            rendiminetoAzucarModel);
+                            [rendiminetoAzucarModel]);
 
                         if (respuesta.toString().contains("OK")) {
                           EasyLoading.dismiss();

@@ -107,13 +107,18 @@ const VisitaCollectionSchema = CollectionSchema(
       name: r'productorId',
       type: IsarType.string,
     ),
-    r'tierraDescanso': PropertySchema(
+    r'synch': PropertySchema(
       id: 18,
+      name: r'synch',
+      type: IsarType.bool,
+    ),
+    r'tierraDescanso': PropertySchema(
+      id: 19,
       name: r'tierraDescanso',
       type: IsarType.string,
     ),
     r'visitaId': PropertySchema(
-      id: 19,
+      id: 20,
       name: r'visitaId',
       type: IsarType.string,
     )
@@ -184,8 +189,9 @@ void _visitaCollectionSerialize(
   writer.writeString(offsets[15], object.observaciones);
   writer.writeString(offsets[16], object.otrosCultivos);
   writer.writeString(offsets[17], object.productorId);
-  writer.writeString(offsets[18], object.tierraDescanso);
-  writer.writeString(offsets[19], object.visitaId);
+  writer.writeBool(offsets[18], object.synch);
+  writer.writeString(offsets[19], object.tierraDescanso);
+  writer.writeString(offsets[20], object.visitaId);
 }
 
 VisitaCollection _visitaCollectionDeserialize(
@@ -214,8 +220,9 @@ VisitaCollection _visitaCollectionDeserialize(
   object.observaciones = reader.readString(offsets[15]);
   object.otrosCultivos = reader.readString(offsets[16]);
   object.productorId = reader.readString(offsets[17]);
-  object.tierraDescanso = reader.readString(offsets[18]);
-  object.visitaId = reader.readString(offsets[19]);
+  object.synch = reader.readBool(offsets[18]);
+  object.tierraDescanso = reader.readString(offsets[19]);
+  object.visitaId = reader.readString(offsets[20]);
   return object;
 }
 
@@ -263,8 +270,10 @@ P _visitaCollectionDeserializeProp<P>(
     case 17:
       return (reader.readString(offset)) as P;
     case 18:
-      return (reader.readString(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 19:
+      return (reader.readString(offset)) as P;
+    case 20:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -2791,6 +2800,16 @@ extension VisitaCollectionQueryFilter
   }
 
   QueryBuilder<VisitaCollection, VisitaCollection, QAfterFilterCondition>
+      synchEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'synch',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<VisitaCollection, VisitaCollection, QAfterFilterCondition>
       tierraDescansoEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -3321,6 +3340,19 @@ extension VisitaCollectionQuerySortBy
     });
   }
 
+  QueryBuilder<VisitaCollection, VisitaCollection, QAfterSortBy> sortBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.asc);
+    });
+  }
+
+  QueryBuilder<VisitaCollection, VisitaCollection, QAfterSortBy>
+      sortBySynchDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.desc);
+    });
+  }
+
   QueryBuilder<VisitaCollection, VisitaCollection, QAfterSortBy>
       sortByTierraDescanso() {
     return QueryBuilder.apply(this, (query) {
@@ -3615,6 +3647,19 @@ extension VisitaCollectionQuerySortThenBy
     });
   }
 
+  QueryBuilder<VisitaCollection, VisitaCollection, QAfterSortBy> thenBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.asc);
+    });
+  }
+
+  QueryBuilder<VisitaCollection, VisitaCollection, QAfterSortBy>
+      thenBySynchDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.desc);
+    });
+  }
+
   QueryBuilder<VisitaCollection, VisitaCollection, QAfterSortBy>
       thenByTierraDescanso() {
     return QueryBuilder.apply(this, (query) {
@@ -3781,6 +3826,13 @@ extension VisitaCollectionQueryWhereDistinct
   }
 
   QueryBuilder<VisitaCollection, VisitaCollection, QDistinct>
+      distinctBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'synch');
+    });
+  }
+
+  QueryBuilder<VisitaCollection, VisitaCollection, QDistinct>
       distinctByTierraDescanso({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'tierraDescanso',
@@ -3922,6 +3974,12 @@ extension VisitaCollectionQueryProperty
       productorIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'productorId');
+    });
+  }
+
+  QueryBuilder<VisitaCollection, bool, QQueryOperations> synchProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'synch');
     });
   }
 
