@@ -67,58 +67,63 @@ const VisitaCollectionSchema = CollectionSchema(
       name: r'fotos',
       type: IsarType.string,
     ),
-    r'latitud': PropertySchema(
+    r'herramientaLimpieza': PropertySchema(
       id: 10,
+      name: r'herramientaLimpieza',
+      type: IsarType.string,
+    ),
+    r'latitud': PropertySchema(
+      id: 11,
       name: r'latitud',
       type: IsarType.string,
     ),
     r'longitud': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'longitud',
       type: IsarType.string,
     ),
     r'maquinariasUtilizadas': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'maquinariasUtilizadas',
       type: IsarType.string,
     ),
     r'nombreFinca': PropertySchema(
-      id: 13,
+      id: 14,
       name: r'nombreFinca',
       type: IsarType.string,
     ),
     r'nombreProductor': PropertySchema(
-      id: 14,
+      id: 15,
       name: r'nombreProductor',
       type: IsarType.string,
     ),
     r'observaciones': PropertySchema(
-      id: 15,
+      id: 16,
       name: r'observaciones',
       type: IsarType.string,
     ),
     r'otrosCultivos': PropertySchema(
-      id: 16,
+      id: 17,
       name: r'otrosCultivos',
       type: IsarType.string,
     ),
     r'productorId': PropertySchema(
-      id: 17,
+      id: 18,
       name: r'productorId',
       type: IsarType.string,
     ),
     r'synch': PropertySchema(
-      id: 18,
+      id: 19,
       name: r'synch',
       type: IsarType.bool,
     ),
     r'tierraDescanso': PropertySchema(
-      id: 19,
+      id: 20,
       name: r'tierraDescanso',
       type: IsarType.string,
     ),
     r'visitaId': PropertySchema(
-      id: 20,
+      id: 21,
       name: r'visitaId',
       type: IsarType.string,
     )
@@ -152,6 +157,7 @@ int _visitaCollectionEstimateSize(
   bytesCount += 3 + object.fincaId.length * 3;
   bytesCount += 3 + object.formaCosecha.length * 3;
   bytesCount += 3 + object.fotos.length * 3;
+  bytesCount += 3 + object.herramientaLimpieza.length * 3;
   bytesCount += 3 + object.latitud.length * 3;
   bytesCount += 3 + object.longitud.length * 3;
   bytesCount += 3 + object.maquinariasUtilizadas.length * 3;
@@ -181,17 +187,18 @@ void _visitaCollectionSerialize(
   writer.writeString(offsets[7], object.fincaId);
   writer.writeString(offsets[8], object.formaCosecha);
   writer.writeString(offsets[9], object.fotos);
-  writer.writeString(offsets[10], object.latitud);
-  writer.writeString(offsets[11], object.longitud);
-  writer.writeString(offsets[12], object.maquinariasUtilizadas);
-  writer.writeString(offsets[13], object.nombreFinca);
-  writer.writeString(offsets[14], object.nombreProductor);
-  writer.writeString(offsets[15], object.observaciones);
-  writer.writeString(offsets[16], object.otrosCultivos);
-  writer.writeString(offsets[17], object.productorId);
-  writer.writeBool(offsets[18], object.synch);
-  writer.writeString(offsets[19], object.tierraDescanso);
-  writer.writeString(offsets[20], object.visitaId);
+  writer.writeString(offsets[10], object.herramientaLimpieza);
+  writer.writeString(offsets[11], object.latitud);
+  writer.writeString(offsets[12], object.longitud);
+  writer.writeString(offsets[13], object.maquinariasUtilizadas);
+  writer.writeString(offsets[14], object.nombreFinca);
+  writer.writeString(offsets[15], object.nombreProductor);
+  writer.writeString(offsets[16], object.observaciones);
+  writer.writeString(offsets[17], object.otrosCultivos);
+  writer.writeString(offsets[18], object.productorId);
+  writer.writeBool(offsets[19], object.synch);
+  writer.writeString(offsets[20], object.tierraDescanso);
+  writer.writeString(offsets[21], object.visitaId);
 }
 
 VisitaCollection _visitaCollectionDeserialize(
@@ -211,18 +218,19 @@ VisitaCollection _visitaCollectionDeserialize(
   object.fincaId = reader.readString(offsets[7]);
   object.formaCosecha = reader.readString(offsets[8]);
   object.fotos = reader.readString(offsets[9]);
+  object.herramientaLimpieza = reader.readString(offsets[10]);
   object.id = id;
-  object.latitud = reader.readString(offsets[10]);
-  object.longitud = reader.readString(offsets[11]);
-  object.maquinariasUtilizadas = reader.readString(offsets[12]);
-  object.nombreFinca = reader.readString(offsets[13]);
-  object.nombreProductor = reader.readString(offsets[14]);
-  object.observaciones = reader.readString(offsets[15]);
-  object.otrosCultivos = reader.readString(offsets[16]);
-  object.productorId = reader.readString(offsets[17]);
-  object.synch = reader.readBool(offsets[18]);
-  object.tierraDescanso = reader.readString(offsets[19]);
-  object.visitaId = reader.readString(offsets[20]);
+  object.latitud = reader.readString(offsets[11]);
+  object.longitud = reader.readString(offsets[12]);
+  object.maquinariasUtilizadas = reader.readString(offsets[13]);
+  object.nombreFinca = reader.readString(offsets[14]);
+  object.nombreProductor = reader.readString(offsets[15]);
+  object.observaciones = reader.readString(offsets[16]);
+  object.otrosCultivos = reader.readString(offsets[17]);
+  object.productorId = reader.readString(offsets[18]);
+  object.synch = reader.readBool(offsets[19]);
+  object.tierraDescanso = reader.readString(offsets[20]);
+  object.visitaId = reader.readString(offsets[21]);
   return object;
 }
 
@@ -270,10 +278,12 @@ P _visitaCollectionDeserializeProp<P>(
     case 17:
       return (reader.readString(offset)) as P;
     case 18:
-      return (reader.readBool(offset)) as P;
-    case 19:
       return (reader.readString(offset)) as P;
+    case 19:
+      return (reader.readBool(offset)) as P;
     case 20:
+      return (reader.readString(offset)) as P;
+    case 21:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1649,6 +1659,142 @@ extension VisitaCollectionQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'fotos',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<VisitaCollection, VisitaCollection, QAfterFilterCondition>
+      herramientaLimpiezaEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'herramientaLimpieza',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<VisitaCollection, VisitaCollection, QAfterFilterCondition>
+      herramientaLimpiezaGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'herramientaLimpieza',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<VisitaCollection, VisitaCollection, QAfterFilterCondition>
+      herramientaLimpiezaLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'herramientaLimpieza',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<VisitaCollection, VisitaCollection, QAfterFilterCondition>
+      herramientaLimpiezaBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'herramientaLimpieza',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<VisitaCollection, VisitaCollection, QAfterFilterCondition>
+      herramientaLimpiezaStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'herramientaLimpieza',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<VisitaCollection, VisitaCollection, QAfterFilterCondition>
+      herramientaLimpiezaEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'herramientaLimpieza',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<VisitaCollection, VisitaCollection, QAfterFilterCondition>
+      herramientaLimpiezaContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'herramientaLimpieza',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<VisitaCollection, VisitaCollection, QAfterFilterCondition>
+      herramientaLimpiezaMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'herramientaLimpieza',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<VisitaCollection, VisitaCollection, QAfterFilterCondition>
+      herramientaLimpiezaIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'herramientaLimpieza',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<VisitaCollection, VisitaCollection, QAfterFilterCondition>
+      herramientaLimpiezaIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'herramientaLimpieza',
         value: '',
       ));
     });
@@ -3229,6 +3375,20 @@ extension VisitaCollectionQuerySortBy
   }
 
   QueryBuilder<VisitaCollection, VisitaCollection, QAfterSortBy>
+      sortByHerramientaLimpieza() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'herramientaLimpieza', Sort.asc);
+    });
+  }
+
+  QueryBuilder<VisitaCollection, VisitaCollection, QAfterSortBy>
+      sortByHerramientaLimpiezaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'herramientaLimpieza', Sort.desc);
+    });
+  }
+
+  QueryBuilder<VisitaCollection, VisitaCollection, QAfterSortBy>
       sortByLatitud() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'latitud', Sort.asc);
@@ -3522,6 +3682,20 @@ extension VisitaCollectionQuerySortThenBy
     });
   }
 
+  QueryBuilder<VisitaCollection, VisitaCollection, QAfterSortBy>
+      thenByHerramientaLimpieza() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'herramientaLimpieza', Sort.asc);
+    });
+  }
+
+  QueryBuilder<VisitaCollection, VisitaCollection, QAfterSortBy>
+      thenByHerramientaLimpiezaDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'herramientaLimpieza', Sort.desc);
+    });
+  }
+
   QueryBuilder<VisitaCollection, VisitaCollection, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -3765,6 +3939,14 @@ extension VisitaCollectionQueryWhereDistinct
     });
   }
 
+  QueryBuilder<VisitaCollection, VisitaCollection, QDistinct>
+      distinctByHerramientaLimpieza({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'herramientaLimpieza',
+          caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<VisitaCollection, VisitaCollection, QDistinct> distinctByLatitud(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -3920,6 +4102,13 @@ extension VisitaCollectionQueryProperty
   QueryBuilder<VisitaCollection, String, QQueryOperations> fotosProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'fotos');
+    });
+  }
+
+  QueryBuilder<VisitaCollection, String, QQueryOperations>
+      herramientaLimpiezaProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'herramientaLimpieza');
     });
   }
 

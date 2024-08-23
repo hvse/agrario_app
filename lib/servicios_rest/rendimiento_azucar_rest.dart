@@ -76,11 +76,20 @@ FutureOr<String> rendimientoAzucarDeletelocal(int id) async {
   }
 }
 
-FutureOr<List<RendiminetoAzucarModel>> rendimientoAzucarGetLocal() async {
+FutureOr<List<RendiminetoAzucarModel>> rendimientoAzucarGetLocal(
+    {bool synch = false}) async {
   final Isar isar = IsarService().isar;
   try {
-    final List<RendimientoAzucarCollection> practicas =
-        await isar.rendimientoAzucarCollections.where().findAll();
+    final List<RendimientoAzucarCollection> practicas;
+
+    if (synch) {
+      practicas = await isar.rendimientoAzucarCollections
+          .filter()
+          .synchEqualTo(false)
+          .findAll();
+    } else {
+      practicas = await isar.rendimientoAzucarCollections.where().findAll();
+    }
     return rendimientoAzucarFromListCollection(practicas);
   } catch (e) {
     debugPrint('Error: $e');
@@ -89,7 +98,8 @@ FutureOr<List<RendiminetoAzucarModel>> rendimientoAzucarGetLocal() async {
 }
 
 FutureOr<String> syncRendimientoAzucar() async {
-  List<RendiminetoAzucarModel> manos = await rendimientoAzucarGetLocal();
+  List<RendiminetoAzucarModel> manos =
+      await rendimientoAzucarGetLocal(synch: true);
   for (var i = 0; i < manos.length; i++) {
     final response = await rendimientoAzucarAdd(manos[i]);
     if (response == 'OK') {
@@ -97,6 +107,22 @@ FutureOr<String> syncRendimientoAzucar() async {
     }
   }
   return 'OK';
+}
+
+FutureOr<String> rendimientoAzucarDeletelocalSynch() async {
+  final Isar isar = IsarService().isar;
+  try {
+    await isar.writeTxn(() async {
+      await isar.rendimientoAzucarCollections
+          .filter()
+          .synchEqualTo(true)
+          .deleteAll();
+    });
+    return 'OK';
+  } catch (e) {
+    debugPrint('Error: $e');
+    return e.toString();
+  }
 }
 
 FutureOr<String> rendimientoAzucarAdd(RendiminetoAzucarModel rendi) async {
@@ -127,6 +153,9 @@ FutureOr<String> rendimientoAzucarEdit(RendiminetoAzucarModel rendi) async {
       '${BASE}index.php?id_rendimiento_azucar=${rendi.idRendimientoAzucar}';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
+
+  final toJson = rendi.toJson();
+  debugPrint('lo que mandamos a crear: $toJson');
   final response = await http.put(
     Uri.parse(apiUrl),
     headers: <String, String>{
@@ -140,7 +169,7 @@ FutureOr<String> rendimientoAzucarEdit(RendiminetoAzucarModel rendi) async {
   Map<String, dynamic> visitas = json.decode(response.body);
   if (response.statusCode == 200) {
     print(response.body);
-    return visitas['mensaje'];
+    return 'ok';
   } else {
     // Maneja errores de la respuesta
     return visitas['error'];

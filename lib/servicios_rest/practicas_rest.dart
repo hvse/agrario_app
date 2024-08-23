@@ -68,11 +68,17 @@ FutureOr<String> manoDeletelocal(int id) async {
   }
 }
 
-FutureOr<List<PracticaModel>> practicaGetLocal() async {
+FutureOr<List<PracticaModel>> practicaGetLocal({bool synch = false}) async {
   final Isar isar = IsarService().isar;
   try {
-    final List<PracticaCollection> practicas =
-        await isar.practicaCollections.where().findAll();
+    final List<PracticaCollection> practicas;
+    if (synch) {
+      practicas =
+          await isar.practicaCollections.filter().synchEqualTo(false).findAll();
+    } else {
+      practicas = await isar.practicaCollections.where().findAll();
+    }
+
     return practicaFromListCollection(practicas);
   } catch (e) {
     debugPrint('Error: $e');
@@ -81,7 +87,7 @@ FutureOr<List<PracticaModel>> practicaGetLocal() async {
 }
 
 FutureOr<String> syncPractica() async {
-  List<PracticaModel> manos = await practicaGetLocal();
+  List<PracticaModel> manos = await practicaGetLocal(synch: true);
   for (var i = 0; i < manos.length; i++) {
     final response = await practicaAdd(manos[i]);
     if (response == 'OK') {
@@ -89,6 +95,19 @@ FutureOr<String> syncPractica() async {
     }
   }
   return 'OK';
+}
+
+FutureOr<String> practicasDeletelocalSynch() async {
+  final Isar isar = IsarService().isar;
+  try {
+    await isar.writeTxn(() async {
+      await isar.practicaCollections.filter().synchEqualTo(true).deleteAll();
+    });
+    return 'OK';
+  } catch (e) {
+    debugPrint('Error: $e');
+    return e.toString();
+  }
 }
 
 FutureOr<String> practicaAdd(PracticaModel mano) async {

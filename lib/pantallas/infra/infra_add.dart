@@ -1,4 +1,5 @@
 import 'package:agrario_app/modelos/infra_model.dart';
+import 'package:agrario_app/pantallas/infra/infra.dart';
 import 'package:agrario_app/pantallas/mano_obra/mano_obra.dart';
 import 'package:agrario_app/servicios_rest/infra_rest.dart';
 import 'package:agrario_app/servicios_rest/login_rest.dart';
@@ -81,8 +82,7 @@ class _InfraAddState extends State<InfraAdd> {
         visitaId = visitasGet.first.visitaId.toString();
         visitaIdController.text = visitaId;
 
-        productorId =
-            '${productoresGet.first.productorId.toString()}&${productoresGet.first.nombreProductor.toString()}';
+        productorId = productoresGet.first.productorId.toString();
         idProductorController.text =
             productoresGet.first.productorId.toString();
 
@@ -95,8 +95,8 @@ class _InfraAddState extends State<InfraAdd> {
 
         productores = productoresGet.map((productor) {
           return DropdownMenuItem(
-            value:
-                '${productor.productorId.toString()}&${productor.nombreProductor.toString()}', // Use productor.productorId.toString(),
+            value: productor.productorId
+                .toString(), // Use productor.productorId.toString(),
             child: Text(productor.nombreProductor.toString()),
           );
         }).toList();
@@ -142,17 +142,15 @@ class _InfraAddState extends State<InfraAdd> {
                                   visitaId = value.toString();
                                 })),
                         const SizedBox(height: 16.0),
-                        // DropdownButtonFormField(
-                        //     decoration: InputDecoration(
-                        //       labelText: 'Productor',
-                        //     ),
-                        //     value: productorId,
-                        //     items: productores,
-                        //     onChanged: (value) => setState(() {
-                        //           final List data = value.toString().split('&');
-                        //           productorId = data[0];
-                        //           _nombreproducto.text = data[1];
-                        //         })),,
+                        DropdownButtonFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Productor',
+                            ),
+                            value: productorId,
+                            items: productores,
+                            onChanged: (value) => setState(() {
+                                  productorId = value.toString();
+                                })),
                         const SizedBox(height: 16.0),
                         TextFormField(
                           validator: (value) => Validator.isValidEmpty(value),
@@ -201,7 +199,9 @@ class _InfraAddState extends State<InfraAdd> {
                     onPressed: () async {
                       if (!formKey.currentState!.validate()) return;
                       EasyLoading.show(status: 'Cargando...');
+
                       InfraModel infra = InfraModel(
+                        synch: false,
                         idInstraestructura: idinfra.text,
                         abonoParcelasCanhaAzucar:
                             abonoParcelasCanhaAzucarController.text,
@@ -222,10 +222,8 @@ class _InfraAddState extends State<InfraAdd> {
 
                       if (respuesta.toString().contains("OK")) {
                         EasyLoading.dismiss();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) => ManoObra())));
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: ((context) => Infra())));
                       } else {
                         EasyLoading.dismiss();
                         showAlertDialog(context, 'Error al registrar');

@@ -1,5 +1,7 @@
 import 'package:agrario_app/modelos/sostentabilidad_organica_model.dart';
 import 'package:agrario_app/pantallas/sostenibilidad_organica/sostenibilidad_organica.dart';
+import 'package:agrario_app/servicios_rest/finca_rest.dart';
+import 'package:agrario_app/servicios_rest/login_rest.dart';
 import 'package:agrario_app/servicios_rest/sostentabilidad_organica_rest.dart';
 import 'package:agrario_app/servicios_rest/utils.dart';
 import 'package:agrario_app/servicios_rest/validator.dart';
@@ -31,7 +33,11 @@ class _SostenibilidadOrganicaaddState extends State<SostenibilidadOrganicaadd> {
 
   bool isLoading = true;
   late List<DropdownMenuItem<Object>>? visitas;
+  late List<DropdownMenuItem<Object>>? productores;
+  late List<DropdownMenuItem<Object>>? fincas;
   String idVista = '';
+  String productorId = '';
+  String fincaId = '';
   String latitud = '';
   String longitud = '';
 
@@ -93,17 +99,37 @@ class _SostenibilidadOrganicaaddState extends State<SostenibilidadOrganicaadd> {
   Future<void> cargarDatos() async {
     try {
       var visiResult = await visitaGetLocal();
+      var fincaResult = await fincaGetlocal();
+      var productorResult = await productoresGetlocal();
       setState(() {
         if (widget.mano == null) {
           idVista = visiResult.firstOrNull?.visitaId.toString() ?? '';
+          productorId =
+              productorResult.firstOrNull?.productorId.toString() ?? '';
+          fincaId = fincaResult.firstOrNull?.fincaId.toString() ?? '';
           visitaId.text = idVista;
         } else {
           idVista = widget.mano!.visitaId.toString();
+          productorId = widget.mano!.idProductor.toString();
+          fincaId = widget.mano!.fincaId.toString();
         }
         visitas = visiResult.map((visita) {
           return DropdownMenuItem(
             value: visita.visitaId.toString(),
             child: Text(visita.visitaId.toString()),
+          );
+        }).toList();
+        productores = productorResult.map((productor) {
+          return DropdownMenuItem(
+            value: productor.productorId.toString(),
+            child: Text(productor.nombreProductor),
+          );
+        }).toList();
+
+        fincas = fincaResult.map((finca) {
+          return DropdownMenuItem(
+            value: finca.fincaId.toString(),
+            child: Text(finca.nombreFinca),
           );
         }).toList();
       });
@@ -141,29 +167,37 @@ class _SostenibilidadOrganicaaddState extends State<SostenibilidadOrganicaadd> {
                   Form(
                       key: formKey,
                       child: Column(children: [
-                        if (widget.mano != null)
-                          TextFormField(
-                            validator: (value) => Validator.isValidEmpty(value),
-                            controller: idSostentabilidadOrganica,
-                            decoration: const InputDecoration(
-                                labelText: 'Sostentabilidad Id'),
-                          ),
-                        TextFormField(
-                          validator: (value) => Validator.isValidEmpty(value),
-                          controller: idProductor,
-                          keyboardType: TextInputType.number,
-                          decoration:
-                              const InputDecoration(labelText: 'Productor Id'),
-                        ),
+                        const SizedBox(height: 16.0),
                         DropdownButtonFormField(
                             decoration: InputDecoration(
-                              labelText: 'Visita Id',
+                              labelText: 'Visita',
                             ),
                             value: idVista,
                             items: visitas,
                             onChanged: (value) => setState(() {
                                   idVista = value.toString();
                                 })),
+                        const SizedBox(height: 16.0),
+                        DropdownButtonFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Productor',
+                            ),
+                            value: productorId,
+                            items: productores,
+                            onChanged: (value) => setState(() {
+                                  productorId = value.toString();
+                                })),
+                        const SizedBox(height: 16.0),
+                        DropdownButtonFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Finca',
+                            ),
+                            value: fincaId,
+                            items: fincas,
+                            onChanged: (value) => setState(() {
+                                  fincaId = value.toString();
+                                })),
+                        const SizedBox(height: 16.0),
                         TextFormField(
                           validator: (value) => Validator.isValidEmpty(value),
                           controller: cobertura,
@@ -219,7 +253,7 @@ class _SostenibilidadOrganicaaddState extends State<SostenibilidadOrganicaadd> {
                         synch: false,
                         idSostentabilidadOrganica:
                             idSostentabilidadOrganica.text,
-                        idProductor: idProductor.text,
+                        idProductor: productorId,
                         cobertura: cobertura.text,
                         diversificacionCultivo: diversificacionCultivo.text,
                         abonosVerdes: abonosVerdes.text,
@@ -230,6 +264,7 @@ class _SostenibilidadOrganicaaddState extends State<SostenibilidadOrganicaadd> {
                         latitud: latitud,
                         longitud: longitud,
                         visitaId: idVista,
+                        fincaId: fincaId,
                       );
 
                       debugPrint(

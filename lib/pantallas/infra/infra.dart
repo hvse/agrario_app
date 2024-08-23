@@ -105,7 +105,13 @@ class _InfraState extends State<Infra> {
                               trailing: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
-                                  children: [],
+                                  children: [
+                                    if (!data[index].synch)
+                                      Icon(
+                                        Icons.sync,
+                                        color: Colors.orange,
+                                      )
+                                  ],
                                 ),
                               ));
                         },

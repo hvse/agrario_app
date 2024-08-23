@@ -35,6 +35,7 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
   late TextEditingController _apto_maquina;
   late TextEditingController _otros_cultivos;
   late TextEditingController _fotos;
+  late TextEditingController _herramientaLimpieza;
   late TextEditingController _nombrefinca;
   late TextEditingController _nombreproducto;
   bool isLoading = true;
@@ -66,6 +67,7 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
       _fotos = TextEditingController();
       _nombrefinca = TextEditingController();
       _nombreproducto = TextEditingController();
+      _herramientaLimpieza = TextEditingController();
     } else {
       _visitasId =
           TextEditingController(text: widget.visita!.visitaId.toString());
@@ -100,6 +102,8 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
           TextEditingController(text: widget.visita!.nombreFinca.toString());
       _nombreproducto = TextEditingController(
           text: widget.visita!.nombreProductor.toString());
+      _herramientaLimpieza = TextEditingController(
+          text: widget.visita!.herramientaLimpieza.toString());
     }
     getLocationAndUpdateState();
     cargarDatos();
@@ -131,17 +135,13 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
         if (widget.visita != null) {
           fincaId =
               '${widget.visita!.fincaId.toString()}&${widget.visita!.nombreFinca.toString()}';
-          productorId =
-              '${widget.visita!.productorId.toString()}&${widget.visita!.nombreProductor.toString()}';
-          _fincaId.text = widget.visita!.fincaId.toString();
-          _productoId.text = widget.visita!.productorId.toString();
+          productorId = widget.visita!.productorId.toString();
+          _nombreproducto.text = widget.visita!.nombreProductor.toString();
         } else {
           fincaId =
               '${result.first.fincaId.toString()}&${result.first.nombreFinca.toString()}';
-          productorId =
-              '${productor.first.productorId.toString()}&${productor.first.nombreProductor.toString()}';
-          _fincaId.text = result.first.fincaId.toString();
-          _productoId.text = productor.first.productorId.toString();
+          productorId = productor.first.productorId.toString();
+          _nombreproducto.text = productor.first.nombreProductor.toString();
         }
 
         fincas = result.map((finca) {
@@ -153,10 +153,10 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
         }).toList();
       });
 
-      productores = result.map((finca) {
+      productores = productor.map((productor) {
         return DropdownMenuItem(
-          value: '${finca.fincaId.toString()}&${finca.nombreFinca.toString()}',
-          child: Text(finca.nombreFinca.toString()),
+          value: productor.productorId.toString(),
+          child: Text(productor.nombreProductor),
         );
       }).toList();
 
@@ -193,24 +193,15 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
                   Form(
                       key: formKey,
                       child: Column(children: [
-                        if (widget.visita != null)
-                          TextFormField(
-                            validator: (value) => Validator.isValidEmpty(value),
-                            controller: _visitasId,
-                            decoration:
-                                const InputDecoration(labelText: 'Visita Id'),
-                          ),
-                        // DropdownButtonFormField(
-                        //     decoration: InputDecoration(
-                        //       labelText: 'Productor',
-                        //     ),
-                        //     value: productorId,
-                        //     items: productores,
-                        //     onChanged: (value) => setState(() {
-                        //           final List data = value.toString().split('&');
-                        //           productorId = data[0];
-                        //           _nombreproducto.text = data[1];
-                        //         })),
+                        DropdownButtonFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Productor',
+                            ),
+                            value: productorId,
+                            items: productores,
+                            onChanged: (value) => setState(() {
+                                  productorId = value.toString();
+                                })),
                         DropdownButtonFormField(
                             decoration: InputDecoration(
                               labelText: 'Finca',
@@ -218,19 +209,8 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
                             value: fincaId,
                             items: fincas,
                             onChanged: (value) => setState(() {
-                                  List data = value.toString().split('&');
-                                  fincaId = data[0];
-                                  _nombrefinca.text = data[1];
+                                  fincaId = value.toString();
                                 })),
-                        const SizedBox(height: 16.0),
-                        const SizedBox(height: 16.0),
-                        TextFormField(
-                          validator: (value) => Validator.isValidEmpty(value),
-                          controller: _productoId,
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                              labelText: 'Producto(número)'),
-                        ),
                         const SizedBox(height: 16.0),
                         TextFormField(
                           validator: (value) => Validator.isValidEmpty(value),
@@ -319,6 +299,12 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
                           decoration: const InputDecoration(
                               labelText: 'Otros cultivos'),
                         ),
+                        TextFormField(
+                          validator: (value) => Validator.isValidEmpty(value),
+                          controller: _herramientaLimpieza,
+                          decoration: const InputDecoration(
+                              labelText: 'Herramienta de Limpieza'),
+                        ),
                       ])),
                   const SizedBox(height: 16.0),
                   ElevatedButton(
@@ -332,11 +318,15 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
                       print('Contraseña: ${_visitasId.text}');
                       print('cultivo vecino: ${_observaciones.text}');
 
+                      List valorFinca = fincaId.split('&');
+                      List valorProductor = productorId.split('&');
+
                       VisitaModel visitaModel = VisitaModel(
+                        herramientaLimpieza: _herramientaLimpieza.text,
                         id: null,
                         visitaId: _visitasId.text,
-                        fincaId: fincaId,
-                        productorId: _productoId.text,
+                        fincaId: valorFinca[0],
+                        productorId: valorProductor[0],
                         fechaVisita: DateTime.parse(_fechaVisita.text),
                         observaciones: _observaciones.text,
                         cultivoVecino: _cultivo_vecino.text,
@@ -352,8 +342,8 @@ class _VisitasAddPageState extends State<VisitasAddPage> {
                         fotos: _fotos.text,
                         longitud: latitud,
                         latitud: longitud,
-                        nombreFinca: _nombrefinca.text,
-                        nombreProductor: _nombreproducto.text,
+                        nombreFinca: valorFinca[1],
+                        nombreProductor: "",
                         synch: false,
                       );
 

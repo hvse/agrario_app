@@ -88,12 +88,32 @@ FutureOr<String> fincaDeletelocal(int id) async {
   }
 }
 
-FutureOr<List<FincaModel>> fincaGetlocal() async {
+FutureOr<String> fincaDeletelocalSynch() async {
   final Isar isar = IsarService().isar;
   try {
-    final List<FincaCollection> visitas =
-        await isar.fincaCollections.where().findAll();
-    return fincasFromListCollection(visitas);
+    await isar.writeTxn(() async {
+      await isar.fincaCollections.filter().synchEqualTo(true).deleteAll();
+    });
+    return 'OK';
+  } catch (e) {
+    debugPrint('Error: $e');
+    return e.toString();
+  }
+}
+
+FutureOr<List<FincaModel>> fincaGetlocal({bool synch = false}) async {
+  final Isar isar = IsarService().isar;
+  try {
+    late List<FincaCollection> fincas;
+
+    if (synch) {
+      fincas =
+          await isar.fincaCollections.filter().synchEqualTo(false).findAll();
+    } else {
+      fincas = await isar.fincaCollections.where().findAll();
+    }
+
+    return fincasFromListCollection(fincas);
   } catch (e) {
     debugPrint('Error: $e');
     throw Error();
@@ -101,7 +121,7 @@ FutureOr<List<FincaModel>> fincaGetlocal() async {
 }
 
 FutureOr<void> syncFinca() async {
-  List<FincaModel> finca = await fincaGetlocal();
+  List<FincaModel> finca = await fincaGetlocal(synch: true);
   for (var i = 0; i < finca.length; i++) {
     final response = await fincaAdd(finca[i]);
     if (response.contains('Finca creada')) {

@@ -102,20 +102,26 @@ class _RendimientoOtroState extends State<RendimientoOtro> {
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   children: [
-                                    ElevatedButton(
-                                      child: Icon(Icons.more_vert),
-                                      onPressed: () {
-                                        showEditDeletOption(context, () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: ((context) =>
-                                                      RendimientoOtroAdd(
-                                                        mano: data[index],
-                                                      ))));
-                                        });
-                                      },
-                                    ),
+                                    if (data[index].synch)
+                                      ElevatedButton(
+                                        child: Icon(Icons.more_vert),
+                                        onPressed: () {
+                                          showEditDeletOption(context, () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: ((context) =>
+                                                        RendimientoOtroAdd(
+                                                          mano: data[index],
+                                                        ))));
+                                          });
+                                        },
+                                      ),
+                                    if (!data[index].synch)
+                                      Icon(
+                                        Icons.sync,
+                                        color: Colors.orange,
+                                      )
                                   ],
                                 ),
                               ));

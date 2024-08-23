@@ -1,5 +1,7 @@
 import 'package:agrario_app/modelos/rendimiento_azucar_model.dart';
 import 'package:agrario_app/pantallas/rendimiento_azucar/rendimiento_azucar.dart';
+import 'package:agrario_app/servicios_rest/finca_rest.dart';
+import 'package:agrario_app/servicios_rest/login_rest.dart';
 import 'package:agrario_app/servicios_rest/rendimiento_azucar_rest.dart';
 import 'package:agrario_app/servicios_rest/utils.dart';
 import 'package:agrario_app/servicios_rest/validator.dart';
@@ -34,7 +36,11 @@ class _RendimientoAzucarAddState extends State<RendimientoAzucarAdd> {
 
   bool isLoading = true;
   late List<DropdownMenuItem<Object>>? visitas;
+  late List<DropdownMenuItem<Object>>? productores;
+  late List<DropdownMenuItem<Object>>? fincas;
   String idVista = '';
+  String productorId = '';
+  String fincaId = '';
   String latitud = '';
   String longitud = '';
 
@@ -99,17 +105,37 @@ class _RendimientoAzucarAddState extends State<RendimientoAzucarAdd> {
   Future<void> cargarDatos() async {
     try {
       var visiResult = await visitaGetLocal();
+      var fincaResult = await fincaGetlocal();
+      var productorResult = await productoresGetlocal();
       setState(() {
         if (widget.mano == null) {
           idVista = visiResult.firstOrNull?.visitaId.toString() ?? '';
+          productorId =
+              productorResult.firstOrNull?.productorId.toString() ?? '';
+          fincaId = fincaResult.firstOrNull?.fincaId.toString() ?? '';
           visitaId.text = idVista;
         } else {
           idVista = widget.mano!.visitaId.toString();
+          productorId = widget.mano!.idProductor.toString();
+          fincaId = widget.mano!.fincaId.toString();
         }
         visitas = visiResult.map((visita) {
           return DropdownMenuItem(
             value: visita.visitaId.toString(),
             child: Text(visita.visitaId.toString()),
+          );
+        }).toList();
+        productores = productorResult.map((productor) {
+          return DropdownMenuItem(
+            value: productor.productorId.toString(),
+            child: Text(productor.nombreProductor),
+          );
+        }).toList();
+
+        fincas = fincaResult.map((finca) {
+          return DropdownMenuItem(
+            value: finca.fincaId.toString(),
+            child: Text(finca.nombreFinca),
           );
         }).toList();
       });
@@ -134,8 +160,8 @@ class _RendimientoAzucarAddState extends State<RendimientoAzucarAdd> {
     return Scaffold(
       appBar: AppBar(
         title: widget.mano == null
-            ? const Text('Agregar Rendimiento Azucar')
-            : const Text('Editar Rendimiento Azucar'),
+            ? const Text('Agregar Caña de Azucar')
+            : const Text('Editar Caña de Azucar'),
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
@@ -147,29 +173,36 @@ class _RendimientoAzucarAddState extends State<RendimientoAzucarAdd> {
                   Form(
                       key: formKey,
                       child: Column(children: [
-                        if (widget.mano != null)
-                          TextFormField(
-                            validator: (value) => Validator.isValidEmpty(value),
-                            controller: idRendimientoAzucar,
-                            decoration: const InputDecoration(
-                                labelText: 'Rendimiento Id'),
-                          ),
-                        TextFormField(
-                          validator: (value) => Validator.isValidEmpty(value),
-                          controller: idProductor,
-                          keyboardType: TextInputType.number,
-                          decoration:
-                              const InputDecoration(labelText: 'Productor Id'),
-                        ),
                         DropdownButtonFormField(
                             decoration: InputDecoration(
-                              labelText: 'Visita Id',
+                              labelText: 'Visita',
                             ),
                             value: idVista,
                             items: visitas,
                             onChanged: (value) => setState(() {
                                   idVista = value.toString();
                                 })),
+                        const SizedBox(height: 16.0),
+                        DropdownButtonFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Productor',
+                            ),
+                            value: productorId,
+                            items: productores,
+                            onChanged: (value) => setState(() {
+                                  productorId = value.toString();
+                                })),
+                        const SizedBox(height: 16.0),
+                        DropdownButtonFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Finca',
+                            ),
+                            value: fincaId,
+                            items: fincas,
+                            onChanged: (value) => setState(() {
+                                  fincaId = value.toString();
+                                })),
+                        const SizedBox(height: 16.0),
                         TextFormField(
                           validator: (value) => Validator.isValidEmpty(value),
                           controller: variedades,
@@ -203,6 +236,7 @@ class _RendimientoAzucarAddState extends State<RendimientoAzucarAdd> {
                             }
                           },
                         ),
+                        const SizedBox(height: 16.0),
                         TextFormField(
                           validator: (value) => Validator.isValidEmpty(value),
                           controller: hectConv,
@@ -253,6 +287,7 @@ class _RendimientoAzucarAddState extends State<RendimientoAzucarAdd> {
                       EasyLoading.show(status: 'Cargando...');
                       RendiminetoAzucarModel rendiminetoAzucarModel =
                           RendiminetoAzucarModel(
+                        fincaId: fincaId,
                         synch: false,
                         idRendimientoAzucar: idRendimientoAzucar.text,
                         visitaId: idVista,
@@ -266,7 +301,7 @@ class _RendimientoAzucarAddState extends State<RendimientoAzucarAdd> {
                         tonConv: tonConv.text,
                         tonConver: tonConver.text,
                         tonOrg: tonOrg.text,
-                        idProductor: idProductor.text,
+                        idProductor: productorId,
                         latitud: latitud,
                         longitud: longitud,
                       );
@@ -289,9 +324,7 @@ class _RendimientoAzucarAddState extends State<RendimientoAzucarAdd> {
                       } else {
                         var respuesta =
                             await rendimientoAzucarEdit(rendiminetoAzucarModel);
-                        if (respuesta
-                            .toString()
-                            .contains("Practicas Observadas  Actualizada")) {
+                        if (respuesta.toString().contains("ok")) {
                           EasyLoading.dismiss();
                           Navigator.push(
                               context,

@@ -19,6 +19,7 @@ List<RendimientoAzucarCollection> rendimientoAzucarCollectionFromListJson(
   for (final entry in praxticas) {
     final RendimientoAzucarCollection rendimientoAzucarCollection =
         RendimientoAzucarCollection()
+          ..fincaId = entry.fincaId
           ..idRendimientoAzucar = entry.idRendimientoAzucar
           ..anho = entry.anho
           ..fechaCorte = entry.fechaCorte
@@ -48,6 +49,7 @@ List<RendiminetoAzucarModel> rendimientoAzucarFromListCollection(
   for (final entry in practicas) {
     final RendiminetoAzucarModel status = RendiminetoAzucarModel(
       id: entry.id,
+      fincaId: entry.fincaId!,
       idRendimientoAzucar: entry.idRendimientoAzucar!,
       nroParcelas: entry.nroParcelas!,
       hectOrg: entry.hectOrg!,
@@ -72,6 +74,7 @@ List<RendiminetoAzucarModel> rendimientoAzucarFromListCollection(
 
 class RendiminetoAzucarModel {
   final int? id;
+  final String fincaId;
   final String idRendimientoAzucar;
   final String nroParcelas;
   final String hectOrg;
@@ -106,6 +109,7 @@ class RendiminetoAzucarModel {
     required this.visitaId,
     required this.idProductor,
     required this.synch,
+    required this.fincaId,
     this.id,
   });
 
@@ -139,6 +143,7 @@ class RendiminetoAzucarModel {
         visitaId: json["VisitaID"] == null ? "" : json["VisitaID"].toString(),
         idProductor:
             json["id_productor"] == null ? "" : json["id_productor"].toString(),
+        fincaId: json["FincaID"] == null ? "" : json["FincaID"].toString(),
         synch: true,
       );
 
@@ -158,5 +163,6 @@ class RendiminetoAzucarModel {
         "longitud": longitud,
         "VisitaID": int.parse(visitaId),
         "id_productor": int.parse(idProductor),
+        "FincaID": int.parse(fincaId),
       };
 }

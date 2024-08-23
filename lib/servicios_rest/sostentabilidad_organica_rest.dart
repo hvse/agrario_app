@@ -81,11 +81,20 @@ FutureOr<String> sosOrganicaDeletelocal(int id) async {
   }
 }
 
-FutureOr<List<SostentabilidadOrganicaModel>> sosOrganicaGetLocal() async {
+FutureOr<List<SostentabilidadOrganicaModel>> sosOrganicaGetLocal(
+    {bool synch = false}) async {
   final Isar isar = IsarService().isar;
   try {
-    final List<SostentabilidadOrganicaCollection> practicas =
-        await isar.sostentabilidadOrganicaCollections.where().findAll();
+    final List<SostentabilidadOrganicaCollection> practicas;
+    if (synch) {
+      practicas = await isar.sostentabilidadOrganicaCollections
+          .filter()
+          .synchEqualTo(false)
+          .findAll();
+    } else {
+      practicas =
+          await isar.sostentabilidadOrganicaCollections.where().findAll();
+    }
     return sosOrganicaFromListCollection(practicas);
   } catch (e) {
     debugPrint('Error: $e');
@@ -94,7 +103,8 @@ FutureOr<List<SostentabilidadOrganicaModel>> sosOrganicaGetLocal() async {
 }
 
 FutureOr<String> syncSosOrganica() async {
-  List<SostentabilidadOrganicaModel> manos = await sosOrganicaGetLocal();
+  List<SostentabilidadOrganicaModel> manos =
+      await sosOrganicaGetLocal(synch: true);
   for (var i = 0; i < manos.length; i++) {
     final response = await sosOrganicaAdd(manos[i]);
     if (response == 'OK') {
@@ -108,6 +118,11 @@ FutureOr<String> sosOrganicaAdd(SostentabilidadOrganicaModel rendi) async {
   final String apiUrl = '${BASE}index.php?action=CrearPlanSostOrganica';
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? cokie = prefs.getString('session');
+
+  debugPrint('lo que mandamos a crear: ${rendi.toJson()}');
+  final toJson = rendi.toJson();
+
+  debugPrint('lo que mandamos a crear: $toJson');
   // Realiza la solicitud POST
   final response = await http.post(
     Uri.parse(apiUrl),
@@ -124,6 +139,22 @@ FutureOr<String> sosOrganicaAdd(SostentabilidadOrganicaModel rendi) async {
     return "OK";
   } else {
     throw Error();
+  }
+}
+
+FutureOr<String> sosDeletelocalSynch() async {
+  final Isar isar = IsarService().isar;
+  try {
+    await isar.writeTxn(() async {
+      await isar.sostentabilidadOrganicaCollections
+          .filter()
+          .synchEqualTo(true)
+          .deleteAll();
+    });
+    return 'OK';
+  } catch (e) {
+    debugPrint('Error: $e');
+    return e.toString();
   }
 }
 

@@ -23,28 +23,30 @@ List<VisitaModel> visitasFromListCollection(List<VisitaCollection> visitas) {
   final List<VisitaModel> packageList = [];
   for (final entry in visitas) {
     final VisitaModel status = VisitaModel(
-        synch: entry.synch,
-        id: entry.id,
-        visitaId: entry.visitaId,
-        fincaId: entry.fincaId,
-        productorId: entry.productorId,
-        fechaVisita: entry.fechaVisita,
-        observaciones: entry.observaciones,
-        cultivoVecino: entry.cultivoVecino,
-        cosechaMecanica: entry.cosechaMecanica,
-        canhaOrganica: entry.canhaOrganica,
-        canhaConversion: entry.canhaConversion,
-        tierraDescanso: entry.tierraDescanso,
-        maquinariasUtilizadas: entry.maquinariasUtilizadas,
-        anho: entry.anho,
-        formaCosecha: entry.formaCosecha,
-        aptoMaquina: entry.aptoMaquina,
-        otrosCultivos: entry.otrosCultivos,
-        fotos: entry.fotos,
-        longitud: entry.longitud,
-        latitud: entry.latitud,
-        nombreFinca: entry.nombreFinca,
-        nombreProductor: entry.nombreProductor);
+      synch: entry.synch,
+      id: entry.id,
+      visitaId: entry.visitaId,
+      fincaId: entry.fincaId,
+      productorId: entry.productorId,
+      fechaVisita: entry.fechaVisita,
+      observaciones: entry.observaciones,
+      cultivoVecino: entry.cultivoVecino,
+      cosechaMecanica: entry.cosechaMecanica,
+      canhaOrganica: entry.canhaOrganica,
+      canhaConversion: entry.canhaConversion,
+      tierraDescanso: entry.tierraDescanso,
+      maquinariasUtilizadas: entry.maquinariasUtilizadas,
+      anho: entry.anho,
+      formaCosecha: entry.formaCosecha,
+      aptoMaquina: entry.aptoMaquina,
+      otrosCultivos: entry.otrosCultivos,
+      fotos: entry.fotos,
+      longitud: entry.longitud,
+      latitud: entry.latitud,
+      nombreFinca: entry.nombreFinca,
+      nombreProductor: entry.nombreProductor,
+      herramientaLimpieza: entry.herramientaLimpieza,
+    );
     packageList.add(status);
   }
   return packageList;
@@ -75,6 +77,7 @@ List<VisitaCollection> visitasCollectionFromListJson(List<VisitaModel> visita) {
       ..visitaId = entry.visitaId
       ..nombreFinca = entry.nombreFinca
       ..synch = entry.synch
+      ..herramientaLimpieza = entry.herramientaLimpieza
       ..nombreProductor = entry.nombreProductor;
 
     packageList.add(status);
@@ -105,6 +108,7 @@ class VisitaModel {
   final dynamic nombreFinca;
   final dynamic nombreProductor;
   final bool synch;
+  final dynamic herramientaLimpieza;
 
   VisitaModel({
     required this.id,
@@ -129,55 +133,56 @@ class VisitaModel {
     required this.nombreFinca,
     required this.nombreProductor,
     required this.synch,
+    required this.herramientaLimpieza,
   });
 
   factory VisitaModel.fromJson(Map<String, dynamic> json) => VisitaModel(
-        id: null,
-        visitaId: json["VisitaID"] == null ? "" : json["VisitaID"].toString(),
-        fincaId: json["FincaID"] == null ? "" : json["FincaID"].toString(),
-        productorId:
-            json["ProductorID"] == null ? "" : json["ProductorID"].toString(),
-        fechaVisita: DateTime.parse(json["FechaVisita"] ?? ""),
-        observaciones: json["Observaciones"] == null
-            ? ""
-            : json["Observaciones"].toString(),
-        cultivoVecino: json["cultivo_vecino"] == null
-            ? ""
-            : json["cultivo_vecino"].toString(),
-        cosechaMecanica: json["cosecha_mecanica"] == null
-            ? ""
-            : json["cosecha_mecanica"].toString(),
-        canhaOrganica: json["canha_organica"] == null
-            ? ""
-            : json["canha_organica"].toString(),
-        canhaConversion: json["canha_conversion"] == null
-            ? ""
-            : json["canha_conversion"].toString(),
-        tierraDescanso: json["tierra_descanso"] == null
-            ? ""
-            : json["tierra_descanso"].toString(),
-        maquinariasUtilizadas: json["maquinarias_utilizadas"] == null
-            ? ""
-            : json["maquinarias_utilizadas"].toString(),
-        anho: json["anho"] == null ? "" : json["anho"].toString(),
-        formaCosecha: json["forma_cosecha"] == null
-            ? ""
-            : json["forma_cosecha"].toString(),
-        aptoMaquina:
-            json["apto_maquina"] == null ? "" : json["apto_maquina"].toString(),
-        otrosCultivos: json["otros_cultivos"] == null
-            ? ""
-            : json["otros_cultivos"].toString(),
-        fotos: json["fotos"] == null ? "" : json["fotos"].toString(),
-        longitud: json["longitud"] == null ? "" : json["longitud"].toString(),
-        latitud: json["latitud"] == null ? "" : json["latitud"].toString(),
-        nombreFinca:
-            json["NombreFinca"] == null ? "" : json["NombreFinca"].toString(),
-        nombreProductor: json["NombreProductor"] == null
-            ? ""
-            : json["NombreProductor"].toString(),
-        synch: true,
-      );
+      id: null,
+      visitaId: json["VisitaID"] == null ? "" : json["VisitaID"].toString(),
+      fincaId: json["FincaID"] == null ? "" : json["FincaID"].toString(),
+      productorId:
+          json["ProductorID"] == null ? "" : json["ProductorID"].toString(),
+      fechaVisita: DateTime.parse(json["FechaVisita"] ?? ""),
+      observaciones:
+          json["Observaciones"] == null ? "" : json["Observaciones"].toString(),
+      cultivoVecino: json["cultivo_vecino"] == null
+          ? ""
+          : json["cultivo_vecino"].toString(),
+      cosechaMecanica: json["cosecha_mecanica"] == null
+          ? ""
+          : json["cosecha_mecanica"].toString(),
+      canhaOrganica: json["canha_organica"] == null
+          ? ""
+          : json["canha_organica"].toString(),
+      canhaConversion: json["canha_conversion"] == null
+          ? ""
+          : json["canha_conversion"].toString(),
+      tierraDescanso: json["tierra_descanso"] == null
+          ? ""
+          : json["tierra_descanso"].toString(),
+      maquinariasUtilizadas: json["maquinarias_utilizadas"] == null
+          ? ""
+          : json["maquinarias_utilizadas"].toString(),
+      anho: json["anho"] == null ? "" : json["anho"].toString(),
+      formaCosecha:
+          json["forma_cosecha"] == null ? "" : json["forma_cosecha"].toString(),
+      aptoMaquina:
+          json["apto_maquina"] == null ? "" : json["apto_maquina"].toString(),
+      otrosCultivos: json["otros_cultivos"] == null
+          ? ""
+          : json["otros_cultivos"].toString(),
+      fotos: json["fotos"] == null ? "" : json["fotos"].toString(),
+      longitud: json["longitud"] == null ? "" : json["longitud"].toString(),
+      latitud: json["latitud"] == null ? "" : json["latitud"].toString(),
+      nombreFinca:
+          json["NombreFinca"] == null ? "" : json["NombreFinca"].toString(),
+      nombreProductor: json["NombreProductor"] == null
+          ? ""
+          : json["NombreProductor"].toString(),
+      synch: true,
+      herramientaLimpieza: json['herramienta_limpieza'] == null
+          ? ""
+          : json['herramienta_limpieza'].toString());
 
   Map<String, dynamic> toJson() => {
         "VisitaID": visitaId == "" ? null : int.parse(visitaId),
@@ -200,6 +205,7 @@ class VisitaModel {
         "latitud": latitud,
         "NombreFinca": nombreFinca,
         "NombreProductor": nombreProductor,
+        "herramienta_limpieza": herramientaLimpieza
       };
 
   factory VisitaModel.empty() => VisitaModel(
@@ -224,6 +230,7 @@ class VisitaModel {
         latitud: '',
         nombreFinca: '',
         nombreProductor: '',
+        herramientaLimpieza: '',
         synch: true,
       );
 }

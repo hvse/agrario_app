@@ -21,5 +21,6 @@ class RendimientoAzucarCollection {
   late String? longitud;
   late String? visitaId;
   late String? idProductor;
+  late String? fincaId;
   late bool? synch;
 }

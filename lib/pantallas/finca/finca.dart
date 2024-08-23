@@ -84,16 +84,22 @@ class _FincaState extends State<Finca> {
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   children: [
-                                    ElevatedButton(
-                                      child: Icon(Icons.more_vert),
-                                      onPressed: () {
-                                        print("Editing ");
-                                        this.visitaId =
-                                            data[index].fincaId.toString();
-                                        _showEditDeletOption(
-                                            context, data[index]);
-                                      },
-                                    ),
+                                    if (data[index].synch)
+                                      ElevatedButton(
+                                        child: Icon(Icons.more_vert),
+                                        onPressed: () {
+                                          print("Editing ");
+                                          this.visitaId =
+                                              data[index].fincaId.toString();
+                                          _showEditDeletOption(
+                                              context, data[index]);
+                                        },
+                                      ),
+                                    if (!data[index].synch)
+                                      Icon(
+                                        Icons.sync,
+                                        color: Colors.orangeAccent,
+                                      ),
                                   ],
                                 ),
                               ));

@@ -116,20 +116,26 @@ class _PracticasObsState extends State<PracticasObs> {
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   children: [
-                                    ElevatedButton(
-                                      child: Icon(Icons.more_vert),
-                                      onPressed: () {
-                                        showEditDeletOption(context, () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: ((context) =>
-                                                      PracticaAdd(
-                                                        mano: data[index],
-                                                      ))));
-                                        });
-                                      },
-                                    ),
+                                    if (data[index].synch!)
+                                      ElevatedButton(
+                                        child: Icon(Icons.more_vert),
+                                        onPressed: () {
+                                          showEditDeletOption(context, () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: ((context) =>
+                                                        PracticaAdd(
+                                                          mano: data[index],
+                                                        ))));
+                                          });
+                                        },
+                                      ),
+                                    if (!data[index].synch!)
+                                      Icon(
+                                        Icons.sync,
+                                        color: Colors.orange,
+                                      )
                                   ],
                                 ),
                               ));

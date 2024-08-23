@@ -68,11 +68,17 @@ FutureOr<String> manoDeletelocal(int id) async {
   }
 }
 
-FutureOr<List<InfraModel>> infraGetLocal() async {
+FutureOr<List<InfraModel>> infraGetLocal({synch = false}) async {
   final Isar isar = IsarService().isar;
   try {
-    final List<InfraCollection> visitas =
-        await isar.infraCollections.where().findAll();
+    final List<InfraCollection> visitas;
+
+    if (synch) {
+      visitas =
+          await isar.infraCollections.filter().synchEqualTo(false).findAll();
+    } else {
+      visitas = await isar.infraCollections.where().findAll();
+    }
     return fincasFromListCollection(visitas);
   } catch (e) {
     debugPrint('Error: $e');
@@ -81,7 +87,7 @@ FutureOr<List<InfraModel>> infraGetLocal() async {
 }
 
 FutureOr<String> syncInfra() async {
-  List<InfraModel> manos = await infraGetLocal();
+  List<InfraModel> manos = await infraGetLocal(synch: true);
   for (var i = 0; i < manos.length; i++) {
     final response = await infraAdd(manos[i]);
     if (response == 'OK') {
@@ -89,6 +95,19 @@ FutureOr<String> syncInfra() async {
     }
   }
   return 'OK';
+}
+
+FutureOr<String> InfraDeletelocalSynch() async {
+  final Isar isar = IsarService().isar;
+  try {
+    await isar.writeTxn(() async {
+      await isar.infraCollections.filter().synchEqualTo(true).deleteAll();
+    });
+    return 'OK';
+  } catch (e) {
+    debugPrint('Error: $e');
+    return e.toString();
+  }
 }
 
 FutureOr<String> infraAdd(InfraModel infra) async {

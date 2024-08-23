@@ -28,73 +28,78 @@ const RendimientoAzucarCollectionSchema = CollectionSchema(
       name: r'fechaCorte',
       type: IsarType.string,
     ),
-    r'hectConv': PropertySchema(
+    r'fincaId': PropertySchema(
       id: 2,
+      name: r'fincaId',
+      type: IsarType.string,
+    ),
+    r'hectConv': PropertySchema(
+      id: 3,
       name: r'hectConv',
       type: IsarType.string,
     ),
     r'hectConver': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'hectConver',
       type: IsarType.string,
     ),
     r'hectOrg': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'hectOrg',
       type: IsarType.string,
     ),
     r'idProductor': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'idProductor',
       type: IsarType.string,
     ),
     r'idRendimientoAzucar': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'idRendimientoAzucar',
       type: IsarType.string,
     ),
     r'latitud': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'latitud',
       type: IsarType.string,
     ),
     r'longitud': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'longitud',
       type: IsarType.string,
     ),
     r'nroParcelas': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'nroParcelas',
       type: IsarType.string,
     ),
     r'synch': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'synch',
       type: IsarType.bool,
     ),
     r'tonConv': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'tonConv',
       type: IsarType.string,
     ),
     r'tonConver': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'tonConver',
       type: IsarType.string,
     ),
     r'tonOrg': PropertySchema(
-      id: 13,
+      id: 14,
       name: r'tonOrg',
       type: IsarType.string,
     ),
     r'variedades': PropertySchema(
-      id: 14,
+      id: 15,
       name: r'variedades',
       type: IsarType.string,
     ),
     r'visitaId': PropertySchema(
-      id: 15,
+      id: 16,
       name: r'visitaId',
       type: IsarType.string,
     )
@@ -127,6 +132,12 @@ int _rendimientoAzucarCollectionEstimateSize(
   }
   {
     final value = object.fechaCorte;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.fincaId;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -220,20 +231,21 @@ void _rendimientoAzucarCollectionSerialize(
 ) {
   writer.writeString(offsets[0], object.anho);
   writer.writeString(offsets[1], object.fechaCorte);
-  writer.writeString(offsets[2], object.hectConv);
-  writer.writeString(offsets[3], object.hectConver);
-  writer.writeString(offsets[4], object.hectOrg);
-  writer.writeString(offsets[5], object.idProductor);
-  writer.writeString(offsets[6], object.idRendimientoAzucar);
-  writer.writeString(offsets[7], object.latitud);
-  writer.writeString(offsets[8], object.longitud);
-  writer.writeString(offsets[9], object.nroParcelas);
-  writer.writeBool(offsets[10], object.synch);
-  writer.writeString(offsets[11], object.tonConv);
-  writer.writeString(offsets[12], object.tonConver);
-  writer.writeString(offsets[13], object.tonOrg);
-  writer.writeString(offsets[14], object.variedades);
-  writer.writeString(offsets[15], object.visitaId);
+  writer.writeString(offsets[2], object.fincaId);
+  writer.writeString(offsets[3], object.hectConv);
+  writer.writeString(offsets[4], object.hectConver);
+  writer.writeString(offsets[5], object.hectOrg);
+  writer.writeString(offsets[6], object.idProductor);
+  writer.writeString(offsets[7], object.idRendimientoAzucar);
+  writer.writeString(offsets[8], object.latitud);
+  writer.writeString(offsets[9], object.longitud);
+  writer.writeString(offsets[10], object.nroParcelas);
+  writer.writeBool(offsets[11], object.synch);
+  writer.writeString(offsets[12], object.tonConv);
+  writer.writeString(offsets[13], object.tonConver);
+  writer.writeString(offsets[14], object.tonOrg);
+  writer.writeString(offsets[15], object.variedades);
+  writer.writeString(offsets[16], object.visitaId);
 }
 
 RendimientoAzucarCollection _rendimientoAzucarCollectionDeserialize(
@@ -245,21 +257,22 @@ RendimientoAzucarCollection _rendimientoAzucarCollectionDeserialize(
   final object = RendimientoAzucarCollection();
   object.anho = reader.readStringOrNull(offsets[0]);
   object.fechaCorte = reader.readStringOrNull(offsets[1]);
-  object.hectConv = reader.readStringOrNull(offsets[2]);
-  object.hectConver = reader.readStringOrNull(offsets[3]);
-  object.hectOrg = reader.readStringOrNull(offsets[4]);
+  object.fincaId = reader.readStringOrNull(offsets[2]);
+  object.hectConv = reader.readStringOrNull(offsets[3]);
+  object.hectConver = reader.readStringOrNull(offsets[4]);
+  object.hectOrg = reader.readStringOrNull(offsets[5]);
   object.id = id;
-  object.idProductor = reader.readStringOrNull(offsets[5]);
-  object.idRendimientoAzucar = reader.readStringOrNull(offsets[6]);
-  object.latitud = reader.readStringOrNull(offsets[7]);
-  object.longitud = reader.readStringOrNull(offsets[8]);
-  object.nroParcelas = reader.readStringOrNull(offsets[9]);
-  object.synch = reader.readBoolOrNull(offsets[10]);
-  object.tonConv = reader.readStringOrNull(offsets[11]);
-  object.tonConver = reader.readStringOrNull(offsets[12]);
-  object.tonOrg = reader.readStringOrNull(offsets[13]);
-  object.variedades = reader.readStringOrNull(offsets[14]);
-  object.visitaId = reader.readStringOrNull(offsets[15]);
+  object.idProductor = reader.readStringOrNull(offsets[6]);
+  object.idRendimientoAzucar = reader.readStringOrNull(offsets[7]);
+  object.latitud = reader.readStringOrNull(offsets[8]);
+  object.longitud = reader.readStringOrNull(offsets[9]);
+  object.nroParcelas = reader.readStringOrNull(offsets[10]);
+  object.synch = reader.readBoolOrNull(offsets[11]);
+  object.tonConv = reader.readStringOrNull(offsets[12]);
+  object.tonConver = reader.readStringOrNull(offsets[13]);
+  object.tonOrg = reader.readStringOrNull(offsets[14]);
+  object.variedades = reader.readStringOrNull(offsets[15]);
+  object.visitaId = reader.readStringOrNull(offsets[16]);
   return object;
 }
 
@@ -291,9 +304,9 @@ P _rendimientoAzucarCollectionDeserializeProp<P>(
     case 9:
       return (reader.readStringOrNull(offset)) as P;
     case 10:
-      return (reader.readBoolOrNull(offset)) as P;
-    case 11:
       return (reader.readStringOrNull(offset)) as P;
+    case 11:
+      return (reader.readBoolOrNull(offset)) as P;
     case 12:
       return (reader.readStringOrNull(offset)) as P;
     case 13:
@@ -301,6 +314,8 @@ P _rendimientoAzucarCollectionDeserializeProp<P>(
     case 14:
       return (reader.readStringOrNull(offset)) as P;
     case 15:
+      return (reader.readStringOrNull(offset)) as P;
+    case 16:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -713,6 +728,162 @@ extension RendimientoAzucarCollectionQueryFilter on QueryBuilder<
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'fechaCorte',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterFilterCondition> fincaIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'fincaId',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterFilterCondition> fincaIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'fincaId',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterFilterCondition> fincaIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'fincaId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterFilterCondition> fincaIdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'fincaId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterFilterCondition> fincaIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'fincaId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterFilterCondition> fincaIdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'fincaId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterFilterCondition> fincaIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'fincaId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterFilterCondition> fincaIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'fincaId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+          QAfterFilterCondition>
+      fincaIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'fincaId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+          QAfterFilterCondition>
+      fincaIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'fincaId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterFilterCondition> fincaIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'fincaId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterFilterCondition> fincaIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'fincaId',
         value: '',
       ));
     });
@@ -2872,6 +3043,20 @@ extension RendimientoAzucarCollectionQuerySortBy on QueryBuilder<
   }
 
   QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterSortBy> sortByFincaId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fincaId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterSortBy> sortByFincaIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fincaId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
       QAfterSortBy> sortByHectConv() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'hectConv', Sort.asc);
@@ -3095,6 +3280,20 @@ extension RendimientoAzucarCollectionQuerySortThenBy on QueryBuilder<
       QAfterSortBy> thenByFechaCorteDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'fechaCorte', Sort.desc);
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterSortBy> thenByFincaId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fincaId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QAfterSortBy> thenByFincaIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fincaId', Sort.desc);
     });
   }
 
@@ -3326,6 +3525,13 @@ extension RendimientoAzucarCollectionQueryWhereDistinct on QueryBuilder<
   }
 
   QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
+      QDistinct> distinctByFincaId({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'fincaId', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, RendimientoAzucarCollection,
       QDistinct> distinctByHectConv({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'hectConv', caseSensitive: caseSensitive);
@@ -3445,6 +3651,13 @@ extension RendimientoAzucarCollectionQueryProperty on QueryBuilder<
       fechaCorteProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'fechaCorte');
+    });
+  }
+
+  QueryBuilder<RendimientoAzucarCollection, String?, QQueryOperations>
+      fincaIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'fincaId');
     });
   }
 

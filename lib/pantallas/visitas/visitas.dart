@@ -72,10 +72,7 @@ class _VisitasState extends State<Visitas> {
                         ),
                         itemBuilder: (context, index) {
                           return ListTile(
-                              title: Text("VisitaId: " +
-                                  data[index].visitaId.toString() +
-                                  "\n" +
-                                  "Finca: " +
+                              title: Text("Finca: " +
                                   data[index].nombreFinca.toString() +
                                   "\n" +
                                   "Productor: " +
@@ -89,25 +86,29 @@ class _VisitasState extends State<Visitas> {
                                   "\n" +
                                   "Cultivo Vecino: " +
                                   data[index].cultivoVecino),
-
-                              // Puedes agregar más widgets aquí según tus necesidades
                               trailing: SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   children: [
-                                    ElevatedButton(
-                                      child: Icon(Icons.more_vert),
-                                      onPressed: () =>
-                                          showEditDeletOption(context, () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: ((context) =>
-                                                    VisitasAddPage(
-                                                      visita: data[index],
-                                                    ))));
-                                      }),
-                                    ),
+                                    if (data[index].synch)
+                                      ElevatedButton(
+                                        child: Icon(Icons.more_vert),
+                                        onPressed: () =>
+                                            showEditDeletOption(context, () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: ((context) =>
+                                                      VisitasAddPage(
+                                                        visita: data[index],
+                                                      ))));
+                                        }),
+                                      ),
+                                    if (!data[index].synch)
+                                      Icon(
+                                        Icons.sync,
+                                        color: Colors.orange,
+                                      )
                                   ],
                                 ),
                               ));

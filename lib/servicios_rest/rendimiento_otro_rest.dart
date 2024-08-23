@@ -75,11 +75,20 @@ FutureOr<String> rendimientoOtroDeletelocal(int id) async {
   }
 }
 
-FutureOr<List<RendimientoOtroModel>> rendimientoOtroGetLocal() async {
+FutureOr<List<RendimientoOtroModel>> rendimientoOtroGetLocal(
+    {bool synch = false}) async {
   final Isar isar = IsarService().isar;
   try {
-    final List<RendimientoOtroCollection> practicas =
-        await isar.rendimientoOtroCollections.where().findAll();
+    final List<RendimientoOtroCollection> practicas;
+
+    if (synch) {
+      practicas = await isar.rendimientoOtroCollections
+          .filter()
+          .synchEqualTo(false)
+          .findAll();
+    } else {
+      practicas = await isar.rendimientoOtroCollections.where().findAll();
+    }
     return rendimientoOtroFromListCollection(practicas);
   } catch (e) {
     debugPrint('Error: $e');
@@ -88,7 +97,7 @@ FutureOr<List<RendimientoOtroModel>> rendimientoOtroGetLocal() async {
 }
 
 FutureOr<String> syncRendimientoOtro() async {
-  List<RendimientoOtroModel> manos = await rendimientoOtroGetLocal();
+  List<RendimientoOtroModel> manos = await rendimientoOtroGetLocal(synch: true);
   for (var i = 0; i < manos.length; i++) {
     final response = await rendimientoOtroAdd(manos[i]);
     if (response == 'OK') {
@@ -96,6 +105,22 @@ FutureOr<String> syncRendimientoOtro() async {
     }
   }
   return 'OK';
+}
+
+FutureOr<String> rendimientoOtroDeletelocalSynch() async {
+  final Isar isar = IsarService().isar;
+  try {
+    await isar.writeTxn(() async {
+      await isar.rendimientoOtroCollections
+          .filter()
+          .synchEqualTo(true)
+          .deleteAll();
+    });
+    return 'OK';
+  } catch (e) {
+    debugPrint('Error: $e');
+    return e.toString();
+  }
 }
 
 FutureOr<String> rendimientoOtroAdd(RendimientoOtroModel rendi) async {
@@ -138,7 +163,7 @@ FutureOr<String> rendimientoOtroEdit(RendimientoOtroModel rendi) async {
   Map<String, dynamic> visitas = json.decode(response.body);
   if (response.statusCode == 200) {
     print(response.body);
-    return visitas['mensaje'];
+    return "ok";
   } else {
     // Maneja errores de la respuesta
     return visitas['error'];

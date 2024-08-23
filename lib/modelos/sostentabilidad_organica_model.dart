@@ -21,6 +21,7 @@ List<SostentabilidadOrganicaCollection> sosOrganicaCollectionFromListJson(
     final SostentabilidadOrganicaCollection status =
         SostentabilidadOrganicaCollection()
           ..idSostentabilidadOrganica = entry.idSostentabilidadOrganica
+          ..fincaId = entry.fincaId
           ..abonoOrganico = entry.abonoOrganico
           ..abonosVerdes = entry.abonosVerdes
           ..calAgrico = entry.calAgrico
@@ -46,6 +47,7 @@ List<SostentabilidadOrganicaModel> sosOrganicaFromListCollection(
   for (final entry in practicas) {
     final SostentabilidadOrganicaModel status = SostentabilidadOrganicaModel(
       id: entry.id,
+      fincaId: entry.fincaId!,
       idSostentabilidadOrganica: entry.idSostentabilidadOrganica!,
       abonoOrganico: entry.abonoOrganico!,
       abonosVerdes: entry.abonosVerdes!,
@@ -79,6 +81,7 @@ class SostentabilidadOrganicaModel {
   final String longitud;
   final String visitaId;
   final String idProductor;
+  final String fincaId;
   final bool synch;
 
   SostentabilidadOrganicaModel({
@@ -95,6 +98,7 @@ class SostentabilidadOrganicaModel {
     required this.visitaId,
     required this.idProductor,
     required this.synch,
+    required this.fincaId,
     this.id,
   });
 
@@ -133,6 +137,7 @@ class SostentabilidadOrganicaModel {
         visitaId: json["VisitaID"] == null ? "" : json["VisitaID"].toString(),
         idProductor:
             json["id_productor"] == null ? "" : json["id_productor"].toString(),
+        fincaId: json["FincaID"] == null ? "" : json["FincaID"].toString(),
         synch: true,
       );
 
@@ -149,5 +154,6 @@ class SostentabilidadOrganicaModel {
         "longitud": longitud,
         "VisitaID": visitaId,
         "id_productor": idProductor,
+        "FincaID": fincaId,
       };
 }

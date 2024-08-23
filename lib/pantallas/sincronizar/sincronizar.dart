@@ -11,14 +11,29 @@ class Sincronizar extends StatelessWidget {
     return ScaffoldCustom(
       title: 'Sincronizar datos',
       body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            EasyLoading.show(status: 'Sincronizando...');
-            await sincronizarRest();
-            EasyLoading.showSuccess('Sincronizado con exito');
-            EasyLoading.dismiss();
-          },
-          child: Text('Sincronizar'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                EasyLoading.show(status: 'Sincronizando...');
+                await sincronizarRest();
+                EasyLoading.showSuccess('Sincronizado con exito');
+                EasyLoading.dismiss();
+              },
+              child: Text('Sincronizar'),
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () async {
+                EasyLoading.show(status: 'Actualizando...');
+                await actualizarRest();
+                EasyLoading.showSuccess('Actualizado con exito');
+                EasyLoading.dismiss();
+              },
+              child: Text('Actualizar'),
+            ),
+          ],
         ),
       ),
     );

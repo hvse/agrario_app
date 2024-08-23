@@ -17,6 +17,7 @@ List<InfraCollection> infraCollectionFromListJson(List<InfraModel> infra) {
 
   for (final entry in infra) {
     final InfraCollection status = InfraCollection()
+      ..synch = entry.synch
       ..idInstraestructura = entry.idInstraestructura
       ..abonoParcelasCanhaAzucar = entry.abonoParcelasCanhaAzucar
       ..plantacionesNuevas = entry.plantacionesNuevas
@@ -37,12 +38,11 @@ List<InfraCollection> infraCollectionFromListJson(List<InfraModel> infra) {
   return packageList;
 }
 
-
-
 List<InfraModel> fincasFromListCollection(List<InfraCollection> infra) {
   final List<InfraModel> packageList = [];
   for (final entry in infra) {
     final InfraModel fincaModel = InfraModel(
+      synch: entry.synch,
       idInstraestructura: entry.idInstraestructura,
       abonoParcelasCanhaAzucar: entry.abonoParcelasCanhaAzucar,
       plantacionesNuevas: entry.plantacionesNuevas,
@@ -76,6 +76,7 @@ class InfraModel {
   final String longitud;
   final String visitaId;
   final String idProductor;
+  final bool synch;
 
   InfraModel({
     required this.idInstraestructura,
@@ -90,6 +91,7 @@ class InfraModel {
     required this.longitud,
     required this.visitaId,
     required this.idProductor,
+    required this.synch,
     this.id,
   });
 
@@ -99,6 +101,7 @@ class InfraModel {
   String toRawJson() => json.encode(toJson());
 
   factory InfraModel.fromJson(Map<String, dynamic> json) => InfraModel(
+        synch: true,
         idInstraestructura: json["id_instraestructura"] == null
             ? ""
             : json["id_instraestructura"].toString(),

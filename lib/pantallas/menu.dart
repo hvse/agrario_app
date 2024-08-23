@@ -70,7 +70,7 @@ class Menu extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.trending_flat),
-            title: const Text('Rendimiento de Azucar'),
+            title: const Text('Caña de Azucar'),
             onTap: () {
               print("menu 2");
               Navigator.push(

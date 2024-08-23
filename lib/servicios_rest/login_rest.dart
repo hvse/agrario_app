@@ -53,19 +53,11 @@ FutureOr<String> loginRest(String usuario, String pass) async {
         List<String> headersplited = arreglo1.split(';');
         prefs.setString('session', headersplited[0]);
         print(headersplited[0]);
-
+        await getDataRemote();
         print("url: ${apiUrl}");
         print("body: ${jsonData}");
         print("Inicio de sesion: ${response.body}");
-        await fincaGetSesion();
-        await productoresGetSession();
-        await getManoObraSession();
-        await getPracticasSession();
-        await getRendimientoAzucarSession();
-        await getRendimientoOtroSession();
-        await getSosOrganicaSession();
-        await getVisitasSession();
-        await getInfraSession();
+
         return 'ok';
       } else {
         return 'error';
@@ -78,6 +70,18 @@ FutureOr<String> loginRest(String usuario, String pass) async {
     // Maneja errores de la solicitud
     return 'Error en la solicitud: $error';
   }
+}
+
+Future<void> getDataRemote() async {
+  await fincaGetSesion();
+  await productoresGetSession();
+  await getManoObraSession();
+  await getPracticasSession();
+  await getRendimientoAzucarSession();
+  await getRendimientoOtroSession();
+  await getSosOrganicaSession();
+  await getVisitasSession();
+  await getInfraSession();
 }
 
 Future<List<ProductorModel>> getProductores() async {

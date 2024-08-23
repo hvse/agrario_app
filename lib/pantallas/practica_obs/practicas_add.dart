@@ -1,6 +1,7 @@
 import 'package:agrario_app/modelos/practicas_model.dart';
 import 'package:agrario_app/pantallas/practica_obs/practicas_obs.dart';
 import 'package:agrario_app/servicios_rest/finca_rest.dart';
+import 'package:agrario_app/servicios_rest/login_rest.dart';
 import 'package:agrario_app/servicios_rest/practicas_rest.dart';
 import 'package:agrario_app/servicios_rest/utils.dart';
 import 'package:agrario_app/servicios_rest/validator.dart';
@@ -37,7 +38,9 @@ class _PracticaAddState extends State<PracticaAdd> {
 
   bool isLoading = true;
   late List<DropdownMenuItem<Object>>? visitas;
+  late List<DropdownMenuItem<Object>>? productores;
   String idVista = '';
+  String productoId = '';
   String latitud = '';
   String longitud = '';
 
@@ -116,17 +119,28 @@ class _PracticaAddState extends State<PracticaAdd> {
   Future<void> cargarDatos() async {
     try {
       var visiResult = await visitaGetLocal();
+      var productor = await productoresGetlocal();
       setState(() {
         if (widget.mano == null) {
           idVista = visiResult.firstOrNull?.visitaId.toString() ?? '';
+          productoId = productor.firstOrNull?.productorId.toString() ?? '';
           visitaId.text = idVista;
+          idProductor.text = productoId;
         } else {
           idVista = widget.mano!.visitaId.toString();
+          productoId = widget.mano!.idProductor.toString();
         }
         visitas = visiResult.map((visita) {
           return DropdownMenuItem(
             value: visita.visitaId.toString(),
             child: Text(visita.visitaId.toString()),
+          );
+        }).toList();
+
+        productores = productor.map((productor) {
+          return DropdownMenuItem(
+            value: productor.productorId.toString(),
+            child: Text(productor.nombreProductor),
           );
         }).toList();
       });
@@ -164,22 +178,26 @@ class _PracticaAddState extends State<PracticaAdd> {
                   Form(
                       key: formKey,
                       child: Column(children: [
-                        if (widget.mano != null)
-                          TextFormField(
-                            validator: (value) => Validator.isValidEmpty(value),
-                            controller: idPracticasObservadas,
-                            decoration: const InputDecoration(
-                                labelText: 'Practicas Id'),
-                          ),
                         DropdownButtonFormField(
                             decoration: InputDecoration(
-                              labelText: 'Visita Id',
+                              labelText: 'Visita',
                             ),
                             value: idVista,
                             items: visitas,
                             onChanged: (value) => setState(() {
                                   idVista = value.toString();
                                 })),
+                        const SizedBox(height: 16.0),
+                        DropdownButtonFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Productor',
+                            ),
+                            value: productoId,
+                            items: productores,
+                            onChanged: (value) => setState(() {
+                                  idVista = value.toString();
+                                })),
+                        const SizedBox(height: 16.0),
                         TextFormField(
                           validator: (value) => Validator.isValidEmpty(value),
                           controller: practicasObservadas,
@@ -253,13 +271,6 @@ class _PracticaAddState extends State<PracticaAdd> {
                           decoration: const InputDecoration(
                               labelText: 'Trabajo infantil'),
                         ),
-                        TextFormField(
-                          validator: (value) => Validator.isValidEmpty(value),
-                          controller: idProductor,
-                          keyboardType: TextInputType.number,
-                          decoration:
-                              const InputDecoration(labelText: 'Productor'),
-                        ),
                       ])),
                   const SizedBox(height: 16.0),
                   ElevatedButton(
@@ -280,7 +291,7 @@ class _PracticaAddState extends State<PracticaAdd> {
                         realizaQuema: realizaQuema.text,
                         crianzaAnimal: crianzaAnimal.text,
                         trabajoInfantil: trabajoInfantil.text,
-                        idProductor: idProductor.text,
+                        idProductor: productoId,
                         latitud: latitud,
                         longitud: longitud,
                         visitaId: idVista,

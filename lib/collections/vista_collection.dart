@@ -25,4 +25,5 @@ class VisitaCollection {
   late String nombreFinca;
   late String nombreProductor;
   late bool synch;
+  late String herramientaLimpieza;
 }

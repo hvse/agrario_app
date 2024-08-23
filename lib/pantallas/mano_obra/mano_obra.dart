@@ -90,21 +90,27 @@ class _ManoObraState extends State<ManoObra> {
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   children: [
-                                    ElevatedButton(
-                                      child: Icon(Icons.more_vert),
-                                      onPressed: () => showEditDeletOption(
-                                        context,
-                                        () async {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: ((context) =>
-                                                      ManoObraAdd(
-                                                        mano: data[index],
-                                                      ))));
-                                        },
+                                    if (data[index].synch)
+                                      ElevatedButton(
+                                        child: Icon(Icons.more_vert),
+                                        onPressed: () => showEditDeletOption(
+                                          context,
+                                          () async {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: ((context) =>
+                                                        ManoObraAdd(
+                                                          mano: data[index],
+                                                        ))));
+                                          },
+                                        ),
                                       ),
-                                    ),
+                                    if (!data[index].synch)
+                                      Icon(
+                                        Icons.sync,
+                                        color: Colors.orange,
+                                      )
                                   ],
                                 ),
                               ));

@@ -21,6 +21,7 @@ List<RendimientoOtroCollection> rendimientoOtroCollectionFromListJson(
     final RendimientoOtroCollection rendimientoOtroCollection =
         RendimientoOtroCollection()
           ..idRendimientoOtros = entry.idRendimientoOtros
+          ..fincaId = entry.fincaId
           ..nroParcelas = entry.nroParcelas
           ..orgHas = entry.orgHas
           ..converHas = entry.converHas
@@ -49,6 +50,7 @@ List<RendimientoOtroModel> rendimientoOtroFromListCollection(
   for (final entry in practicas) {
     final RendimientoOtroModel status = RendimientoOtroModel(
       id: entry.id,
+      fincaId: entry.fincaId!,
       idRendimientoOtros: entry.idRendimientoOtros!,
       nroParcelas: entry.nroParcelas!,
       orgHas: entry.orgHas!,
@@ -88,6 +90,7 @@ class RendimientoOtroModel {
   final String longitud;
   final String visitaId;
   final String idProductor;
+  final String fincaId;
   final bool synch;
 
   RendimientoOtroModel({
@@ -107,6 +110,7 @@ class RendimientoOtroModel {
     required this.visitaId,
     required this.idProductor,
     required this.synch,
+    required this.fincaId,
     this.id,
   });
 
@@ -144,6 +148,7 @@ class RendimientoOtroModel {
         visitaId: json["VisitaID"] == null ? "" : json["VisitaID"].toString(),
         idProductor:
             json["id_productor"] == null ? "" : json["id_productor"].toString(),
+        fincaId: json["FincaID"] == null ? "" : json["FincaID"].toString(),
         synch: true,
       );
 
@@ -163,5 +168,6 @@ class RendimientoOtroModel {
         "longitud": longitud,
         "VisitaID": visitaId,
         "id_productor": idProductor,
+        "FincaID": fincaId,
       };
 }

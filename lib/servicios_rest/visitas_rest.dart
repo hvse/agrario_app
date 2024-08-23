@@ -80,11 +80,18 @@ FutureOr<String> visitaDeletelocal(int id) async {
   }
 }
 
-FutureOr<List<VisitaModel>> visitaGetLocal() async {
+FutureOr<List<VisitaModel>> visitaGetLocal({synch = false}) async {
   final Isar isar = IsarService().isar;
   try {
-    final List<VisitaCollection> visitas =
-        await isar.visitaCollections.where().findAll();
+    final List<VisitaCollection> visitas;
+
+    if (synch) {
+      visitas =
+          await isar.visitaCollections.filter().synchEqualTo(false).findAll();
+    } else {
+      visitas = await isar.visitaCollections.where().findAll();
+    }
+
     return visitasFromListCollection(visitas);
   } catch (e) {
     debugPrint('Error: $e');
@@ -93,7 +100,7 @@ FutureOr<List<VisitaModel>> visitaGetLocal() async {
 }
 
 FutureOr<String> syncVisitas() async {
-  List<VisitaModel> visitas = await visitaGetLocal();
+  List<VisitaModel> visitas = await visitaGetLocal(synch: true);
   for (var i = 0; i < visitas.length; i++) {
     final response = await visitasAdd(visitas[i]);
     if (response == 'OK') {
@@ -101,6 +108,19 @@ FutureOr<String> syncVisitas() async {
     }
   }
   return 'OK';
+}
+
+FutureOr<String> visitaDeletelocalSynch() async {
+  final Isar isar = IsarService().isar;
+  try {
+    await isar.writeTxn(() async {
+      await isar.visitaCollections.filter().synchEqualTo(true).deleteAll();
+    });
+    return 'OK';
+  } catch (e) {
+    debugPrint('Error: $e');
+    return e.toString();
+  }
 }
 
 FutureOr<String> visitasAdd(VisitaModel visita) async {
@@ -119,7 +139,7 @@ FutureOr<String> visitasAdd(VisitaModel visita) async {
     body: request,
   );
 
-  print(response);
+  print(response.body);
 
   if (response.statusCode == 200) {
     return "OK";

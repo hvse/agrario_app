@@ -69,11 +69,17 @@ FutureOr<String> manoDeletelocal(int id) async {
   }
 }
 
-FutureOr<List<ManoObraModel>> manoGetLocal() async {
+FutureOr<List<ManoObraModel>> manoGetLocal({synch = false}) async {
   final Isar isar = IsarService().isar;
   try {
-    final List<ManoObraCollection> visitas =
-        await isar.manoObraCollections.where().findAll();
+    final List<ManoObraCollection> visitas;
+    if (synch) {
+      visitas =
+          await isar.manoObraCollections.filter().synchEqualTo(false).findAll();
+    } else {
+      visitas = await isar.manoObraCollections.where().findAll();
+    }
+
     return manoFromListCollection(visitas);
   } catch (e) {
     debugPrint('Error: $e');
@@ -82,7 +88,7 @@ FutureOr<List<ManoObraModel>> manoGetLocal() async {
 }
 
 FutureOr<String> syncMano() async {
-  List<ManoObraModel> manos = await manoGetLocal();
+  List<ManoObraModel> manos = await manoGetLocal(synch: true);
   for (var i = 0; i < manos.length; i++) {
     final response = await manoAdd(manos[i]);
     if (response == 'OK') {
@@ -90,6 +96,19 @@ FutureOr<String> syncMano() async {
     }
   }
   return 'OK';
+}
+
+FutureOr<String> manoDeletelocalSynch() async {
+  final Isar isar = IsarService().isar;
+  try {
+    await isar.writeTxn(() async {
+      await isar.manoObraCollections.filter().synchEqualTo(true).deleteAll();
+    });
+    return 'OK';
+  } catch (e) {
+    debugPrint('Error: $e');
+    return e.toString();
+  }
 }
 
 FutureOr<String> manoAdd(ManoObraModel mano) async {
@@ -151,6 +170,5 @@ Future<void> manosClean() async {
     });
   } catch (e) {
     debugPrint('Error: $e');
- 
   }
 }

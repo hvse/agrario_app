@@ -72,8 +72,13 @@ const InfraCollectionSchema = CollectionSchema(
       name: r'salud',
       type: IsarType.string,
     ),
-    r'visitaId': PropertySchema(
+    r'synch': PropertySchema(
       id: 11,
+      name: r'synch',
+      type: IsarType.bool,
+    ),
+    r'visitaId': PropertySchema(
+      id: 12,
       name: r'visitaId',
       type: IsarType.string,
     )
@@ -130,7 +135,8 @@ void _infraCollectionSerialize(
   writer.writeString(offsets[8], object.otros);
   writer.writeString(offsets[9], object.plantacionesNuevas);
   writer.writeString(offsets[10], object.salud);
-  writer.writeString(offsets[11], object.visitaId);
+  writer.writeBool(offsets[11], object.synch);
+  writer.writeString(offsets[12], object.visitaId);
 }
 
 InfraCollection _infraCollectionDeserialize(
@@ -152,7 +158,8 @@ InfraCollection _infraCollectionDeserialize(
   object.otros = reader.readString(offsets[8]);
   object.plantacionesNuevas = reader.readString(offsets[9]);
   object.salud = reader.readString(offsets[10]);
-  object.visitaId = reader.readString(offsets[11]);
+  object.synch = reader.readBool(offsets[11]);
+  object.visitaId = reader.readString(offsets[12]);
   return object;
 }
 
@@ -186,6 +193,8 @@ P _infraCollectionDeserializeProp<P>(
     case 10:
       return (reader.readString(offset)) as P;
     case 11:
+      return (reader.readBool(offset)) as P;
+    case 12:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1844,6 +1853,16 @@ extension InfraCollectionQueryFilter
   }
 
   QueryBuilder<InfraCollection, InfraCollection, QAfterFilterCondition>
+      synchEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'synch',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<InfraCollection, InfraCollection, QAfterFilterCondition>
       visitaIdEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -2139,6 +2158,19 @@ extension InfraCollectionQuerySortBy
     });
   }
 
+  QueryBuilder<InfraCollection, InfraCollection, QAfterSortBy> sortBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.asc);
+    });
+  }
+
+  QueryBuilder<InfraCollection, InfraCollection, QAfterSortBy>
+      sortBySynchDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.desc);
+    });
+  }
+
   QueryBuilder<InfraCollection, InfraCollection, QAfterSortBy>
       sortByVisitaId() {
     return QueryBuilder.apply(this, (query) {
@@ -2319,6 +2351,19 @@ extension InfraCollectionQuerySortThenBy
     });
   }
 
+  QueryBuilder<InfraCollection, InfraCollection, QAfterSortBy> thenBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.asc);
+    });
+  }
+
+  QueryBuilder<InfraCollection, InfraCollection, QAfterSortBy>
+      thenBySynchDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'synch', Sort.desc);
+    });
+  }
+
   QueryBuilder<InfraCollection, InfraCollection, QAfterSortBy>
       thenByVisitaId() {
     return QueryBuilder.apply(this, (query) {
@@ -2418,6 +2463,12 @@ extension InfraCollectionQueryWhereDistinct
     });
   }
 
+  QueryBuilder<InfraCollection, InfraCollection, QDistinct> distinctBySynch() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'synch');
+    });
+  }
+
   QueryBuilder<InfraCollection, InfraCollection, QDistinct> distinctByVisitaId(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2504,6 +2555,12 @@ extension InfraCollectionQueryProperty
   QueryBuilder<InfraCollection, String, QQueryOperations> saludProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'salud');
+    });
+  }
+
+  QueryBuilder<InfraCollection, bool, QQueryOperations> synchProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'synch');
     });
   }
 

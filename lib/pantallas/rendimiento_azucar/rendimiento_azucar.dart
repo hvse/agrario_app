@@ -99,20 +99,26 @@ class _RendimienntoAzucarState extends State<RendimienntoAzucar> {
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   children: [
-                                    ElevatedButton(
-                                      child: Icon(Icons.more_vert),
-                                      onPressed: () {
-                                        showEditDeletOption(context, () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: ((context) =>
-                                                      RendimientoAzucarAdd(
-                                                        mano: data[index],
-                                                      ))));
-                                        });
-                                      },
-                                    ),
+                                    if (data[index].synch)
+                                      ElevatedButton(
+                                        child: Icon(Icons.more_vert),
+                                        onPressed: () {
+                                          showEditDeletOption(context, () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: ((context) =>
+                                                        RendimientoAzucarAdd(
+                                                          mano: data[index],
+                                                        ))));
+                                          });
+                                        },
+                                      ),
+                                    if (!data[index].synch)
+                                      Icon(
+                                        Icons.sync,
+                                        color: Colors.orange,
+                                      )
                                   ],
                                 ),
                               ));
@@ -122,7 +128,7 @@ class _RendimienntoAzucarState extends State<RendimienntoAzucar> {
           ),
         ],
       ),
-      title: 'Lista de Rendimiento Azucar',
+      title: 'Lista de Caña de Azucar',
       floatingActionButton: FloatingActionButton(
         //backgroundColor: Colors.grey,
         elevation: 5,
